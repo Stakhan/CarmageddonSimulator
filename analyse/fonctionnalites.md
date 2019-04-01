@@ -32,6 +32,7 @@ On distingue deux types de configurations :
     Parmi ces dernières on divise entre :
     + La __configuration structurelle__ ;
     + La __configuration de flux__. 
+
 ### Configuration structurelle
 Elle correspond à des informations structurelles de la simulation : la taille des voies, le type de carrefour, le nombre de carrefours en série... Ces informations doivent être définies avant le début de la simulation.
 
