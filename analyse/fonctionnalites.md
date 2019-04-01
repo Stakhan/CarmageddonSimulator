@@ -14,7 +14,7 @@ A celles-ci s'ajoutent d'autres fonctionnalités auxiliaires :
 ## 1. Ouverture et Fermeture
 
 ### Ouverture
-L'ouverture de l'application s'effectue en lançant l'exécutable.
+L'ouverture de l'application s'effectue en lançant l'exécutable. (quel type d'exécutable ? archive java ? Quel commande à lancé ?)
 
 ### Fermeture
 Dans une version graphique, la fermeture de l'application s'effectue en fermant la fenêtre ou en cliquant sur une icône prévue à cet effet.
