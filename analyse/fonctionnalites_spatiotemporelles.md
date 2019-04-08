@@ -5,7 +5,7 @@ En effet, un piéton avance à une vitesse moyenne de 3 km/h, ce qui équivaut �
 - 1 case = 0,8 mètre 
 - 1 tour = 1 seconde 
 
-Ainsi, une cellule correspond à une superficie de 0,8*0,8 m², soit à peu près l’espace couvert par un piéton sur le trottoir. Une voiture “par défaut” couvre un rectangle de 5*3 cellules, soit 4*2,4 mètres environ. 
+Ainsi, une cellule correspond à une superficie de 0,8*0,8 m², soit à peu près l’espace couvert par un piéton sur le trottoir. Une voiture “par défaut” couvre un rectangle de 5\*3 cellules, soit 4*2,4 mètres environ. 
 En ville, une voiture est limitée à 50 km/h, soit une avancée de 50/3 = 17 cases en un tour. 
 Le code de la route donne le calcul suivant pour la distance d’arrêt = distance parcourue pendant le temps de réaction + distance de freinage. 
 Temps de réaction = 1 seconde (conducteur en forme, sinon le double voire le triple), soit Dist = Vitesse * Temps. 
