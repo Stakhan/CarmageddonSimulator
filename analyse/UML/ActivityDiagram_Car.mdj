@@ -9945,6 +9945,7 @@
 						"$ref": "AAAAAAFp4hPciGZ60bY="
 					},
 					"name": "ActivityDiagram_Car",
+					"defaultDiagram": true,
 					"ownedViews": [
 						{
 							"_type": "UMLControlNodeView",
@@ -10303,7 +10304,7 @@
 											"font": "Arial;13;0",
 											"left": 816,
 											"top": 320,
-											"width": 86.6708984375,
+											"width": 88,
 											"height": 13,
 											"text": "(from Activity1)"
 										},
@@ -10405,7 +10406,7 @@
 											"font": "Arial;13;0",
 											"left": 672,
 											"top": 448,
-											"width": 86.6708984375,
+											"width": 88,
 											"height": 13,
 											"text": "(from Activity1)"
 										},
@@ -10472,9 +10473,9 @@
 										"$ref": "AAAAAAFp4h9cymfem14="
 									},
 									"font": "Arial;13;0",
-									"left": 1050,
+									"left": 1049,
 									"top": 385,
-									"width": 17.34814453125,
+									"width": 18,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -10981,7 +10982,7 @@
 											"font": "Arial;13;0",
 											"left": 672,
 											"top": 704,
-											"width": 86.6708984375,
+											"width": 88,
 											"height": 13,
 											"text": "(from Activity1)"
 										},
@@ -11289,7 +11290,7 @@
 											"font": "Arial;13;0",
 											"left": 832,
 											"top": 306,
-											"width": 86.6708984375,
+											"width": 88,
 											"height": 13,
 											"text": "(from Activity1)"
 										},
@@ -11356,9 +11357,9 @@
 										"$ref": "AAAAAAFp4ic4zGki7Xc="
 									},
 									"font": "Arial;13;0",
-									"left": 1237,
+									"left": 1236,
 									"top": 335,
-									"width": 17.34814453125,
+									"width": 18,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -11876,9 +11877,9 @@
 										"$ref": "AAAAAAFp4inXLWmdDd4="
 									},
 									"font": "Arial;13;0",
-									"left": 1101,
+									"left": 1100,
 									"top": 571,
-									"width": 17.34814453125,
+									"width": 18,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -12073,6 +12074,28 @@
 							"subViews": [
 								{
 									"_type": "EdgeLabelView",
+									"_id": "AAAAAAFp+6N7EgP2usw=",
+									"_parent": {
+										"$ref": "AAAAAAFp4irf0mnHRJ8="
+									},
+									"model": {
+										"$ref": "AAAAAAFp4irfyGnGVEc="
+									},
+									"font": "Arial;13;0",
+									"left": 809,
+									"top": 615,
+									"width": 21.68994140625,
+									"height": 13,
+									"alpha": 1.5707963267948966,
+									"distance": 15,
+									"hostEdge": {
+										"$ref": "AAAAAAFp4irf0mnHRJ8="
+									},
+									"edgePosition": 1,
+									"text": "non"
+								},
+								{
+									"_type": "EdgeLabelView",
 									"_id": "AAAAAAFp4irf0mnJfIk=",
 									"_parent": {
 										"$ref": "AAAAAAFp4irf0mnHRJ8="
@@ -12124,6 +12147,9 @@
 							"lineStyle": 3,
 							"points": "1043:573;818:607;687:621",
 							"showVisibility": true,
+							"nameLabel": {
+								"$ref": "AAAAAAFp+6N7EgP2usw="
+							},
 							"stereotypeLabel": {
 								"$ref": "AAAAAAFp4irf0mnJfIk="
 							},
@@ -12486,7 +12512,7 @@
 											"font": "Arial;13;0",
 											"left": 512,
 											"top": 528,
-											"width": 86.6708984375,
+											"width": 88,
 											"height": 13,
 											"text": "(from Activity1)"
 										},
@@ -12553,9 +12579,9 @@
 										"$ref": "AAAAAAFp4nlSRR6ECmI="
 									},
 									"font": "Arial;13;0",
-									"left": 771,
+									"left": 770,
 									"top": 529,
-									"width": 17.34814453125,
+									"width": 18,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -12777,7 +12803,7 @@
 											"font": "Arial;13;0",
 											"left": 672,
 											"top": 80,
-											"width": 86.6708984375,
+											"width": 88,
 											"height": 13,
 											"text": "(from Activity1)"
 										},
@@ -13066,9 +13092,9 @@
 										"$ref": "AAAAAAFp4oHUCB8Gcr4="
 									},
 									"font": "Arial;13;0",
-									"left": 1178,
+									"left": 1177,
 									"top": 324,
-									"width": 17.34814453125,
+									"width": 18,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -13495,7 +13521,7 @@
 											"font": "Arial;13;0",
 											"left": 816,
 											"top": 320,
-											"width": 86.6708984375,
+											"width": 88,
 											"height": 13,
 											"text": "(from Activity1)"
 										},
@@ -13562,9 +13588,9 @@
 										"$ref": "AAAAAAFp4oz78R9/4fI="
 									},
 									"font": "Arial;13;0",
-									"left": 576,
+									"left": 575,
 									"top": 266,
-									"width": 17.34814453125,
+									"width": 18,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -13846,9 +13872,9 @@
 										"$ref": "AAAAAAFp4pE7NR+2C48="
 									},
 									"font": "Arial;13;0",
-									"left": 879,
+									"left": 878,
 									"top": 305,
-									"width": 17.34814453125,
+									"width": 18,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -13976,7 +14002,7 @@
 											"font": "Arial;13;0",
 											"left": 1000,
 											"top": 434,
-											"width": 86.6708984375,
+											"width": 88,
 											"height": 13,
 											"text": "(from Activity1)"
 										},
