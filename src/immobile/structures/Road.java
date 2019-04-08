@@ -1,4 +1,4 @@
-package immobile;
+package immobile.structures;
 
 import java.util.List;
 

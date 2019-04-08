@@ -1,4 +1,4 @@
-package immobile;
+package immobile.lights;
 
 public class TrafficLightSystem {
 

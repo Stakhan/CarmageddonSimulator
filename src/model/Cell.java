@@ -2,8 +2,8 @@ package model;
 
 import java.util.List;
 
-import immobile.Structure;
-import immobile.TrafficLight;
+import immobile.lights.TrafficLight;
+import immobile.structures.Structure;
 import mobile.MobileObject;
 
 public class Cell {
