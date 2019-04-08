@@ -1,6 +1,8 @@
-package model.structure;
+package immobile;
 
 import java.util.List;
+
+import enumeration.Orientation;
 
 public class Road {
 	
@@ -14,11 +16,15 @@ public class Road {
 	List<SideWalk> listSideWalks;
 	
 	
-	public Road(int length, int laneSize, int sideWalkSize, Orientation orientation) {
+	public Road(int length, int laneSize, int sideWalkSize, Orientation orientation, int laneNb) {
 		this.length = length;
 		this.laneSize = laneSize;
 		this.sideWalkSize = sideWalkSize;
 		this.orientation = orientation;
+		//this.listLanes = new List<Lane>();
+		
+		//Define lanes
+		
 	}
 	
 	

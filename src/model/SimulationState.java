@@ -1,6 +1,6 @@
-package model.base;
+package model;
 
-import model.structure.StructureParts;
+import immobile.StructureParts;
 
 public class SimulationState {
 	

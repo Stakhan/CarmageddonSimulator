@@ -1,7 +1,6 @@
 package model;
 
-import model.base.Simulation;
-import model.structure.ConfigureStructure;
+import engine.Simulation;
 
 public class Main {
 	public static void main(String[] args) {

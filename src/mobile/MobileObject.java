@@ -1,4 +1,4 @@
-package model.mobile;
+package mobile;
 
 public class MobileObject {
 

@@ -1,11 +1,12 @@
-package model.base;
+package engine;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import model.mobile.MovingParts;
-import model.structure.ConfigureStructure;
-import model.structure.StructureParts;
+import immobile.StructureParts;
+import mobile.MovingParts;
+import model.ConfigureStructure;
+import model.SimulationState;
 
 public class Simulation {
 	

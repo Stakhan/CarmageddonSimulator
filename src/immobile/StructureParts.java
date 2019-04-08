@@ -1,4 +1,4 @@
-package model.structure;
+package immobile;
 
 public class StructureParts {
 
