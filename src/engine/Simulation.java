@@ -32,21 +32,7 @@ public class Simulation {
 	 * 
 	 */
 	//
-	public void run(StructureParts structureParts, MovingParts movingParts) {
-		
-		boolean termination = false;
-		int currentState = 0;
-		
-		SimulationState initState = new SimulationState(currentState, this.lineNb, this.columnNb);
-		listStates.add(initState);
-		
-		while(termination == false) {
-			//Execute simulation step by step.
-			currentState++;
-			listStates.add(new SimulationState(currentState, this.lineNb, this.columnNb)); //Add simulation state to list
-			termination = listStates.get(currentState).generate(listStates.get(currentState-1)); //Generate current state from previous State
-		}
-	}
+	
 	public void run() {
 			
 		boolean termination = false;
@@ -62,8 +48,18 @@ public class Simulation {
 			termination = listStates.get(currentState).generate(listStates.get(currentState-1)); //Generate current state from previous State
 		}
 	}
+	
+public void run(StructureParts structureParts, MovingParts movingParts) {
+		
+		run();
+	}
 
-	//Getter
+
+	/**
+	 * Get a state of the simulation at the given index
+	 * @param index
+	 * @return
+	 */
 	public SimulationState getState(int index) {
 		return this.listStates.get(index);
 	}
