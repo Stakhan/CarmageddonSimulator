@@ -24,10 +24,9 @@ public class SimulationState {
 	 */
 	public boolean generate(SimulationState previousState) {
 		//Fixing every structure part
-		for(Cell[] line: this.grid) {
-			for(Cell cell: line) {
-				cell = null;
-			}
+
+		for(Cell[] cell: line) {
+			cell.
 		}
 		return true; //true return statement only here for testing
 	}

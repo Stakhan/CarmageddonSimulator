@@ -7,14 +7,14 @@ import enumeration.Orientation;
 
 public class Road {
 	
-	int length;
-	int laneSize;
-	int sideWalkSize;
-	int roadSize;
-	int position;
-	Orientation orientation;
-	List<Lane> listLanes;
-	List<SideWalk> listSideWalks;
+	private int length;
+	private int laneSize;
+	private int sideWalkSize;
+	private int roadSize;
+	public int position;
+	private Orientation orientation;
+	private List<Lane> listLanes;
+	private List<SideWalk> listSideWalks;
 	
 	/**
 	 * Constructeur
