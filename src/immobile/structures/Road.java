@@ -11,6 +11,8 @@ public class Road {
 	private int laneSize;
 	private int sideWalkSize;
 	private int roadSize;
+	private int laneNb;
+	private boolean bidirectional;
 	public int position;
 	private Orientation orientation;
 	private List<Lane> listLanes;
@@ -31,8 +33,11 @@ public class Road {
 		this.laneSize = laneSize;
 		this.sideWalkSize = sideWalkSize;
 		this.orientation = orientation;
+		this.laneNb = laneNb;
+		this.bidirectional = bidirectional;
 		this.listLanes = new ArrayList<Lane>();
 		this.listSideWalks = new ArrayList<SideWalk>();
+		
 		
 		//Creating lanes
 		if(!bidirectional) {
@@ -51,15 +56,48 @@ public class Road {
 			this.roadSize = 2*laneSize*laneNb;
 		}
 		
+		
 		//Creating Sidewalks
 		listSideWalks.add(new SideWalk());
 		listSideWalks.add(new SideWalk());
 		this.roadSize += 2*sideWalkSize;
 		
+		
 		//Computing position from length and size
-		this.position = (int) this.length/this.roadSize/2+1;
+		this.position = (int) this.length/2 - this.roadSize/2 + 1;
+		System.out.println("Road object created.");
+		System.out.println("Position of this "+this.orientation+" road is "+this.position);
 		
 	}
 	
-	
+	/*
+	 * Getters
+	 */
+	public int getPosition() {
+		return position;
+	}
+	public int getRoadSize() {
+		return roadSize;
+	}
+	public Orientation getOrientation() {
+		return orientation;
+	}
+	public int getLaneSize() {
+		return laneSize;
+	}
+	public int getSideWalkSize() {
+		return sideWalkSize;
+	}
+	public Lane getLane(int index) {
+		return listLanes.get(index);
+	}
+	public SideWalk getSideWalk(int index) {
+		return listSideWalks.get(index);
+	}
+	public List<Lane> getListLanes() {
+		return listLanes;
+	}
+	public int getLength() {
+		return length;
+	}
 }

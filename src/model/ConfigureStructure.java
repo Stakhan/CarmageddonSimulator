@@ -16,6 +16,7 @@ public class ConfigureStructure {
 		this.columnNb = 350;
 		this.laneSize = 5;
 		this.sideWalkSize = 3;
+		this.bidirectional = false;
 	}
 	
 	public ConfigureStructure(int size) {
@@ -24,5 +25,6 @@ public class ConfigureStructure {
 		this.columnNb = size;
 		this.laneSize = 5;
 		this.sideWalkSize = 3;
+		this.bidirectional = false;
 	}
 }

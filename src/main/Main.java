@@ -1,15 +1,17 @@
 package main;
 
 import engine.Simulation;
+import immobile.StructureParts;
 import model.ConfigureStructure;
 
 public class Main {
 	public static void main(String[] args) {
 		
-		ConfigureStructure structConfig = new ConfigureStructure(350);
-		Simulation simulation1 = new Simulation(structConfig);
+		ConfigureStructure structConfig = new ConfigureStructure(50);
+		StructureParts structureParts1 = new StructureParts(structConfig);
+		Simulation simulation1 = new Simulation(structConfig, structureParts1);
 		simulation1.run();
-		System.out.println(simulation1.getState(1).toString());
+		simulation1.getState(1).writeToFile("simulation-state1.grid");
 		
 	}
 }
