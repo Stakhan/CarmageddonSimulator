@@ -11,7 +11,7 @@ public class Main {
 		StructureParts structureParts1 = new StructureParts(structConfig);
 		Simulation simulation1 = new Simulation(structConfig, structureParts1);
 		simulation1.run();
-		simulation1.getState(1).writeToFile("simulation-state1.grid");
+		simulation1.getState(0).writeToFile("simulation-state1.grid");
 		
 	}
 }
