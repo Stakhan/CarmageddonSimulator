@@ -1,13 +1,15 @@
-package model;
+package main;
 
-import model.base.Simulation;
-import model.structure.ConfigureStructure;
+import engine.Simulation;
+import model.ConfigureStructure;
 
 public class Main {
 	public static void main(String[] args) {
+		
 		ConfigureStructure structConfig = new ConfigureStructure(350);
 		Simulation simulation1 = new Simulation(structConfig);
 		simulation1.run();
 		System.out.println(simulation1.getState(1).toString());
+		
 	}
 }

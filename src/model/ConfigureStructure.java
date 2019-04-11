@@ -1,12 +1,13 @@
-package model.structure;
+package model;
 
 public class ConfigureStructure {
 	
 	public int intersectionNb;
 	public int lineNb;
 	public int columnNb;
-	int laneSize;
-	int sideWalkSize;
+	public int laneSize;
+	public int sideWalkSize;
+	public boolean bidirectional;
 	
 	//Constructeurs
 	public ConfigureStructure() {

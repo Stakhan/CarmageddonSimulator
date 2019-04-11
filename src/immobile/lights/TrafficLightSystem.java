@@ -1,4 +1,4 @@
-package model.structure;
+package immobile.lights;
 
 public class TrafficLightSystem {
 

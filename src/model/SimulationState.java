@@ -1,6 +1,6 @@
-package model.base;
+package model;
 
-import model.structure.StructureParts;
+import immobile.StructureParts;
 
 public class SimulationState {
 	
@@ -8,7 +8,7 @@ public class SimulationState {
 	private Cell[][] grid;
 	private StructureParts structureParts;
 	
-	//Constructeur
+	//Constructor
 	public SimulationState(int step, int lineNb, int columnNb) {
 		super();
 		this.step = step;
@@ -23,12 +23,11 @@ public class SimulationState {
 	 * @return true if a termination case presents itself
 	 */
 	public boolean generate(SimulationState previousState) {
-		//Update every simulation element
-//		for(Cell[] line: this.grid) {
-//			for(Cell cell: line) {
-//				cell = null;
-//			}
-//		}
+		//Fixing every structure part
+
+		for(Cell[] cell: line) {
+			cell.
+		}
 		return true; //true return statement only here for testing
 	}
 	

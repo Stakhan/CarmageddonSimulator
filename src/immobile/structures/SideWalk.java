@@ -1,4 +1,4 @@
-package model.structure;
+package immobile.structures;
 
 public class SideWalk extends Structure {
 
