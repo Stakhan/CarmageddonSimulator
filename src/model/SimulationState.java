@@ -51,26 +51,7 @@ public class SimulationState {
 		return true; //true return statement only here for testing
 	}
 	
-<<<<<<< HEAD
-//	@Override
-//	public String toString() {
-//		String table = "";
-//		for(int i=0; i<grid.length-1; i++) {
-//			String line = "[";
-//			for(int j=0; j<grid[0].length-1; j++) {
-//				if (grid[i][j] != null) {
-//					line += grid[i][j].getContainedRoad()+" ";
-//				}
-//				else {
-//					line += grid[i][j]+" ";
-//				}
-//			}
-//			line += "]\n";
-//			table += line;
-//		}
-//		return table;
-//	}
-=======
+
 	@Override
 	public String toString() {
 
@@ -86,7 +67,6 @@ public class SimulationState {
 		return table;
 
 	}
->>>>>>> eb3eddc6473fbe42e32d60a116a30f1c51e2536b
 	
 	
 	/**
