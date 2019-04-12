@@ -81,6 +81,39 @@ public class StructureParts {
 				}
 				
 			}
+			else if(road.getOrientation() == Orientation.Vertical) {
+				
+				int cursor = road.getPosition()+road.getRoadSize(); //Our vertical position on the grid throughout this code
+				
+				//Adding left sidewalk (considering direction defined as true)	
+				for(int i=cursor; i<cursor-road.getSideWalkSize(); i--) {
+						for (Cell cell: structGrid[i]) {
+							cell.addRoad(road);
+							cell.addStructure(road.getSideWalk(0));
+						}
+				}
+				cursor -= road.getSideWalkSize();
+				
+				//Adding each lanes				
+				for(Lane lane : road.getListLanes()) {	
+					for(int j=cursor; j<cursor-road.getLaneSize(); j--) {
+							for (Cell cell: structGrid[j]) {
+								cell.addRoad(road);
+								cell.addStructure(lane);
+							}
+						}
+					cursor -= road.getLaneSize();
+				}
+				
+				//Adding right sidewalk (considering direction defined as true)	
+				for(int i=cursor; i<cursor-road.getSideWalkSize(); i--) {
+						for (Cell cell: structGrid[i]) {
+							cell.addRoad(road);
+							cell.addStructure(road.getSideWalk(1));
+						}
+				}
+				
+			}
 		}
 	}
 	

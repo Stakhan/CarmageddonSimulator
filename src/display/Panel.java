@@ -30,6 +30,7 @@ public class Panel extends JPanel{
 
 	@Override
 	public void paintComponent(Graphics g) {
+		//Définition de la taille d'un pixel en fonction de la taille de la simulation
 		defineUnits(structConfig);
 		super.paintComponent(g); // Appel de la methode paintComponent de la classe mere
 		// Graphics est un objet fourni par le systeme qui est utilise pour dessiner les composant du conteneur
@@ -42,16 +43,16 @@ public class Panel extends JPanel{
 
 					if(grid[i][j].getContainedStructures(0) instanceof immobile.structures.SideWalk) {
 						g2d.setPaint(Color.gray); // couleur de l’interieur
-						g2d.fillRect(i*wUnit, j*hUnit, wUnit, hUnit);
+						g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 					}
 					else if(grid[i][j].getContainedStructures(0) instanceof Lane) {
 						g2d.setPaint(Color.black); // couleur de l’interieur
-						g2d.fillRect(i*wUnit, j*hUnit, wUnit, hUnit);
+						g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 					}
 				}
 				else if (grid[i][j].getcontainedRoads().size() == 0) {
 					g2d.setPaint(Color.green); // couleur de l’interieur
-					g2d.fillRect(i*wUnit, j*hUnit, wUnit, hUnit);
+					g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 				}
 			}
 		}
