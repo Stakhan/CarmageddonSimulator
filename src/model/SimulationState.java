@@ -21,9 +21,24 @@ public class SimulationState {
 		super();
 		this.step = step;
 		this.grid = new Cell[lineNb][columnNb];
+		defineCoordinates(lineNb, columnNb);
 		this.grid = structureParts.getStructGrid();
 	}
 	
+	
+	/**
+	 * Create cells with coordinates
+	 * @param xLength
+	 * @param yLength
+	 */
+	public void defineCoordinates(int xLength, int yLength) {
+		for (int x = 0; x < xLength; x++) {
+			for (int y = 0; y < yLength; y++) {
+				Cell cell = new Cell(x, y);
+				grid[x][y] = cell;
+			}
+		}
+	}
 	
 	/**
 	 * Generation of every element's position and parameter at this step in the simulation. Filling up every grid's cell.
@@ -36,6 +51,7 @@ public class SimulationState {
 		return true; //true return statement only here for testing
 	}
 	
+<<<<<<< HEAD
 //	@Override
 //	public String toString() {
 //		String table = "";
@@ -54,6 +70,23 @@ public class SimulationState {
 //		}
 //		return table;
 //	}
+=======
+	@Override
+	public String toString() {
+
+		String table = "";
+		for(int i=0; i<grid.length-1; i++) {
+			String line = "[";
+			for(int j=0; j<grid[0].length-1; j++) {
+				line += grid[i][j].toString() + " ";
+			}
+			line += "]\n";
+			table += line;
+		}
+		return table;
+
+	}
+>>>>>>> eb3eddc6473fbe42e32d60a116a30f1c51e2536b
 	
 	
 	/**
