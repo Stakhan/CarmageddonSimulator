@@ -87,5 +87,8 @@ public class SimulationState {
 	public Cell getGridValue(int i, int j) {
 		return grid[i][j];
 	}
+	public Cell[][] getGrid() {
+		return grid;
+	}
 	
 }

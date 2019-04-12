@@ -1,5 +1,6 @@
 package main;
 
+import display.Window;
 import engine.Simulation;
 import immobile.StructureParts;
 import model.ConfigureStructure;
@@ -12,6 +13,7 @@ public class Main {
 		Simulation simulation1 = new Simulation(structConfig, structureParts1);
 		simulation1.run();
 		simulation1.getState(0).writeToFile("simulation-state1.grid");
+		Window window1 = new Window(structConfig, simulation1.getState(0));
 		
 	}
 }
