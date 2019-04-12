@@ -23,9 +23,23 @@ public class StructureParts {
 		listRoads.add(new Road(structConfig.columnNb, structConfig.laneSize, structConfig.sideWalkSize, Orientation.Vertical, 1, structConfig.bidirectional));
 		
 		this.structGrid = new Cell[structConfig.lineNb][structConfig.columnNb];
+		
+		defineCoordinates(structConfig.lineNb, structConfig.columnNb);
+		
 		initStructGrid();
-		
-		
+	}
+	
+	
+	/***
+	 * Defines the coordinates of the cells
+	 */
+	public void defineCoordinates(int xLength, int yLength) {
+		for (int x = 0; x < xLength; x++) {
+			for (int y = 0; y < yLength; y++) {
+				Cell cell = new Cell(x, y);
+				structGrid[x][y] = cell;
+			}
+		}
 	}
 	
 	
@@ -41,7 +55,7 @@ public class StructureParts {
 				//Adding left sidewalk (considering direction defined as true)	
 				for(int i=cursor; i<cursor+road.getSideWalkSize(); i++) {
 						for (Cell cell: structGrid[i]) {
-							cell = new Cell(road);
+							cell.addRoad(road);
 							cell.addStructure(road.getSideWalk(0));
 						}
 				}
@@ -51,7 +65,7 @@ public class StructureParts {
 				for(Lane lane : road.getListLanes()) {	
 					for(int j=cursor; j<cursor+road.getLaneSize(); j++) {
 							for (Cell cell: structGrid[j]) {
-								cell = new Cell(road);
+								cell.addRoad(road);
 								cell.addStructure(lane);
 							}
 						}
@@ -61,7 +75,7 @@ public class StructureParts {
 				//Adding right sidewalk (considering direction defined as true)	
 				for(int i=cursor; i<cursor+road.getSideWalkSize(); i++) {
 						for (Cell cell: structGrid[i]) {
-							cell = new Cell(road);
+							cell.addRoad(road);
 							cell.addStructure(road.getSideWalk(1));
 						}
 				}
