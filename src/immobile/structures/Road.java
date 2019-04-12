@@ -70,6 +70,10 @@ public class Road {
 		
 	}
 	
+	public static Road build() {
+		return null;
+	}
+	
 	/*
 	 * Getters
 	 */

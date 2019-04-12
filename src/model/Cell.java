@@ -12,7 +12,7 @@ public class Cell {
 	private List<Structure> containedStructures;
 	private List<MobileObject> containedMobileObjects;
 	private TrafficLight trafficLight;
-	private Road containedRoad;
+	private List<Road> containedRoads;
 	
 	/*
 	 * Constructors
@@ -24,8 +24,7 @@ public class Cell {
 	public Cell(Road road) {
 		containedStructures = new ArrayList<Structure>();
 		containedMobileObjects = new ArrayList<MobileObject>();
-		containedRoad = road;
-		System.out.println(containedRoad.getClass().getSimpleName());
+		containedRoads = new ArrayList<Road>();
 	}
 	
 	/**
@@ -37,19 +36,26 @@ public class Cell {
 	public void addMobileObjects(MobileObject object) {
 		containedMobileObjects.add(object);
 	}
-	public void setRoad(Road road) {
-		this.containedRoad = road;
+	public void addRoad(Road road) {
+		this.containedRoads.add(road);
 	}
 	
 	/**
 	 * Getters
 	 */
-	public Road getContainedRoad() {
-		return containedRoad;
+	public Road getcontainedRoads(int index) {
+		return containedRoads.get(index);
 	}
+	public List<Road> getcontainedRoads() {
+		return containedRoads;
+	}
+	public Structure getContainedStructures(int index) {
+		return containedStructures.get(index);
+	}
+	
 	
 	@Override
 	public String toString() {
-		return containedRoad.getClass().getSimpleName();
+		return containedRoads.getClass().getSimpleName();
 	}
 }
