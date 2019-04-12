@@ -13,3 +13,10 @@ Distance de freinage = Vkmh * 3/10 (en m/s).
 Pour 50 km/h, un arrêt brusque nécessite (50000/3600 + 50*3/10) * 3600/3000  
 soit 50/3 + 5 * 3600/1000 = 17 + 18 = 35 cases. 
 
+
+# Durée des feux
+
+http://www.equipementsdelaroute.equipement.gouv.fr/IMG/pdf/IISR_6ePARTIE_vc20120402_cle573dda.pdf
+Feu jaune : 3-5 secondes
+Attente : 120 secondes max
+Feu vert : 6 secondes min
