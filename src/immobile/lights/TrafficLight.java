@@ -22,9 +22,6 @@ public abstract class TrafficLight {
 	protected int timeRed;
 	 */
 
-	/**
-	* Constructor
-	*/
 	public TrafficLight(Road road, Color currentColor) { // deprecated: , int timeGreen, int timeRed
 		super();
 		this.road = road;
@@ -36,12 +33,6 @@ public abstract class TrafficLight {
 		 */
 	}
 
-	/**
-	* Setters
-	*/
-	public void setOrientation(Road road) {
-		this.road = road;
-	}
 	public void setCurrentColor(Color currentColor) {
 		this.currentColor = currentColor;
 	}

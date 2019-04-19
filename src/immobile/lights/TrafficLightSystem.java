@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import enumeration.Color;
+import enumeration.Orientation;
 import immobile.structures.Road;
+import immobile.StructureParts;
 
 /**
 * Given the duration of the Green Light for the main and the secondary road, 
@@ -15,20 +17,13 @@ public class TrafficLightSystem {
 	/**
 	* Traffic Light System is a composition of Traffic Lights.
 	*/
-	private List<TrafficLight> listLights;
+	private static List<TrafficLight> listLights;
 	/**
 	 * Time to wait for changing the Traffic Light state belong to the road.
 	*/
-	private int timingMainRoad;
-	private int timingSecondRoad;
-
-	/**
-	 * Duration of each traffic ligth color
-	*/
-	// 3 seconds is the official duration for the Yellow Traffic Light in French agglomeration
-	int timeYellow = 3;
-	int timeMainRed = timingSecondRoad + timeYellow;
-	int timeSecondRed = timingMainRoad + timeYellow;
+	private static int timingMainRoad;
+	private static int timingSecondRoad;
+	private static final int timeYellow = 3; // 3 seconds is the official duration for the Yellow Traffic Light in French agglomeration
 
 	/**
 	* This constructor builds a determined list of Traffic Lights for Car and Pedestrian by road.
@@ -38,11 +33,11 @@ public class TrafficLightSystem {
 		this.timingSecondRoad = timingSecondRoad;
 		
 		List<TrafficLight> listLights = new ArrayList<TrafficLight>();
-		listLights.add(new TrafficLightCar(listRoads.get(1), Color.Green));
-		listLights.add(new TrafficLightCar(listRoads.get(2), Color.Red));
-		listLights.add(new TrafficLightPedestrian(listRoads.get(1), Color.Green));
-		listLights.add(new TrafficLightPedestrian(listRoads.get(2), Color.Red));
-
+		listLights.add(new TrafficLightCar(listRoads.get(0), Color.Green));
+		listLights.add(new TrafficLightCar(listRoads.get(1), Color.Red));
+		listLights.add(new TrafficLightPedestrian(listRoads.get(0), Color.Green));
+		listLights.add(new TrafficLightPedestrian(listRoads.get(1), Color.Red));
+		
 		/*
 		 * deprecated
 		List<TrafficLight> listLights = new ArrayList<TrafficLight>();
@@ -51,37 +46,63 @@ public class TrafficLightSystem {
 		listLights.add(new TrafficLightPedestrian(listRoads.get(1), Color.Green, timingMainRoad, timeMainRed + timeYellow));
 		listLights.add(new TrafficLightPedestrian(listRoads.get(2), Color.Red, timingSecondRoad, timeSecondRed + timeYellow));
 		*/
+		this.listLights = listLights;
 }
 
 	/**
-	* This method determines the color changing of the traffic lights from the step of the simulation.
-	* It applies a modulo corresponding at a traffic lights cycle and change the colors according
-	* to the result and the traffic lights timings
-	* @param step of the simulation
-	*/
-	public void nextStep(int step) {
-		int stepModulo = step % (timingMainRoad + timingSecondRoad);
+	 * This method determines the color changing of the traffic lights from the step of the simulation.
+	 * It applies a modulo corresponding at a traffic lights cycle and change the colors according
+	 * to the result and the traffic lights timings
+	 * @param step of the simulation
+	 * @return 
+	 * @return 
+	 */
+	public static void nextStep(int step) {
+		int stepModulo = step % (timingMainRoad + timeYellow + timingSecondRoad + timeYellow);
 		if (stepModulo == 0) {
 			// Beginning of the cycle : initial situation
-			this.listLights.get(0).setCurrentColor(Color.Green);
-			this.listLights.get(1).setCurrentColor(Color.Red);
-			this.listLights.get(2).setCurrentColor(Color.Green);
+			listLights.get(0).setCurrentColor(Color.Green);
+			listLights.get(1).setCurrentColor(Color.Red);
+			listLights.get(2).setCurrentColor(Color.Green);
 		}
 		else if (stepModulo == timingMainRoad) {
 			// End of the main road green light
-			this.listLights.get(0).setCurrentColor(Color.Yellow);
-			this.listLights.get(2).setCurrentColor(Color.Red);
+			listLights.get(0).setCurrentColor(Color.Yellow);
+			listLights.get(2).setCurrentColor(Color.Red);
 		}
-		else if (stepModulo == timeMainRed) {
+		else if (stepModulo == (timingMainRoad + timeYellow)) {
 			// Beginning of the second road green light
-			this.listLights.get(0).setCurrentColor(Color.Red);
-			this.listLights.get(1).setCurrentColor(Color.Green);
-			this.listLights.get(3).setCurrentColor(Color.Green);
+			listLights.get(0).setCurrentColor(Color.Red);
+			listLights.get(1).setCurrentColor(Color.Green);
+			listLights.get(3).setCurrentColor(Color.Green);
 		}
-		else if (stepModulo == timeMainRed + timingSecondRoad) {
+		else if (stepModulo == (timingMainRoad + timeYellow + timingSecondRoad)) {
 			// End of the second road green light
-			this.listLights.get(1).setCurrentColor(Color.Yellow);
-			this.listLights.get(3).setCurrentColor(Color.Red);
+			listLights.get(1).setCurrentColor(Color.Yellow);
+			listLights.get(3).setCurrentColor(Color.Red);
+		}
+	}
+
+	@Override
+	public String toString() {
+		return "TrafficLightSystem : " + "\nMain road car traffic light is " + listLights.get(0).currentColor 
+				+ "\nSecond road car traffic light is " + listLights.get(1).currentColor 
+				+ "\nMain road pedestrian traffic light is " + listLights.get(2).currentColor 
+				+ "\nSecond road pedestrian traffic light is " + listLights.get(3).currentColor ;
+	}
+	
+	public static void main(String args[]){
+		List<Road> listRoads = new ArrayList<Road>();
+		listRoads.add(new Road(10, 2, 0, Orientation.Horizontal, 1, false));
+		listRoads.add(new Road(10, 2, 0, Orientation.Vertical, 1, false));
+		TrafficLightSystem trafficLightSystem = new TrafficLightSystem(listRoads, 15, 15);
+		System.out.println("\nparam : timingMainRoad=" + timingMainRoad + ", timingSecondRoad=" + timingSecondRoad);
+		for(int i = 0; i <= 72; i++) {
+			trafficLightSystem.nextStep(i);
+			if (i % 3 == 0) {
+				System.out.println("\nStep " + i + ", stepmodulo " + i % (timingMainRoad + timeYellow + timingSecondRoad + timeYellow));
+				System.out.println(trafficLightSystem);
+			}
 		}
 	}
 }
