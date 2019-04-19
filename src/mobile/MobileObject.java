@@ -22,7 +22,8 @@ public abstract class MobileObject {
 	public MobileObject(int length, int height, Cell position) {
 		this.length = length;
 		this.height = height;
-		this.position = position;		
+		this.position = position;
+		objectCoverage = new ArrayList<Cell>();
 	}
 	
 	

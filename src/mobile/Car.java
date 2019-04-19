@@ -9,6 +9,7 @@ import enumeration.CarDirection;
 import enumeration.Color;
 import enumeration.Orientation;
 import enumeration.Profil;
+import immobile.StructureParts;
 import immobile.structures.Lane;
 import immobile.structures.Road;
 import model.Cell;
@@ -25,9 +26,9 @@ public class Car extends MobileObject {
 	private Lane lane;
 	
 	
-	// Constructor
+	
 	/**
-	 * This class inherits from MobileObject, and its constructor too.
+	 * Constructor
 	 * @param velocity, represents the velocity of the car.
 	 * @param model, is the type of the vehicle.
 	 * @param maxAcceleration
@@ -36,8 +37,7 @@ public class Car extends MobileObject {
 	 * @param waitingTime
 	 */
 	public Car(String model, int length, int height, Cell position, Profil profil,
-			double velocity, double maxVelocity, double maxBrake, int crossingDuration, 
-			int waitingTime, Lane lane) {
+			double velocity, double maxVelocity, double maxBrake, Lane lane) {
 
 		super(length, height, position);
 
@@ -51,19 +51,17 @@ public class Car extends MobileObject {
 		this.height = height;
 
 		this.lane = lane;
+		
+		this.crossingDuration = 0;
+		this.waitingTime = 0;
 	}
 	
-	
-	
-	
-	
-	
+
 	
 	public Car(String model, int length, int height, Profil profil,
-			double velocity, double maxVelocity, double maxBrake, int crossingDuration, 
-			int waitingTime, Lane lane) {
+			double velocity, double maxVelocity, double maxBrake, Lane lane, StructureParts structureParts) {
 
-		super(length, height);
+		super(length, height, initializeCarPosition(structureParts, lane));
 		
 		this.profil = profil;
 		this.velocity = velocity;
@@ -75,12 +73,16 @@ public class Car extends MobileObject {
 		this.height = height;
 
 		this.lane = lane;
+		
+		this.crossingDuration = 0;
+		this.waitingTime = 0;
 	}
 	
 	
-	public void initializeCar(SimulationState grid) {
+	static public Cell initializeCarPosition(StructureParts structureParts, Lane lane) {
+		Cell[][] grid = structureParts.getStructGrid();
 		Road road = lane.getRoad();
-		CarDirection carDirection = getDirection();
+		CarDirection carDirection = getDirection(lane);
 		// Index of car
 		int indexRoad = road.getPosition();
 		int carPositionOnRoad = road.getSideWalkSize()  + road.getLaneSize()*road.getIndexOfLane(lane) - ((int) road.getLaneSize()/2) + 1;
@@ -88,25 +90,29 @@ public class Car extends MobileObject {
 		if (carDirection == CarDirection.NS) {
 			int x = - indexRoad - carPositionOnRoad;
 			int y = 0;
-			grid.getGridValue(y, x).addMobileObjects(this);			
+			return grid[y][x];		
 		}
 		if (carDirection == CarDirection.WE) {
 			int y = + indexRoad + carPositionOnRoad;
 			int x = 0;
-			grid.getGridValue(y, x).addMobileObjects(this);			
+			return grid[y][x];			
 		}
 		if (carDirection == CarDirection.SN) {
 			int x = + indexRoad + carPositionOnRoad;
 			int y = -1;
-			grid.getGridValue(y, x).addMobileObjects(this);			
+			return grid[y][x];			
 		}
 		if (carDirection == CarDirection.EW) {
 			int y = - indexRoad - carPositionOnRoad;
 			int x = -1;
-			grid.getGridValue(y, x).addMobileObjects(this);			
+			return grid[y][x];			
 		}
+		return null;
 	}
 	
+	public void drawCar() {
+		
+	}
 	
 	
 	
@@ -116,7 +122,7 @@ public class Car extends MobileObject {
 	/**
 	 * This methods is used to start a vehicle. Its velocity goes from 0 to 10km/h.
 	 */
-	public CarDirection getDirection() {
+	public static CarDirection getDirection(Lane lane) {
 		// Compute the direction of the car
 		// Get the direction of the road where the car is
 		Road road = lane.getRoad();
@@ -145,6 +151,7 @@ public class Car extends MobileObject {
 				return CarDirection.SN;			
 			}
 		}
+	System.out.println("yay");
 	return null; // because Java needs a return :(
 	}
 	
@@ -177,7 +184,7 @@ public class Car extends MobileObject {
 		
 		// /!\ The case where the car is out of the grid is not implemented
 		
-		CarDirection carDirection = this.getDirection();
+		CarDirection carDirection = this.getDirection(lane);
 		
 		if (carDirection == CarDirection.NS) {
 			position.setX(position.getX() + distance);
@@ -198,7 +205,7 @@ public class Car extends MobileObject {
 	
 	
 	// This function compute the deceleration of a car
-	public void decelerate(SimulationState grid, double minVelocity) {
+	public void decelerate(SimulationState grid, double minVelocity, Lane lane) {
 		// Changing the velocity from .. to :
 		if (profil == Profil.slow) {		// to -3km/h
 			this.velocity -= 3;
@@ -226,7 +233,7 @@ public class Car extends MobileObject {
 		
 		// /!\ The case where the car is out of the grid is not implemented
 		
-		CarDirection carDirection = this.getDirection();
+		CarDirection carDirection = this.getDirection(lane);
 		
 		if (carDirection == CarDirection.NS) {
 			position.setX(position.getX() + distance);
