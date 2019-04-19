@@ -124,6 +124,10 @@ public class StructureParts {
 		return structGrid;
 	}
 	
+	public Cell getCell(int x, int y) {
+		return structGrid[x][y];
+	}
+	
 	@Override
 	public String toString() {
 		String table = "";

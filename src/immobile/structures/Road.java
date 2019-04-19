@@ -42,16 +42,16 @@ public class Road {
 		//Creating lanes
 		if(!bidirectional) {
 			for(int i=0; i<laneNb; i++) {
-				listLanes.add(new Lane(true));
+				listLanes.add(new Lane(true, this));
 			}
 			this.roadSize = laneSize*laneNb;
 		}
 		else if (bidirectional) {
 			for(int i=0; i<laneNb; i++) {
-				listLanes.add(new Lane(false));
+				listLanes.add(new Lane(false, this));
 			}
 			for(int i=0; i<laneNb; i++) {
-				listLanes.add(new Lane(true));
+				listLanes.add(new Lane(true, this));
 			}
 			this.roadSize = 2*laneSize*laneNb;
 		}
@@ -103,5 +103,7 @@ public class Road {
 	}
 	public int getLength() {
 		return length;
+
+		
 	}
 }

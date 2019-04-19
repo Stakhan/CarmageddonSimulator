@@ -13,8 +13,10 @@ public abstract class MobileObject {
 	
 	protected int length;
 	protected int height;
-	protected int[] position;
+	protected Cell position;
 	protected List<Cell> containedObject; // list of cells from a same mobile object
+
+	
 	
 	
 	// Methods
@@ -24,15 +26,18 @@ public abstract class MobileObject {
 	 * @param height
 	 * @return central position
 	 */
-	public int[] computePosition(int length, int height) {
-		int[] pos = new int [2];
+	/**
+	public Cell computePosition(int length, int height) {
+
 		int posx = ((int) length/2) + 1;
 		int posy = ((int) height/2) + 1;
-		pos[0] = (posx);
-		pos[1] = (posy);		
-		return pos;
+		int x = position.getX();
+		int y = position.getY();
 		
+		return cell;
 	}
+	*/
+	
 	
 	
 }
