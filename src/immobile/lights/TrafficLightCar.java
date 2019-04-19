@@ -8,16 +8,19 @@ import immobile.structures.Road;
 */
 public class TrafficLightCar extends TrafficLight{
 	/**
-	* Yellow light duration
-	*/
+	* deprecated
 	private int timeYellow;
+	*/
 
 	/**
 	* Constructor
 	*/
-	public TrafficLightCar(Road road, Color currentColor, int timeGreen, int timeRed, int timeYellow) {
-		super(road, currentColor, timeGreen, timeRed);
+	public TrafficLightCar(Road road, Color currentColor) { // deprecated: , int timeGreen, int timeRed, int timeYellow
+		super(road, currentColor); // deprecated: , timeGreen, timeRed
+		/*
+		 * deprecated
 		this.timeYellow = timeYellow;
+		 */
 	}
 
 	@Override
@@ -32,21 +35,18 @@ public class TrafficLightCar extends TrafficLight{
 		super.setCurrentColor(currentColor);
 	}
 
+	/*
+	 * deprecated
 	@Override
 	public void setTimeGreen(int timeGreen) {
 		// TODO Auto-generated method stub
 		super.setTimeGreen(timeGreen);
 	}
-
 	@Override
 	public void setTimeRed(int timeRed) {
 		// TODO Auto-generated method stub
 		super.setTimeRed(timeRed);
 	}
-
-	/**
-	* This method determine the change in Traffic Light Color.
-	*/
 	@Override
 	public void changeColor() {
 		switch (currentColor) {
@@ -54,6 +54,6 @@ public class TrafficLightCar extends TrafficLight{
 		case Yellow: currentColor = Color.Red;
 		case Red: currentColor = Color.Green;
 		}
+	 */
 	}
-
 }

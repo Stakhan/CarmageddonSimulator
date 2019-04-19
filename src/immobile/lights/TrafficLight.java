@@ -15,24 +15,25 @@ public abstract class TrafficLight {
 	* Yellow light duration
 	*/
 	protected Color currentColor;
-	/**
-	* Green light duration
-	*/
+
+	/*
+	 * deprecated
 	protected int timeGreen;
-	/**
-	* Red light duration
-	*/
 	protected int timeRed;
+	 */
 
 	/**
 	* Constructor
 	*/
-	public TrafficLight(Road road, Color currentColor, int timeGreen, int timeRed) {
+	public TrafficLight(Road road, Color currentColor) { // deprecated: , int timeGreen, int timeRed
 		super();
 		this.road = road;
 		this.currentColor = currentColor;
+		/*
+		 * deprecated
 		this.timeGreen = timeGreen;
 		this.timeRed = timeRed;
+		 */
 	}
 
 	/**
@@ -44,6 +45,8 @@ public abstract class TrafficLight {
 	public void setCurrentColor(Color currentColor) {
 		this.currentColor = currentColor;
 	}
+	/* 
+	 * deprecated
 	public void setTimeGreen(int timeGreen) {
 		this.timeGreen = timeGreen;
 	}
@@ -51,13 +54,11 @@ public abstract class TrafficLight {
 		this.timeRed = timeRed;
 	}
 
-	/**
-	* 
-	*/
 	public void changeColor() {
 		switch (currentColor) {
 		case Green: currentColor = Color.Red;
 		case Red: currentColor = Color.Green;
 		}
 	}
+	 */
 }
