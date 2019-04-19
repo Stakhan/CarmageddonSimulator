@@ -42,22 +42,20 @@ public class Panel extends JPanel{
 				if(grid[i][j].getcontainedRoads().size() != 0) {
 
 					if(grid[i][j].getContainedStructures(0) instanceof immobile.structures.SideWalk) {
-						g2d.setPaint(Color.gray); // couleur de l’interieur
+						g2d.setPaint(Color.gray); 
 						g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 					}
 					else if(grid[i][j].getContainedStructures(0) instanceof Lane) {
-						g2d.setPaint(Color.black); // couleur de l’interieur
+						g2d.setPaint(Color.black); 
 						g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 					}
 				}
 				else if (grid[i][j].getcontainedRoads().size() == 0) {
-					g2d.setPaint(Color.green); // couleur de l’interieur
+					g2d.setPaint(Color.green); 
 					g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 				}
 			}
 		}
-		g2d.setPaint(Color.black); // couleur de l’interieur
-		g2d.fillRect(0, 0, wUnit, hUnit); // dessin de l’interieur
 
 
 	}

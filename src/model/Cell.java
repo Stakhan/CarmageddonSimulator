@@ -74,6 +74,9 @@ public class Cell {
 	public Structure getContainedStructures(int index) {
 		return containedStructures.get(index);
 	}
+	public List<MobileObject> getContainedMobileObjects() {
+		return containedMobileObjects;
+	}
 	
 	
 	@Override
