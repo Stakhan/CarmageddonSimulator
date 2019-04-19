@@ -50,15 +50,18 @@ public class Cell {
 	public void addMobileObjects(MobileObject object) {
 		containedMobileObjects.add(object);
 	}
-
 	public void addRoad(Road road) {
 		this.containedRoads.add(road);
-
+		
 	}
 	
 	/**
 	 * Getters
 	 */
+	
+	public List<MobileObject> getListMobileObjects(){
+		return containedMobileObjects;
+	}
 
 	public Road getcontainedRoads(int index) {
 		return containedRoads.get(index);
@@ -111,5 +114,13 @@ public class Cell {
 			c = "o";
 		}
 		return c;
+	}
+
+	public void setX(int i) {
+		this.x = i;
+	}
+
+	public void setY(int i) {
+		this.y = i;
 	}
 }

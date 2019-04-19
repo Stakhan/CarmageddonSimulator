@@ -6,6 +6,7 @@ import java.util.List;
 import enumeration.MobileType;
 import enumeration.StructureType;
 import model.Cell;
+import model.SimulationState;
 
 public abstract class MobileObject {
 
@@ -15,8 +16,20 @@ public abstract class MobileObject {
 	
 	protected int length;
 	protected int height;
-	protected int[] position;
-	protected List<Cell> containedObject; // list of cells from a same mobile object
+	protected Cell position;
+	protected List<Cell> objectCoverage; // list of cells from a same mobile object
+
+	public MobileObject(int length, int height, Cell position) {
+		this.length = length;
+		this.height = height;
+		this.position = position;		
+	}
+	
+	
+	public MobileObject(int length, int height) {
+		this.length = length;
+		this.height = height;	
+	}
 	
 	
 	// Methods
@@ -26,18 +39,21 @@ public abstract class MobileObject {
 	 * @param height
 	 * @return central position
 	 */
-	public int[] computePosition(int length, int height) {
-		int[] pos = new int [2];
+
+	public Cell computePosition(SimulationState grid) {
+
 		int posx = ((int) length/2) + 1;
 		int posy = ((int) height/2) + 1;
-		pos[0] = (posx);
-		pos[1] = (posy);		
-		return pos;
+		int x = position.getX();
+		int y = position.getY();
 		
+		return grid.getGridValue(x, y);
 	}
+
 	/**
 	 * Abstract method that gives the type of such objects
 	 * @return type of this MobileObject
 	 */
 	public abstract MobileType getType();
+
 }

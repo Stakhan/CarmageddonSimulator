@@ -65,6 +65,7 @@ public class Panel extends JPanel implements KeyListener{
 							g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 						}
 					}
+
 					else { //In case it doesn't contain a MobileObject
 						if(grid[i][j].contains(StructureType.SideWalk) && grid[i][j].contains(StructureType.Lane)) { //Test if it contains a Lane and a SideWalk (in that case it should be considered a Lane)
 							//Paint cell in black
@@ -87,7 +88,9 @@ public class Panel extends JPanel implements KeyListener{
 //							g2d.setPaint(Color.black);
 //							g2d.drawRect(j*wUnit, i*hUnit, wUnit, hUnit);
 						}
+
 					}
+					
 				}
 				else if (grid[i][j].getcontainedRoads().size() == 0) { //In case it doesn't contain a road
 					//Paint cell in green
@@ -96,6 +99,7 @@ public class Panel extends JPanel implements KeyListener{
 					//Paint a black border around cell
 //					g2d.setPaint(Color.black);
 //					g2d.drawRect(j*wUnit, i*hUnit, wUnit, hUnit);
+
 				}
 			}
 		}
