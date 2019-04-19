@@ -9,14 +9,23 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 import immobile.StructureParts;
+import mobile.MovingParts;
 
 public class SimulationState {
-	
+	/**
+	 * This class represents the state of the simulation on the grid
+	 */
 	private int step;
 	private Cell[][] grid;
 	
-	//Constructor
-	
+	/**
+	 * Construtor
+	 * 
+	 * @param step
+	 * @param lineNb
+	 * @param columnNb
+	 * @param structureParts
+	 */
 	public SimulationState(int step, int lineNb, int columnNb, StructureParts structureParts) {
 		super();
 		this.step = step;
@@ -40,7 +49,9 @@ public class SimulationState {
 		}
 	}
 	
+	
 	/**
+	 * DEPRECATED
 	 * Generation of every element's position and parameter at this step in the simulation. Filling up every grid's cell.
 	 * 
 	 * @param previousState
@@ -51,6 +62,12 @@ public class SimulationState {
 		return true; //true return statement only here for testing
 	}
 	
+	/**
+	 * update the position of every moving element on the grid starting from the structGrid model located in "StructureParts"
+	 */
+	public void updateGrid(MovingParts movingParts) {
+		
+	}
 
 	@Override
 	public String toString() {

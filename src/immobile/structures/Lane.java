@@ -1,5 +1,7 @@
 package immobile.structures;
 
+import enumeration.StructureType;
+
 public class Lane extends Structure {
 	private boolean direction;
 	private double speedLimit;
@@ -12,7 +14,12 @@ public class Lane extends Structure {
 	public Lane(boolean direction) {
 		this.direction = direction;
 	}
-	
+
+	@Override
+	public StructureType getType() {
+		return StructureType.Lane;
+	}
+
 	
 	
 }

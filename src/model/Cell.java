@@ -3,6 +3,11 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import enumeration.MobileType;
+import enumeration.StructureType;
+
+import java.lang.Class;
+
 import immobile.lights.TrafficLight;
 import immobile.structures.Road;
 import immobile.structures.Structure;
@@ -76,6 +81,23 @@ public class Cell {
 	}
 	public List<MobileObject> getContainedMobileObjects() {
 		return containedMobileObjects;
+	}
+	
+	public boolean contains(StructureType type) {
+		for(Structure structure : containedStructures) {
+			if (structure.getType().equals(type)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public boolean contains(MobileType type) {
+		for(MobileObject mobileObject : containedMobileObjects) {
+			if (mobileObject.getType().equals(type)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	

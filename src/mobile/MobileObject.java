@@ -3,6 +3,8 @@ package mobile;
 import java.util.ArrayList;
 import java.util.List;
 
+import enumeration.MobileType;
+import enumeration.StructureType;
 import model.Cell;
 
 public abstract class MobileObject {
@@ -33,6 +35,9 @@ public abstract class MobileObject {
 		return pos;
 		
 	}
-	
-	
+	/**
+	 * Abstract method that gives the type of such objects
+	 * @return type of this MobileObject
+	 */
+	public abstract MobileType getType();
 }

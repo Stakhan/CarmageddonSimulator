@@ -2,6 +2,9 @@ package mobile;
 
 import java.util.List;
 
+import enumeration.MobileType;
+import enumeration.StructureType;
+
 public class Car extends MobileObject {
 	
 	private double velocity;
@@ -52,6 +55,12 @@ public class Car extends MobileObject {
 	public boolean canGo() {
 		
 		return true;
+	}
+	
+
+	@Override
+	public MobileType getType() {
+		return MobileType.Car;
 	}
 
 }

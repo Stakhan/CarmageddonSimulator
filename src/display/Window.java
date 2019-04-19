@@ -23,8 +23,8 @@ public class Window extends JFrame{
 		this.setContentPane(mainPanel);
 		
 		this.setTitle("Etat de la simulation"); // titre de la fenetre
-		this.setSize(2*structConfig.columnNb, 2*(structConfig.lineNb+15)); // taille de la fenetre. On utilise plutot setPreferredSize si le composant parent
-		this.setResizable(false); //On empêche le redimensionnement
+		this.setSize(structConfig.hDisplaySize, structConfig.vDisplaySize); // taille de la fenetre. On utilise plutot setPreferredSize si le composant parent
+		this.setResizable(true); //On empêche le redimensionnement
 		// utilise un LayoutManager.
 		this.setLocationRelativeTo(null); // positionnement centre par rapport a l’ecran
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // comportement lors d’un clic sur la croix rouge
