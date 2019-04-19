@@ -1,5 +1,5 @@
 package mobile;
 
-public class MovingParts {
+public abstract class MovingParts {
 
 }

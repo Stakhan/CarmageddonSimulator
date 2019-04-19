@@ -32,7 +32,7 @@ public class Simulation {
 	 * @param movingParts
 	 * 
 	 */
-	//
+	//Horizontal
 	
 	public void run() {
 			
