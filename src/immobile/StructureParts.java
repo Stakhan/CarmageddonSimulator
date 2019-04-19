@@ -127,7 +127,9 @@ public class StructureParts {
 	public Cell getCell(int x, int y) {
 		return structGrid[x][y];
 	}
-	
+	public Road getRoad(int i) {
+		return listRoads.get(i);
+	}
 	@Override
 	public String toString() {
 		String table = "";

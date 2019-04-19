@@ -45,14 +45,26 @@ public class Panel extends JPanel{
 						g2d.setPaint(Color.gray); // couleur de l’interieur
 						g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 					}
+					
+					if (grid[i][j].getListMobileObjects().size() != 0) {
+						g2d.setPaint(Color.red); // couleur de l’interieur
+						g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
+					}
+					
 					else if(grid[i][j].getContainedStructures(0) instanceof Lane) {
 						g2d.setPaint(Color.black); // couleur de l’interieur
 						g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 					}
+					
 				}
 				else if (grid[i][j].getcontainedRoads().size() == 0) {
 					g2d.setPaint(Color.green); // couleur de l’interieur
 					g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
+					
+					if (grid[i][j].getListMobileObjects().size() != 0) {
+						g2d.setPaint(Color.red); // couleur de l’interieur
+						g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
+					}
 				}
 			}
 		}

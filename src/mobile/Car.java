@@ -31,17 +31,18 @@ public class Car extends MobileObject {
 	 * @param crossingDuration
 	 * @param waitingTime
 	 */
-	public Car(Profil profil, double velocity, String model, double maxVelocity, double maxBrake, int crossingDuration, 
+	public Car(String model, int length, int height, Cell position, Profil profil,
+			double velocity, double maxVelocity, double maxBrake, int crossingDuration, 
 			int waitingTime, Lane lane) {
-		
+
+		super(length, height, position);
+
 		this.profil = profil;
 		this.velocity = velocity;
 		this.model = model;
 		this.maxVelocity = maxVelocity;
 		this.maxBrake = maxBrake;
 		
-		int length = 5;
-		int height = 3;
 		this.length = length;
 		this.height = height;
 
@@ -51,11 +52,67 @@ public class Car extends MobileObject {
 	
 	
 	
+	
+	
+	
+	public Car(String model, int length, int height, Profil profil,
+			double velocity, double maxVelocity, double maxBrake, int crossingDuration, 
+			int waitingTime, Lane lane) {
+
+		super(length, height);
+		
+		this.profil = profil;
+		this.velocity = velocity;
+		this.model = model;
+		this.maxVelocity = maxVelocity;
+		this.maxBrake = maxBrake;
+		
+		this.length = length;
+		this.height = height;
+
+		this.lane = lane;
+	}
+	
+	
+	public void initializeCar(SimulationState grid) {
+		Road road = lane.getRoad();
+		CarDirection carDirection = getDirection();
+		// Index of car
+		int indexRoad = road.getPosition();
+		int carPositionOnRoad = road.getSideWalkSize()  + road.getLaneSize()*road.getIndexOfLane(lane) - ((int) road.getLaneSize()/2) + 1;
+		
+		if (carDirection == CarDirection.NS) {
+			int x = - indexRoad - carPositionOnRoad;
+			int y = 0;
+			grid.getGridValue(y, x).addMobileObjects(this);			
+		}
+		if (carDirection == CarDirection.WE) {
+			int y = + indexRoad + carPositionOnRoad;
+			int x = 0;
+			grid.getGridValue(y, x).addMobileObjects(this);			
+		}
+		if (carDirection == CarDirection.SN) {
+			int x = + indexRoad + carPositionOnRoad;
+			int y = -1;
+			grid.getGridValue(y, x).addMobileObjects(this);			
+		}
+		if (carDirection == CarDirection.EW) {
+			int y = - indexRoad - carPositionOnRoad;
+			int x = -1;
+			grid.getGridValue(y, x).addMobileObjects(this);			
+		}
+	}
+	
+	
+	
+	
+	
+	
 	// Methods
 	/**
 	 * This methods is used to start a vehicle. Its velocity goes from 0 to 10km/h.
 	 */
-	public CarDirection getDirection(SimulationState grid) {
+	public CarDirection getDirection() {
 		// Compute the direction of the car
 		// Get the direction of the road where the car is
 		Road road = lane.getRoad();
@@ -116,7 +173,7 @@ public class Car extends MobileObject {
 		
 		// /!\ The case where the car is out of the grid is not implemented
 		
-		CarDirection carDirection = this.getDirection(grid);
+		CarDirection carDirection = this.getDirection();
 		
 		if (carDirection == CarDirection.NS) {
 			position.setX(position.getX() + distance);
@@ -165,7 +222,7 @@ public class Car extends MobileObject {
 		
 		// /!\ The case where the car is out of the grid is not implemented
 		
-		CarDirection carDirection = this.getDirection(grid);
+		CarDirection carDirection = this.getDirection();
 		
 		if (carDirection == CarDirection.NS) {
 			position.setX(position.getX() + distance);

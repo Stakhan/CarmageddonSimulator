@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Cell;
+import model.SimulationState;
 
 public abstract class MobileObject {
 
@@ -14,9 +15,19 @@ public abstract class MobileObject {
 	protected int length;
 	protected int height;
 	protected Cell position;
-	protected List<Cell> containedObject; // list of cells from a same mobile object
+	protected List<Cell> objectCoverage; // list of cells from a same mobile object
 
+	public MobileObject(int length, int height, Cell position) {
+		this.length = length;
+		this.height = height;
+		this.position = position;		
+	}
 	
+	
+	public MobileObject(int length, int height) {
+		this.length = length;
+		this.height = height;	
+	}
 	
 	
 	// Methods
@@ -26,17 +37,17 @@ public abstract class MobileObject {
 	 * @param height
 	 * @return central position
 	 */
-	/**
-	public Cell computePosition(int length, int height) {
+
+	public Cell computePosition(SimulationState grid) {
 
 		int posx = ((int) length/2) + 1;
 		int posy = ((int) height/2) + 1;
 		int x = position.getX();
 		int y = position.getY();
 		
-		return cell;
+		return grid.getGridValue(x, y);
 	}
-	*/
+
 	
 	
 	

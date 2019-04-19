@@ -102,8 +102,11 @@ public class Road {
 		return listLanes;
 	}
 	public int getLength() {
-		return length;
-
-		
+		return length;	
 	}
+	public int getIndexOfLane(Lane lane) {
+		return listLanes.indexOf(lane);
+	}
+	
+	
 }
