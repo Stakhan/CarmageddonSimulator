@@ -62,7 +62,7 @@ public class TrafficLightSystem {
 	public void nextStep(int step) {
 		int stepModulo = step % (timingMainRoad + timingSecondRoad);
 		if (stepModulo == 0) {
-			// Beginning of the cycle / Initial situation
+			// Beginning of the cycle : initial situation
 			this.listLights.get(0).setCurrentColor(Color.Green);
 			this.listLights.get(1).setCurrentColor(Color.Red);
 			this.listLights.get(2).setCurrentColor(Color.Green);

@@ -12,9 +12,6 @@ public class TrafficLightCar extends TrafficLight{
 	private int timeYellow;
 	*/
 
-	/**
-	* Constructor
-	*/
 	public TrafficLightCar(Road road, Color currentColor) { // deprecated: , int timeGreen, int timeRed, int timeYellow
 		super(road, currentColor); // deprecated: , timeGreen, timeRed
 		/*
@@ -54,6 +51,6 @@ public class TrafficLightCar extends TrafficLight{
 		case Yellow: currentColor = Color.Red;
 		case Red: currentColor = Color.Green;
 		}
-	 */
 	}
+	 */
 }
