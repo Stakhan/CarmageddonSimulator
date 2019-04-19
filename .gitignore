@@ -1,5 +1,7 @@
 /.classpath
 /.project
+/src/.classpath
+/src/.project
 /.settings/
 /bin/
 simulation-state1.grid
