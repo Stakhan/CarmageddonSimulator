@@ -95,9 +95,9 @@ public class TrafficLightSystem {
 		List<Road> listRoads = new ArrayList<Road>();
 		listRoads.add(new Road(10, 2, 0, Orientation.Horizontal, 1, false));
 		listRoads.add(new Road(10, 2, 0, Orientation.Vertical, 1, false));
-		TrafficLightSystem trafficLightSystem = new TrafficLightSystem(listRoads, 15, 15);
+		TrafficLightSystem trafficLightSystem = new TrafficLightSystem(listRoads, 15, 12);
 		System.out.println("\nparam : timingMainRoad=" + timingMainRoad + ", timingSecondRoad=" + timingSecondRoad);
-		for(int i = 0; i <= 72; i++) {
+		for(int i = 0; i <= 69; i++) {
 			trafficLightSystem.nextStep(i);
 			if (i % 3 == 0) {
 				System.out.println("\nStep " + i + ", stepmodulo " + i % (timingMainRoad + timeYellow + timingSecondRoad + timeYellow));
