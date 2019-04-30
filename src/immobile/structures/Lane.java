@@ -14,6 +14,7 @@ public class Lane extends Structure {
 	}
 	public Lane(boolean direction, Road containingRoad) {
 		this.direction = direction;
+		this.containingRoad = containingRoad;
 	}
 
 
