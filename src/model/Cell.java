@@ -123,4 +123,8 @@ public class Cell {
 	public void setY(int i) {
 		this.y = i;
 	}
+
+	public List<Structure> getContainedStructures() {
+		return containedStructures;
+	}
 }

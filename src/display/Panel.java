@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import enumeration.MobileType;
 import enumeration.StructureType;
 import immobile.structures.Lane;
+import immobile.structures.Structure;
 import model.Cell;
 import model.ConfigureStructure;
 import model.SimulationState;
@@ -73,8 +74,17 @@ public class Panel extends JPanel implements KeyListener{
 							g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 						}
 						else if(grid[i][j].contains(StructureType.Lane)) { //Test if it contains a Lane
-							//Paint cell in black
-							g2d.setPaint(Color.black); 
+							for(Structure lane : grid[i][j].getContainedStructures()) {
+								if(((Lane)lane).getDirection() == false) {
+									//Paint cell in white
+									g2d.setPaint(Color.white);
+								}
+								else {
+									//Paint cell in black
+									g2d.setPaint(Color.black);
+								}
+							}
+							 
 							g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 							//Paint a white border around cell
 //							g2d.setPaint(Color.white);

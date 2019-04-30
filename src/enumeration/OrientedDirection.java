@@ -1,6 +1,6 @@
 package enumeration;
 
-public enum CarDirection {
+public enum OrientedDirection {
 
 	NS,
 	SN,

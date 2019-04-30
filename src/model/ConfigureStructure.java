@@ -34,6 +34,20 @@ public class ConfigureStructure {
 		System.out.println("sideWalkSize: "+this.sideWalkSize);
 
 	}
+public ConfigureStructure(int simulationSize, int displaySize, boolean bidirectional) {
+		
+		this.intersectionNb = 1;
+		this.lineNb = simulationSize;
+		this.columnNb = simulationSize;
+		this.hDisplaySize = displaySize;
+		this.vDisplaySize = displaySize;
+		this.laneSize = 5;
+		this.sideWalkSize = 3;
+		this.bidirectional = bidirectional;
+		System.out.println("laneSize: "+this.laneSize);
+		System.out.println("sideWalkSize: "+this.sideWalkSize);
+
+	}
 	
 }
 

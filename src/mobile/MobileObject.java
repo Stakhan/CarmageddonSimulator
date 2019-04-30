@@ -11,44 +11,36 @@ import model.SimulationState;
 public abstract class MobileObject {
 
 	protected int crossingDuration; // it represents the number of 
-									// step where the object takes part in the simulation
+									// steps where the object takes part in the simulation
 	protected int waitingTime;
 	
 	protected int length;
 	protected int height;
 	protected Cell position;
+	protected Cell center;
 	protected List<Cell> objectCoverage; // list of cells from a same mobile object
 
 	public MobileObject(int length, int height, Cell position) {
 		this.length = length;
 		this.height = height;
 		this.position = position;
+		System.out.println("MobileObject position is "+position.getX()+":"+position.getY());
 		objectCoverage = new ArrayList<Cell>();
 	}
 	
 	
-	public MobileObject(int length, int height) {
-		this.length = length;
-		this.height = height;	
-	}
-	
-	
 	// Methods
+
 	/**
-	 * Compute the central position of an object.
-	 * @param length
-	 * @param height
-	 * @return central position
+	 * Draw MobileObject on grid using its coverage
+	 * @param grid where object should by drawn
 	 */
-
-	public Cell computePosition(SimulationState grid) {
-
-		int posx = ((int) length/2) + 1;
-		int posy = ((int) height/2) + 1;
-		int x = position.getX();
-		int y = position.getY();
-		
-		return grid.getGridValue(x, y);
+	public void draw(Cell[][] grid) {
+		for(Cell cell : objectCoverage) {
+			int x = cell.getX();
+			int y = cell.getY();
+			grid[x][y].addMobileObjects(this);
+		}
 	}
 
 	/**

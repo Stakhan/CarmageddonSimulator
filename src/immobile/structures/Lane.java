@@ -1,5 +1,7 @@
 package immobile.structures;
 
+import enumeration.Orientation;
+import enumeration.OrientedDirection;
 import enumeration.StructureType;
 
 public class Lane extends Structure {
@@ -31,6 +33,32 @@ public class Lane extends Structure {
 	public Road getRoad() {
 		return containingRoad;
 	}
+	public OrientedDirection getOrientedDirection() {
+
+		Orientation orientation = containingRoad.getOrientation();
+		
+		// Compute oriented direction 
+		// Reminder : orientation = Vertical or Horizontal
+		//			: direction = true or false
+		if (this.direction == true) {
+			if (orientation == Orientation.Horizontal) {
+				return OrientedDirection.WE;			
+			}
+			if (orientation == Orientation.Vertical) {
+				return OrientedDirection.NS;			
+			}
+		}
+		if (this.direction == false) {
+			if (orientation == Orientation.Horizontal) {
+				return OrientedDirection.EW;			
+			}
+			if (orientation == Orientation.Vertical) {
+				return OrientedDirection.SN;			
+			}
+		}
+		return null; // because Java needs a return statement :(
+	}
+	
 	
 
 	
