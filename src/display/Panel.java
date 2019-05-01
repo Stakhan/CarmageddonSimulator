@@ -13,6 +13,7 @@ import enumeration.MobileType;
 import enumeration.StructureType;
 import immobile.structures.Lane;
 import immobile.structures.Structure;
+import mobile.MobileObject;
 import model.Cell;
 import model.ConfigureStructure;
 import model.SimulationState;
@@ -38,8 +39,12 @@ public class Panel extends JPanel implements KeyListener{
 
 	@Override
 	public void paintComponent(Graphics g) {
+		//Show grid border
+		boolean border = true;
+		
 		//Définition de la taille d'un pixel en fonction de la taille de la simulation
 		defineUnits(structConfig);
+		
 		super.paintComponent(g); // Appel de la methode paintComponent de la classe mere
 		// Graphics est un objet fourni par le systeme qui est utilise pour dessiner les composant du conteneur
 		Graphics2D g2d = (Graphics2D) g;
@@ -53,11 +58,22 @@ public class Panel extends JPanel implements KeyListener{
 		//Go over all cells of the grid
 		for(int i=0; i<structConfig.columnNb; i++) {
 			for(int j=0; j<structConfig.lineNb; j++) {
+				
 				if(grid[i][j].getcontainedRoads().size() != 0) { //Test if cell contains road
+					
 					if(grid[i][j].getContainedMobileObjects().size() != 0) { //Test if it contains a MobileObject
+						
 						if(grid[i][j].contains(MobileType.Car)) { //Test if it contains a Car
-							//Paint cell in red
-							g2d.setPaint(Color.red); 
+							
+							Cell position = grid[i][j].getContainedMobileObjects().get(0).getPosition(); //Get central position of car
+								if(position.getX() == j+1 && position.getY() == i+1) { //Check if cell is center of car
+									g2d.setPaint(Color.pink); //Paint in pink in that case
+								}
+								else {
+									g2d.setPaint(Color.red); //Rest of car should be painted in red
+								}
+							
+							//Paint cell
 							g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 						}
 						else if(grid[i][j].contains(MobileType.Pedestrian)) { //Test if it contains a Pedestrian
@@ -72,6 +88,11 @@ public class Panel extends JPanel implements KeyListener{
 							//Paint cell in black
 							g2d.setPaint(Color.black); 
 							g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
+							if(border) {
+								//Paint a white border around cell
+								g2d.setPaint(Color.gray);
+								g2d.drawRect(j*wUnit, i*hUnit, wUnit, hUnit);
+							}
 						}
 						else if(grid[i][j].contains(StructureType.Lane)) { //Test if it contains a Lane
 							for(Structure lane : grid[i][j].getContainedStructures()) {
@@ -86,17 +107,23 @@ public class Panel extends JPanel implements KeyListener{
 							}
 							 
 							g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
-							//Paint a white border around cell
-//							g2d.setPaint(Color.white);
-//							g2d.drawRect(j*wUnit, i*hUnit, wUnit, hUnit);
+							if(border) {
+								//Paint a white border around cell
+								g2d.setPaint(Color.gray);
+								g2d.drawRect(j*wUnit, i*hUnit, wUnit, hUnit);
+							}
+							
 						}
 						else if(grid[i][j].contains(StructureType.SideWalk)) { //Test if it contains a SideWalk
 							//Paint cell in gray
 							g2d.setPaint(Color.gray); 
 							g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
-							//Paint a black border around cell
-//							g2d.setPaint(Color.black);
-//							g2d.drawRect(j*wUnit, i*hUnit, wUnit, hUnit);
+							if(border) {
+								//Paint a black border around cell
+								g2d.setPaint(Color.black);
+								g2d.drawRect(j*wUnit, i*hUnit, wUnit, hUnit);
+							}
+							
 						}
 
 					}
@@ -106,9 +133,12 @@ public class Panel extends JPanel implements KeyListener{
 					//Paint cell in green
 					g2d.setPaint(Color.green); 
 					g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
-					//Paint a black border around cell
-//					g2d.setPaint(Color.black);
-//					g2d.drawRect(j*wUnit, i*hUnit, wUnit, hUnit);
+					if(border) {
+						//Paint a black border around cell
+						g2d.setPaint(Color.black);
+						g2d.drawRect(j*wUnit, i*hUnit, wUnit, hUnit);
+					}
+					
 
 				}
 			}

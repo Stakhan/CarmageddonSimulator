@@ -98,26 +98,29 @@ public class Car extends MobileObject {
 		int roadPosition = road.getPosition();
 		int carPositionOnRoad = road.getSideWalkSize() + road.getLaneSize()*(road.getIndexOfLane(lane)+1) - ((int) road.getLaneSize()/2);
 		
-		if (carDirection == OrientedDirection.NS) {
-			int x = grid[0].length - roadPosition - carPositionOnRoad;
-			int y = (int) length/2 + length%2; //taking length of car in account
-			return grid[x][y];		
-		}
 		if (carDirection == OrientedDirection.WE) {
 			int y = roadPosition + carPositionOnRoad;
 			int x = (int) length/2 + length%2;
 			return grid[x][y];			
 		}
-		
-		carPositionOnRoad = road.getSideWalkSize() + road.getLaneSize()*(road.getIndexOfLane(lane)+1) - ((int) road.getLaneSize()/2);
-		if (carDirection == OrientedDirection.SN) {
+		if (carDirection == OrientedDirection.NS) {
+			roadPosition -= 1;
+			carPositionOnRoad -= 1;
 			int x = grid[0].length - roadPosition - carPositionOnRoad;
-			int y = grid.length - ((int) length/2 + length%2);
-			return grid[x][y];			
+			int y = (int) length/2 + length%2; //taking length of car in account
+			return grid[x][y];		
+		}
+		
+		if (carDirection == OrientedDirection.SN) {
+			roadPosition -= 1;
+			carPositionOnRoad -=1;
+			int x = grid[0].length - roadPosition - carPositionOnRoad;
+			int y = grid.length - (((int) length/2));
+			return grid[x][y];
 		}
 		if (carDirection == OrientedDirection.EW) {
-			int y = grid.length - roadPosition - carPositionOnRoad;
-			int x = grid[0].length - ((int) length/2 + length%2);
+			int y = roadPosition + carPositionOnRoad ;
+			int x = grid[0].length - ((int) length/2);
 			return grid[x][y];			
 		}
 		return null;
@@ -324,10 +327,6 @@ public class Car extends MobileObject {
 		}
 		return Color.Green;
 	}
-	
-
-	
-	
 
 
 

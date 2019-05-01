@@ -40,22 +40,24 @@ public class Lane extends Structure {
 		// Compute oriented direction 
 		// Reminder : orientation = Vertical or Horizontal
 		//			: direction = true or false
-		if (this.direction == true) {
+		
 			if (orientation == Orientation.Horizontal) {
-				return OrientedDirection.WE;			
+				if (this.direction == true) {
+					return OrientedDirection.WE;
+				}
+				else {
+					return OrientedDirection.EW;
+				}			
 			}
 			if (orientation == Orientation.Vertical) {
-				return OrientedDirection.NS;			
+				if (this.direction == true) {
+					return OrientedDirection.NS;
+				}
+				else {
+					return OrientedDirection.SN;
+				}			
 			}
-		}
-		if (this.direction == false) {
-			if (orientation == Orientation.Horizontal) {
-				return OrientedDirection.EW;			
-			}
-			if (orientation == Orientation.Vertical) {
-				return OrientedDirection.SN;			
-			}
-		}
+		
 		return null; // because Java needs a return statement :(
 	}
 	

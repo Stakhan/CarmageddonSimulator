@@ -49,4 +49,8 @@ public abstract class MobileObject {
 	 */
 	public abstract MobileType getType();
 
+	//Getters
+	public Cell getPosition() {
+		return position;
+	}
 }

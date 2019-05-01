@@ -19,7 +19,7 @@ public class Road {
 	private List<SideWalk> listSideWalks;
 	
 	/**
-	 * Constructeur
+	 * Constructor
 	 * 
 	 * @param length
 	 * @param laneSize
@@ -64,7 +64,7 @@ public class Road {
 		
 		
 		//Computing position from length and size
-		this.position = (int) this.length/2 - this.roadSize/2 + 1;
+		this.position = (int) this.length/2 - this.roadSize/2 + this.roadSize%2;
 		System.out.println("Road object created.");
 		System.out.println("Position of this "+this.orientation+" road is "+this.position);
 		
