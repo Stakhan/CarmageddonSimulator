@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import immobile.StructureParts;
+import mobile.Car;
 import mobile.MovingParts;
 import model.ConfigureStructure;
 import model.SimulationState;
@@ -15,44 +16,70 @@ public class Simulation {
 	private int lineNb;
 	private int columnNb;
 	private StructureParts structureParts;
+	private MovingParts movingParts;
 	
 	
 	//Constructeur
-	public Simulation(ConfigureStructure structConfig, StructureParts structureParts) {
+	public Simulation(ConfigureStructure structConfig) {
+		
 		this.listStates = new ArrayList<SimulationState>();
+		
 		this.lineNb = structConfig.lineNb;
 		this.columnNb = structConfig.columnNb;
-		this.structureParts = structureParts;
+		
+		this.structureParts = new StructureParts(structConfig);
+		this.movingParts = new MovingParts(this, this.structureParts);
+		
 	}
 	
 
 	/**
-	 * Initialisation de la première étape et exécution de l'avancement de la simulation pas à pas.
-	 * 
-	 * @param structureParts
-	 * @param movingParts
-	 * 
+	 * Initialization of the first state
 	 */
-	//Horizontal
-	
-	public void run() {
-			
-		boolean termination = false;
-		int currentState = 0;
+	public void init() {
+		this.movingParts.generate(); //Adding MobileObjects to the simulation
 		
-		SimulationState initState = new SimulationState(currentState, this.lineNb, this.columnNb, this.structureParts);
+		SimulationState initState = new SimulationState(this, 0, this.lineNb, this.columnNb, this.structureParts.getStructGrid());
+		for(Car car : this.getMovingParts().getListCars()) {
+			car.nextStep();
+			car.draw(initState.getGrid());
+		}
 		listStates.add(initState);
 		
-		while(termination == false) {
-			//Execute simulation step by step.
-			currentState++;
-			listStates.add(new SimulationState(currentState, this.lineNb, this.columnNb, this.structureParts)); //Add simulation state to list
-			termination = listStates.get(currentState).generate(listStates.get(currentState-1)); //Generate current state from previous State
-		}
+	}
+	
+	public void nextState() {
+		SimulationState lastState = this.getLastState(); //fetch last state
+		listStates.add(lastState.nextState()); //compute next state and add it to the list of states
+	}
+	
+
+	//Getters
+	
+	public StructureParts getStructureParts() {
+		return structureParts;
+	}
+	
+	public MovingParts getMovingParts() {
+		return movingParts;
+	}
+	
+	public int getLineNb() {
+		return lineNb;
+	}
+	
+	public int getColumnNb() {
+		return columnNb;
+	}
+	
+	public SimulationState getLastState() {
+		return this.listStates.get(listStates.size()-1);
 	}
 
-
-
+	public List<SimulationState> getListStates() {
+		return listStates;
+	}
+	
 	/**
 	 * Get a state of the simulation at the given index
 	 * @param index

@@ -33,7 +33,7 @@ public abstract class MobileObject {
 
 	/**
 	 * Draw MobileObject on grid using its coverage
-	 * @param grid where object should by drawn
+	 * @param grid where object should be drawn
 	 */
 	public void draw(Cell[][] grid) {
 		for(Cell cell : objectCoverage) {

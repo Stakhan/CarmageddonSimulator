@@ -9,29 +9,41 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JPanel;
 
+import engine.Simulation;
 import enumeration.MobileType;
 import enumeration.StructureType;
 import immobile.structures.Lane;
 import immobile.structures.Structure;
-import mobile.MobileObject;
+import mobile.Car;
 import model.Cell;
 import model.ConfigureStructure;
 import model.SimulationState;
+import sun.swing.MenuItemLayoutHelper.ColumnAlignment;
 
 public class Panel extends JPanel implements KeyListener{
 
+	/**
+	 * This panel displays the simulation
+	 */
+	private static final long serialVersionUID = 1L;
 	private int wUnit;
 	private int hUnit;
 	private ConfigureStructure structConfig;
-	private SimulationState state;
+	private Simulation simulation;
+	private SimulationState displayState;
 
-	public Panel(ConfigureStructure structConfig, SimulationState state){
+	public Panel(ConfigureStructure structConfig, Simulation simulation){
 		this.structConfig = structConfig;
-		this.state = state;
+		this.simulation = simulation;
+		this.displayState = this.simulation.getLastState();
 		this.setFocusable(true); // sinon par defaut le panel n’a pas le focus : on ne peut pas interagir avec
 		this.addKeyListener(this); // on declare que this ecoute les evenements clavier
 	}
 
+	/**
+	 * Définition de la taille d'un pixel en fonction de la taille de la simulation
+	 * @param structConfig
+	 */
 	public void defineUnits(ConfigureStructure structConfig) {
 		this.wUnit = (int) this.getWidth()/structConfig.columnNb;
 		this.hUnit = (int) this.getHeight()/structConfig.lineNb;
@@ -40,20 +52,24 @@ public class Panel extends JPanel implements KeyListener{
 	@Override
 	public void paintComponent(Graphics g) {
 		//Show grid border
-		boolean border = true;
+		boolean border = false;
 		
-		//Définition de la taille d'un pixel en fonction de la taille de la simulation
 		defineUnits(structConfig);
+
+		
 		
 		super.paintComponent(g); // Appel de la methode paintComponent de la classe mere
 		// Graphics est un objet fourni par le systeme qui est utilise pour dessiner les composant du conteneur
 		Graphics2D g2d = (Graphics2D) g;
-		
+				
 		BasicStroke bs1 = new BasicStroke(1); // pinceau du contour : taille 1
 		g2d.setStroke(bs1);		
 		
+		//Filling background
+		g2d.setPaint(Color.blue); 
+		g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
 		
-		Cell[][] grid = state.getGrid();
+		Cell[][] grid = this.displayState.getGrid();
 		
 		//Go over all cells of the grid
 		for(int i=0; i<structConfig.columnNb; i++) {
@@ -153,10 +169,19 @@ public class Panel extends JPanel implements KeyListener{
 		int key = e.getKeyCode();
 		
 		if ((key == KeyEvent.VK_LEFT)) { // cas fleche de gauche
-			
+			this.displayState = this.simulation.getState(this.simulation.getListStates().size()-2);
+			System.out.println("hop");
 		}
 		if ((key == KeyEvent.VK_RIGHT)) {
-			
+			this.simulation.nextState();
+			this.displayState = this.simulation.getLastState();
+			repaint();
+			Cell position = this.simulation.getMovingParts().getListCars().get(0).getPosition();
+//			System.out.println("number of states: "+this.simulation.getListStates().size());
+//			System.out.println("position car1: "+position.getX()+","+position.getY());
+			System.out.println(this.simulation.getStructureParts().getCell(148-1, 280-1).contains(MobileType.Car));
+//			position = this.simulation.getMovingParts().getCar(0).getPosition();
+//			System.out.println(position.getX()+","+position.getY());
 		}
 		
 	}

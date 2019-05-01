@@ -8,13 +8,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-import immobile.StructureParts;
-import mobile.MovingParts;
+import engine.Simulation;
+import mobile.Car;
 
 public class SimulationState {
 	/**
 	 * This class represents the state of the simulation on the grid
 	 */
+	Simulation simulation;
 	private int step;
 	private Cell[][] grid;
 	
@@ -26,12 +27,13 @@ public class SimulationState {
 	 * @param columnNb
 	 * @param structureParts
 	 */
-	public SimulationState(int step, int lineNb, int columnNb, StructureParts structureParts) {
+	public SimulationState(Simulation simulation, int step, int lineNb, int columnNb, Cell[][] structGrid) {
 		super();
+		this.simulation = simulation;
 		this.step = step;
 		this.grid = new Cell[lineNb][columnNb];
 		defineCoordinates(lineNb, columnNb);
-		this.grid = structureParts.getStructGrid();
+		this.grid = structGrid.clone();
 	}
 	
 	
@@ -51,23 +53,21 @@ public class SimulationState {
 	
 	
 	/**
-	 * DEPRECATED
-	 * Generation of every element's position and parameter at this step in the simulation. Filling up every grid's cell.
-	 * 
-	 * @param previousState
-	 * @return true if a termination case presents itself
+	 * Gives next simulation state from previous one
+	 * @return SimulationState
 	 */
-	public boolean generate(SimulationState previousState) {
-		//Updating grid 
-		return true; //true return statement only here for testing
+	public  SimulationState nextState() {
+		SimulationState next = new SimulationState(this.simulation, this.step+1, this.simulation.getLineNb(), this.simulation.getColumnNb(), simulation.getStructureParts().getStructGrid());
+		for(Car car : simulation.getMovingParts().getListCars()) {
+			car.nextStep();
+			car.draw(next.getGrid());
+		}
+		
+		//Should test for collision somehow (next.setStep(-1) could signal termination)
+		
+		return next;
 	}
 	
-	/**
-	 * update the position of every moving element on the grid starting from the structGrid model located in "StructureParts"
-	 */
-	public void updateGrid(MovingParts movingParts) {
-		
-	}
 
 	@Override
 	public String toString() {

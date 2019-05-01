@@ -14,6 +14,7 @@ import model.SimulationState;
 
 
 public class Car extends MobileObject {
+	private MovingParts movingParts;
 	private Profil profil;
 	private MobileObject mobileObject;
 	private double velocity;
@@ -55,7 +56,9 @@ public class Car extends MobileObject {
 	
 
 	/**UP-TO-DATE
+	 * 		
 	 * Constructor
+	 * 
 	 * @param model
 	 * @param length
 	 * @param height
@@ -66,10 +69,12 @@ public class Car extends MobileObject {
 	 * @param lane
 	 * @param structureParts
 	 */
-	public Car(String model, int length, int height, Profil profil,
-			double velocity, double maxVelocity, double maxBrake, Lane lane, StructureParts structureParts) {
-
-		super(length, height, initializeCarPosition(structureParts, lane, length, height));
+	public Car(MovingParts movingParts, String model, int length, int height, Profil profil,
+			double velocity, double maxVelocity, double maxBrake, Lane lane) {
+	
+		super(length, height, initializeCarPosition(movingParts.getSimulation().getStructureParts().getStructGrid(), lane, length, height));
+		
+		this.movingParts = movingParts;
 		
 		this.profil = profil;
 		this.velocity = velocity;
@@ -85,44 +90,41 @@ public class Car extends MobileObject {
 		this.crossingDuration = 0;
 		this.waitingTime = 0;
 		
-		computeCoverage(structureParts.getStructGrid());
+		computeCoverage(movingParts);
 	}
 	
 	
-	static private Cell initializeCarPosition(StructureParts structureParts, Lane lane, int length, int height) {
-		Cell[][] grid = structureParts.getStructGrid();
+	static private Cell initializeCarPosition(Cell[][] structGrid, Lane lane, int length, int height) {
+		Cell[][] grid = structGrid;
 		Road road = lane.getRoad();
 		OrientedDirection carDirection = lane.getOrientedDirection();
 		
 		// Index of car
 		int roadPosition = road.getPosition();
 		int carPositionOnRoad = road.getSideWalkSize() + road.getLaneSize()*(road.getIndexOfLane(lane)+1) - ((int) road.getLaneSize()/2);
-		
 		if (carDirection == OrientedDirection.WE) {
 			int y = roadPosition + carPositionOnRoad;
 			int x = (int) length/2 + length%2;
 			return grid[x][y];			
-		}
-		if (carDirection == OrientedDirection.NS) {
-			roadPosition -= 1;
-			carPositionOnRoad -= 1;
-			int x = grid[0].length - roadPosition - carPositionOnRoad;
-			int y = (int) length/2 + length%2; //taking length of car in account
-			return grid[x][y];		
-		}
-		
-		if (carDirection == OrientedDirection.SN) {
-			roadPosition -= 1;
-			carPositionOnRoad -=1;
-			int x = grid[0].length - roadPosition - carPositionOnRoad;
-			int y = grid.length - (((int) length/2));
-			return grid[x][y];
 		}
 		if (carDirection == OrientedDirection.EW) {
 			int y = roadPosition + carPositionOnRoad ;
 			int x = grid[0].length - ((int) length/2);
 			return grid[x][y];			
 		}
+		roadPosition -= 1; //Adjustment to match exact position
+		carPositionOnRoad -= 1; //idem
+		if (carDirection == OrientedDirection.NS) {
+			int x = grid[0].length - roadPosition - carPositionOnRoad;
+			int y = (int) length/2 + length%2; //taking length of car in account
+			return grid[x][y];		
+		}
+		if (carDirection == OrientedDirection.SN) {
+			int x = grid[0].length - roadPosition - carPositionOnRoad;
+			int y = grid.length - (((int) length/2));
+			return grid[x][y];
+		}
+		
 		return null;
 	}
 	
@@ -131,7 +133,11 @@ public class Car extends MobileObject {
 	 * @param reference grid
 	 */
 
-	private void computeCoverage(Cell[][] grid) {
+	private void computeCoverage(MovingParts movingParts) {
+		
+		this.objectCoverage.clear(); //Clear old coverage
+		
+		Cell[][] grid = movingParts.getSimulation().getStructureParts().getStructGrid(); //Reference grid
 		
 		Orientation carOrientation = this.lane.getRoad().getOrientation();
 		
@@ -165,9 +171,9 @@ public class Car extends MobileObject {
 	// Methods
 	
 	/**
-	 * This methods is used to start a vehicle. Its velocity goes from 0 to 10km/h.
+	 * This method changes the velocity and the position of the car
 	 */
-	public void go(SimulationState grid, double maxVelocity) {
+	public void go() {
 		// Changing the velocity from .. to :
 		if (profil == Profil.slow) {		// to +3km/h
 			this.velocity += 3;
@@ -181,12 +187,13 @@ public class Car extends MobileObject {
 		if (profil == Profil.veryCrazy) {		// to +10km/h
 			this.velocity += 10;
 		}
-		if (this.velocity > maxVelocity) {
-			this.velocity = maxVelocity;
+		if (this.velocity > this.maxVelocity) {
+			this.velocity = this.maxVelocity;
 		}
 		
 		// the car goes to velocity*0,8 cells per state
 		int distance = (int) ((int) this.velocity*3.6/0.8);
+		
 		
 		// Changing the position of the car
 		
@@ -195,16 +202,16 @@ public class Car extends MobileObject {
 		OrientedDirection carDirection = this.lane.getOrientedDirection();
 		
 		if (carDirection == OrientedDirection.NS) {
-			position.setX(position.getX() + distance);
+			position.setY(position.getY() + distance);
 		}
 		if (carDirection == OrientedDirection.SN) {
-			position.setX(position.getX() - distance);
+			position.setY(position.getY() - distance);
 		}
 		if (carDirection == OrientedDirection.EW) {
-			position.setX(position.getY() - distance);
+			position.setX(position.getX() - distance);
 		}
 		if (carDirection == OrientedDirection.WE) {
-			position.setY(position.getX() + distance);
+			position.setX(position.getX() + distance);
 		}
 	}
 	
@@ -328,6 +335,9 @@ public class Car extends MobileObject {
 		return Color.Green;
 	}
 
-
+	public void nextStep() {
+		this.computeCoverage(this.movingParts);
+		this.go();
+	}
 
 }
