@@ -13,7 +13,7 @@ import immobile.structures.Road;
 import immobile.structures.Structure;
 import mobile.MobileObject;
 
-public class Cell {
+public class Cell implements Cloneable{
 	private List<Structure> containedStructures;
 	private List<MobileObject> containedMobileObjects;
 	private TrafficLight trafficLight;
@@ -32,15 +32,25 @@ public class Cell {
 		this.y = y;
 	}
 
-//	public Cell(Road road) {
-//		containedStructures = new ArrayList<Structure>();
-//		containedMobileObjects = new ArrayList<MobileObject>();
-//		containedRoads = new ArrayList<Road>();
-//	}
 
-	
+	/*
+	 * Constructor for clone() method
+	 */
+	public Cell(List<Structure> containedStructures, List<MobileObject> containedMobileObjects,
+			TrafficLight trafficLight, List<Road> containedRoads, int x, int y) {
+		this.containedStructures = containedStructures;
+		this.containedMobileObjects = containedMobileObjects;
+		this.trafficLight = trafficLight;
+		this.containedRoads = containedRoads;
+		this.x = x;
+		this.y = y;
+	}
 
-	
+
+
+
+
+
 	/**
 	 * Setters
 	 */
@@ -126,5 +136,17 @@ public class Cell {
 
 	public List<Structure> getContainedStructures() {
 		return containedStructures;
+	}
+	
+	/*
+	 * This method is necessary for deep copy of the grid
+	 */
+	@Override
+	public Cell clone() {
+	    try {
+	        return (Cell) super.clone();
+	    } catch (CloneNotSupportedException e) {
+	        return new Cell((List<Structure>) ((ArrayList<Structure>) this.containedStructures).clone(), (List<MobileObject>) ((ArrayList) this.containedMobileObjects).clone(), this.trafficLight, (List<Road>) ((ArrayList)this.containedRoads).clone(), this.x, this.y);
+	    }
 	}
 }

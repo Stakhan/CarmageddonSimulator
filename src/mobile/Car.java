@@ -6,18 +6,14 @@ import enumeration.OrientedDirection;
 import enumeration.Color;
 import enumeration.Orientation;
 import enumeration.Profil;
-import immobile.StructureParts;
 import immobile.structures.Lane;
 import immobile.structures.Road;
 import model.Cell;
-import model.ConfigureStructure;
-import model.SimulationState;
 
 
 public class Car extends MobileObject {
 	private MovingParts movingParts;
 	private Profil profil;
-	private MobileObject mobileObject;
 	private double velocity;
 	private String model;
 	private double maxVelocity;
@@ -133,36 +129,7 @@ public class Car extends MobileObject {
 			x = grid[0].length - ((int) length/2);
 			break;
 		}
-		/**
 
-		if (carDirection == OrientedDirection.WE) {
-			y = roadPosition + carPositionOnRoad;
-			x = (int) length/2 + length%2;
-		}
-		if (carDirection == OrientedDirection.EW) {
-			int y = roadPosition + carPositionOnRoad ;
-			int x = grid[0].length - ((int) length/2);
-			return grid[x][y];			
-		}
-		roadPosition -= 1; //Adjustment to match exact position
-		carPositionOnRoad -= 1; //idem
-		if (carDirection == OrientedDirection.NS) {
-			roadPosition -= 1;
-			carPositionOnRoad -= 1;
-			x = grid[0].length - roadPosition - carPositionOnRoad;
-			y = (int) length/2 + length%2; //taking length of car in account
-		}
-		if (carDirection == OrientedDirection.SN) {
-			roadPosition -= 1;
-			carPositionOnRoad -=1;
-			x = grid[0].length - roadPosition - carPositionOnRoad;
-			y = grid.length - (((int) length/2));
-		}
-		if (carDirection == OrientedDirection.EW) {
-			y = roadPosition + carPositionOnRoad ;
-			x = grid[0].length - ((int) length/2);
-		}
-		*/
 		return grid[x][y];
 
 	}
@@ -223,23 +190,7 @@ public class Car extends MobileObject {
 		case veryCrazy: this.velocity += 10;
     	break;
 		}
-		/**
-		if (profil == Profil.slow) {		// to +3km/h
-			this.velocity += 3;
-		}
-		if (profil == Profil.respectful) {		// to +5km/h
-			this.velocity += 5;
-		}
-		if (profil == Profil.crazy) {		// to +7km/h
-			this.velocity += 7;
-		}
-		if (profil == Profil.veryCrazy) {		// to +10km/h
-			this.velocity += 10;
-		}
-		if (this.velocity > this.maxVelocity) {
-			this.velocity = this.maxVelocity;
 
-		*/
 		if (this.velocity > maxVelocity) {
 			this.velocity = maxVelocity;
 
@@ -253,29 +204,16 @@ public class Car extends MobileObject {
 		// /!\ The case where the car is out of the grid is not implemented
 		
 		OrientedDirection carDirection = this.lane.getOrientedDirection();
-		/*
+		
 		switch (carDirection) {
-		case NS: position.setX(position.getX() + distance);
+		case NS: position.setY(position.getY() + distance);
     	break;
-		case SN: position.setX(position.getX() - distance);
+		case SN: position.setY(position.getY() - distance);
     	break;
-		case EW: position.setX(position.getY() - distance);
+		case EW: position.setX(position.getX() - distance);
     	break;
-		case WE: position.setY(position.getX() + distance);
+		case WE: position.setX(position.getX() + distance);
     	break;
-		}
-		*/
-		if (carDirection == OrientedDirection.NS) {
-			position.setY(position.getY() + distance);
-		}
-		if (carDirection == OrientedDirection.SN) {
-			position.setY(position.getY() - distance);
-		}
-		if (carDirection == OrientedDirection.EW) {
-			position.setX(position.getX() - distance);
-		}
-		if (carDirection == OrientedDirection.WE) {
-			position.setX(position.getX() + distance);
 		}
 		
 	}
@@ -298,20 +236,7 @@ public class Car extends MobileObject {
 		case veryCrazy: this.velocity -= 10;
     	break;
 		}
-		/**
-		if (profil == Profil.slow) {		// to -3km/h
-			this.velocity -= 3;
-		}
-		if (profil == Profil.respectful) {		// to -5km/h
-			this.velocity -= 5;
-		}
-		if (profil == Profil.crazy) {		// to -7km/h
-			this.velocity -= 7;
-		}
-		if (profil == Profil.veryCrazy) {		// to -10km/h
-			this.velocity -= 10;
-		}
-		*/
+
 		
 		// The car can't reach a velocity under minVelocity (0, 20, 30 km/h... it depends)
 		if (this.velocity < minVelocity) {
@@ -319,36 +244,22 @@ public class Car extends MobileObject {
 			}
 		
 		// the car goes to velocity*0,8 cells per state
-		//int distance = (int) ((int) this.velocity*3.6/0.8);
-		int distance = 1;
+		int distance = (int) ((int) this.velocity*3.6/0.8);
 		// Changing the position of the car
 		
 		// /!\ The case where the car is out of the grid is not implemented
 		
 		OrientedDirection carDirection = this.lane.getOrientedDirection();
-		/*
+		
 		switch (carDirection) {
-		case NS: position.setX(position.getX() + distance);
+		case NS: position.setY(position.getY() + distance);
     	break;
-		case SN: position.setX(position.getX() - distance);
+		case SN: position.setY(position.getY() - distance);
     	break;
-		case EW: position.setX(position.getY() - distance);
+		case EW: position.setX(position.getX() - distance);
     	break;
-		case WE: position.setY(position.getX() + distance);
+		case WE: position.setX(position.getX() + distance);
     	break;
-		}
-		*/
-		if (carDirection == OrientedDirection.NS) {
-			position.setY(position.getY() + distance);
-		}
-		if (carDirection == OrientedDirection.SN) {
-			position.setY(position.getY() - distance);
-		}
-		if (carDirection == OrientedDirection.EW) {
-			position.setX(position.getX() - distance);
-		}
-		if (carDirection == OrientedDirection.WE) {
-			position.setX(position.getX() + distance);
 		}
 		
 	}

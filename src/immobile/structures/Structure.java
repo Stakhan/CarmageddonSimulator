@@ -6,4 +6,5 @@ public abstract class Structure {
 	
 	public abstract StructureType getType();
 
+	
 }

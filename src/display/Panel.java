@@ -7,7 +7,9 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import engine.Simulation;
 import enumeration.MobileType;
@@ -38,6 +40,9 @@ public class Panel extends JPanel implements KeyListener{
 		this.displayState = this.simulation.getLastState();
 		this.setFocusable(true); // sinon par defaut le panel n’a pas le focus : on ne peut pas interagir avec
 		this.addKeyListener(this); // on declare que this ecoute les evenements clavier
+		
+//		JLabel label = new JLabel(this.simulation.getLastState().toString(), SwingConstants.RIGHT);
+//		this.add(label);
 	}
 
 	/**
@@ -159,7 +164,7 @@ public class Panel extends JPanel implements KeyListener{
 				}
 			}
 		}
-
+		
 
 	}
 	
@@ -169,21 +174,34 @@ public class Panel extends JPanel implements KeyListener{
 		int key = e.getKeyCode();
 		
 		if ((key == KeyEvent.VK_LEFT)) { // cas fleche de gauche
-			this.displayState = this.simulation.getState(this.simulation.getListStates().size()-2);
-			System.out.println("hop");
+			this.displayState = this.simulation.getState(this.displayState.getStep()-1);
+			
+			System.out.println(this.simulation.getState(this.displayState.getStep()-1).getGrid().toString());
 		}
 		if ((key == KeyEvent.VK_RIGHT)) {
 			this.simulation.nextState();
 			this.displayState = this.simulation.getLastState();
 			repaint();
-			Cell position = this.simulation.getMovingParts().getListCars().get(0).getPosition();
+			System.out.println(this.simulation.getLastState().getGrid().toString());
+
+//			Cell position = this.simulation.getMovingParts().getListCars().get(0).getPosition();
 //			System.out.println("number of states: "+this.simulation.getListStates().size());
 //			System.out.println("position car1: "+position.getX()+","+position.getY());
-			System.out.println(this.simulation.getStructureParts().getCell(148-1, 280-1).contains(MobileType.Car));
 //			position = this.simulation.getMovingParts().getCar(0).getPosition();
 //			System.out.println(position.getX()+","+position.getY());
+//			this.simulation.getLastState().writeToFile("simulation-state1.grid");
 		}
-		
+		if ((key == KeyEvent.VK_UP)) { 
+			System.out.println("=============");
+			System.out.println(this.simulation.getStructureParts().getStructGrid().toString());
+			System.out.println("=============");
+
+		}
+		if ((key == KeyEvent.VK_DOWN)) {
+			for(SimulationState state : this.simulation.getListStates()) {
+				System.out.println(state.getGrid().toString());
+			}
+		}
 	}
 
 	@Override

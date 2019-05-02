@@ -123,6 +123,15 @@ public class StructureParts {
 	public Cell[][] getStructGrid() {
 		return structGrid;
 	}
+	public Cell[][] cloneStructGrid(){
+		Cell[][] clonedGrid = new Cell[structGrid.length][structGrid[0].length];
+		for(int i=0; i<structGrid.length; i++) {
+			for(int j=0; j<structGrid[0].length; j++) {
+				clonedGrid[i][j] = structGrid[i][j].clone();
+			}
+		}
+		return clonedGrid;
+	}
 	
 	public Cell getCell(int x, int y) {
 		return structGrid[x][y];
