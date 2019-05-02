@@ -143,10 +143,8 @@ public class Cell implements Cloneable{
 	 */
 	@Override
 	public Cell clone() {
-	    try {
-	        return (Cell) super.clone();
-	    } catch (CloneNotSupportedException e) {
-	        return new Cell((List<Structure>) ((ArrayList<Structure>) this.containedStructures).clone(), (List<MobileObject>) ((ArrayList) this.containedMobileObjects).clone(), this.trafficLight, (List<Road>) ((ArrayList)this.containedRoads).clone(), this.x, this.y);
-	    }
+		
+        return new Cell((List<Structure>) ((ArrayList<Structure>) this.containedStructures).clone(), (List<MobileObject>) ((ArrayList) this.containedMobileObjects).clone(), this.trafficLight, (List<Road>) ((ArrayList)this.containedRoads).clone(), this.x, this.y);
+    
 	}
 }

@@ -175,13 +175,14 @@ public class Panel extends JPanel implements KeyListener{
 		
 		if ((key == KeyEvent.VK_LEFT)) { // cas fleche de gauche
 			this.displayState = this.simulation.getState(this.displayState.getStep()-1);
-			
-			System.out.println(this.simulation.getState(this.displayState.getStep()-1).getGrid().toString());
+			repaint();
+			System.out.println("step "+this.displayState.getStep()+": "+this.simulation.getState(this.displayState.getStep()).getGrid().toString());
 		}
 		if ((key == KeyEvent.VK_RIGHT)) {
 			this.simulation.nextState();
 			this.displayState = this.simulation.getLastState();
 			repaint();
+			System.out.println("step "+this.displayState.getStep());
 			System.out.println(this.simulation.getLastState().getGrid().toString());
 
 //			Cell position = this.simulation.getMovingParts().getListCars().get(0).getPosition();
@@ -192,9 +193,12 @@ public class Panel extends JPanel implements KeyListener{
 //			this.simulation.getLastState().writeToFile("simulation-state1.grid");
 		}
 		if ((key == KeyEvent.VK_UP)) { 
-			System.out.println("=============");
-			System.out.println(this.simulation.getStructureParts().getStructGrid().toString());
-			System.out.println("=============");
+			this.displayState = new SimulationState(this.simulation, -1, this.simulation.getLineNb(), this.simulation.getColumnNb());
+			repaint();
+			System.out.println("hop");
+//			System.out.println("=============");
+//			System.out.println(this.simulation.getStructureParts().getStructGrid().toString());
+//			System.out.println("=============");
 
 		}
 		if ((key == KeyEvent.VK_DOWN)) {
