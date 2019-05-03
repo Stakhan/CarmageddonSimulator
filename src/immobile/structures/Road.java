@@ -58,8 +58,8 @@ public class Road {
 		
 		
 		//Creating Sidewalks
-		listSideWalks.add(new SideWalk());
-		listSideWalks.add(new SideWalk());
+		listSideWalks.add(new SideWalk(this));
+		listSideWalks.add(new SideWalk(this));
 		this.roadSize += 2*sideWalkSize;
 		
 		
