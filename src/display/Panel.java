@@ -13,7 +13,10 @@ import javax.swing.SwingConstants;
 
 import engine.Simulation;
 import enumeration.MobileType;
+import enumeration.Profil;
 import enumeration.StructureType;
+import enumeration.Type;
+import enumeration.Type;
 import immobile.structures.Lane;
 import immobile.structures.Structure;
 import mobile.Car;
@@ -70,9 +73,7 @@ public class Panel extends JPanel implements KeyListener{
 		BasicStroke bs1 = new BasicStroke(1); // pinceau du contour : taille 1
 		g2d.setStroke(bs1);		
 		
-		//Filling background
-		g2d.setPaint(Color.blue); 
-		g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
+		
 		
 		Cell[][] grid = this.displayState.getGrid();
 		
@@ -85,14 +86,14 @@ public class Panel extends JPanel implements KeyListener{
 					if(grid[i][j].getContainedMobileObjects().size() != 0) { //Test if it contains a MobileObject
 						
 						if(grid[i][j].contains(MobileType.Car)) { //Test if it contains a Car
-							
-							Cell position = grid[i][j].getContainedMobileObjects().get(0).getPosition(); //Get central position of car
-								if(position.getX() == j+1 && position.getY() == i+1) { //Check if cell is center of car
-									g2d.setPaint(Color.pink); //Paint in pink in that case
-								}
-								else {
-									g2d.setPaint(Color.red); //Rest of car should be painted in red
-								}
+								
+							int[] position = grid[i][j].getContainedMobileObjects().get(0).getPosition(); //Get central position of car
+							if(position[0] == j+1 && position[1] == i+1) { //Check if cell is center of car
+								g2d.setPaint(Color.pink); //Paint in pink in that case
+							}
+							else {
+								g2d.setPaint(Color.red); //Rest of car should be painted in red
+							}
 							
 							//Paint cell
 							g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
@@ -174,9 +175,12 @@ public class Panel extends JPanel implements KeyListener{
 		int key = e.getKeyCode();
 		
 		if ((key == KeyEvent.VK_LEFT)) { // cas fleche de gauche
-			this.displayState = this.simulation.getState(this.displayState.getStep()-1);
-			repaint();
-			System.out.println("step "+this.displayState.getStep()+": "+this.simulation.getState(this.displayState.getStep()).getGrid().toString());
+			if (this.displayState.getStep() > 0) { //Make sure it's not the first state
+				this.displayState = this.simulation.getState(this.displayState.getStep()-1);
+				repaint();
+				System.out.println("step "+this.displayState.getStep()+": "+this.simulation.getState(this.displayState.getStep()).getGrid().toString());
+			}
+			
 		}
 		if ((key == KeyEvent.VK_RIGHT)) {
 			//System.out.println(this.simulation.getListStates().size()+" et "+this.displayState.);
@@ -203,6 +207,14 @@ public class Panel extends JPanel implements KeyListener{
 			for(SimulationState state : this.simulation.getListStates()) {
 				System.out.println(state.getGrid().toString());
 			}
+		}
+		if ((key == KeyEvent.VK_C)) {
+			if(this.simulation.getStructureParts().getRoad(0).getLane(1).testAvailability(5, this.displayState)) { //Test if room available for poping
+				this.simulation.getMovingParts().getListCars().add(new Car(this.simulation.getMovingParts(), "voiture", 5, 3, Profil.respectful, 0, 2, 10, this.simulation.getStructureParts().getRoad(0).getLane(1)));
+			}
+		}
+		if ((key == KeyEvent.VK_T)) {
+			System.out.println("lane available ? "+this.simulation.getStructureParts().getRoad(1).getLane(1).testAvailability(5, this.displayState));
 		}
 	}
 

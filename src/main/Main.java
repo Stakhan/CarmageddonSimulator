@@ -9,7 +9,7 @@ import model.ConfigureStructure;
 public class Main {
 	public static void main(String[] args) {
 		
-		ConfigureStructure structConfig = new ConfigureStructure(100, 700, true);
+		ConfigureStructure structConfig = new ConfigureStructure(200, 700, true);
 		
 		Simulation simulation1 = new Simulation(structConfig);
 		simulation1.init();

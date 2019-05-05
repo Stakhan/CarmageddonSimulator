@@ -49,7 +49,7 @@ public class SimulationState {
 		}
 		
 		
-		//Should test for collision somehow (next.setStep(-1) could signal termination)
+		//DEV-NOTE: Should test for collision somehow (next.setStep(-1) could signal termination)
 		
 		return next;
 	}

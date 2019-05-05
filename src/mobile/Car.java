@@ -1,17 +1,21 @@
 package mobile;
 
 
-import enumeration.MobileType;
+import enumeration.Type;
 import enumeration.OrientedDirection;
+import engine.Simulation;
 import enumeration.Color;
+import enumeration.MobileType;
 import enumeration.Orientation;
 import enumeration.Profil;
 import immobile.structures.Lane;
 import immobile.structures.Road;
 import model.Cell;
+import model.SimulationState;
 
 
 public class Car extends MobileObject {
+	
 	private MovingParts movingParts;
 	private Profil profil;
 	private double velocity;
@@ -20,37 +24,7 @@ public class Car extends MobileObject {
 	private double maxBrake;
 	private Lane lane;
 	
-	/**DEPRECATED
-	 * Old constructor 
-	 * @param model, is the type of the vehicle.
-	 * @param length
-	 * @param heigth
-	 * @param position
-	 * @param profil
-	 * @param velocity, represents the velocity of the car.
-	 * @param maxVelocity
-	 * @param maxBrake
-	 * @param lane
-	 */
-//	public Car(String model, int length, int height, Cell position, Profil profil,
-//			double velocity, double maxVelocity, double maxBrake, Lane lane) {
-//
-//		super(length, height, position);
-//
-//		this.profil = profil;
-//		this.velocity = velocity;
-//		this.model = model;
-//		this.maxVelocity = maxVelocity;
-//		this.maxBrake = maxBrake;
-//		
-//		this.length = length;
-//		this.height = height;
-//
-//		this.lane = lane;
-//		
-//		this.crossingDuration = 0;
-//		this.waitingTime = 0;
-//	}
+
 	
 	/**UP-TO-DATE
 	 * 		
@@ -91,8 +65,17 @@ public class Car extends MobileObject {
 	}
 	
 	
-
-	static private Cell initializeCarPosition(Cell[][] structGrid, Lane lane, int length, int height) {
+	/**
+	 * 
+	 * Set the position of the car at creation depending on which lane it is linked to
+	 * 
+	 * @param structGrid
+	 * @param lane
+	 * @param length
+	 * @param height
+	 * @return
+	 */
+	static public int[] initializeCarPosition(Cell[][] structGrid, Lane lane, int length, int height) {
 		
 		Cell[][] grid = structGrid;
 
@@ -129,114 +112,167 @@ public class Car extends MobileObject {
 			x = grid[0].length - ((int) length/2);
 			break;
 		}
-
-		return grid[x][y];
+		System.out.println("initializeCarPosition:"+x+","+y+" et "+grid[x][y].getX()+","+grid[x][y].getY());
+		int[] position = {x,y};
+		return position;
 
 	}
 	
 	/**
-	 * compute the cells occupied by the current Car and list them
+	 * Compute the cells occupied by the current car and list them
 	 * @param reference grid
 	 */
 	private void computeCoverage(MovingParts movingParts) {
 		
 		this.objectCoverage.clear(); //Clear old coverage
 		
-		Cell[][] grid = movingParts.getSimulation().getStructureParts().getStructGrid(); //Reference grid
+		if (visible) {
+			Orientation carOrientation = this.lane.getRoad().getOrientation();
+			
+			int sideSpan = (int) this.height/2 + this.height%2;
+			int span = (int) this.length/2 + this.length%2;
 
-		
-		Orientation carOrientation = this.lane.getRoad().getOrientation();
-		
-		int sideSpan = (int) this.height/2 + this.height%2;
-		int span = (int) this.length/2 + this.length%2;
-		
-		if (carOrientation == Orientation.Horizontal) {
-			int xOrigin = this.position.getX() - span;
-			int yOrigin = this.position.getY() - sideSpan;
-			
-			for(int i=xOrigin; i<xOrigin+this.length; i++) {
-				for(int j=yOrigin; j<yOrigin+this.height; j++) {
-					this.objectCoverage.add(grid[j][i]);
+			if (carOrientation == Orientation.Horizontal) {
+				int xOrigin = this.position[0] - span;
+				int yOrigin = this.position[1] - sideSpan;
+				
+				for(int i=xOrigin; i<xOrigin+this.length; i++) {
+					for(int j=yOrigin; j<yOrigin+this.height; j++) {
+						Integer[] couple = {j,i};
+						this.objectCoverage.add(couple);
+					}
+				}
+			}
+			else if (carOrientation == Orientation.Vertical) {
+				int xOrigin = this.position[0] - sideSpan;
+				int yOrigin = this.position[1] - span;
+				
+				for(int i=xOrigin; i<xOrigin+this.height; i++) {
+					for(int j=yOrigin; j<yOrigin+this.length; j++) {
+						Integer[] couple = {j,i};
+						this.objectCoverage.add(couple);
+					}
 				}
 			}
 		}
-		else if (carOrientation == Orientation.Vertical) {
-			int xOrigin = this.position.getX() - sideSpan;
-			int yOrigin = this.position.getY() - span;
-			
-			for(int i=xOrigin; i<xOrigin+this.height; i++) {
-				for(int j=yOrigin; j<yOrigin+this.length; j++) {
-					this.objectCoverage.add(grid[j][i]);
-				}
-			}
-		}
+		
 	}
 	
 	
-	// Methods
+	
+	// Methods related to the movement of the car
+	
+	public void nextStep() {
+		this.computeCoverage(this.movingParts);
+		this.changeVelocity(true);
+		this.go();
+	}
 	
 	/**
-	 * This method changes the velocity and the position of the car
+	 * Changes the velocity of the car depending on the profil of its driver and whether there shall be acceleration or deceleration
 	 */
-	public void go() {
-		// Changing the velocity from .. to :
-		switch (profil) {
-		case slow: this.velocity += 3;
-    	break;
-		case respectful: this.velocity += 5;
-    	break;
-		case crazy: this.velocity += 7;
-    	break;
-		case veryCrazy: this.velocity += 10;
-    	break;
+	public void changeVelocity(boolean accelerate) {
+		
+		int sign = 1; //Positve or negative (accelerate or decelerate)
+		if (!accelerate) {
+			sign = -1;
 		}
-
+		
+		switch (this.profil) {
+		case slow:
+			this.velocity += sign*3;
+			break;
+		case respectful:
+			this.velocity += sign*5;
+    		break;
+		case crazy:
+			this.velocity += sign*7;
+			break;
+		case veryCrazy:
+			this.velocity += sign*10;
+			break;
+		}
 		if (this.velocity > maxVelocity) {
 			this.velocity = maxVelocity;
-
 		}
+		else if (this.velocity < 0) {
+			this.velocity = 0;
+		}
+	}
+	
+	/**
+	 * changes the position of the car
+	 */
+	public void go() {
+		
+		
 		// the car goes to velocity*0,8 cells per state
 		int distance = (int) ((int) this.velocity*3.6/0.8);
 		
 		
 		// Changing the position of the car
-		
-		// /!\ The case where the car is out of the grid is not implemented
-		
 		OrientedDirection carDirection = this.lane.getOrientedDirection();
 		
-		switch (carDirection) {
-		case NS: position.setY(position.getY() + distance);
-    	break;
-		case SN: position.setY(position.getY() - distance);
-    	break;
-		case EW: position.setX(position.getX() - distance);
-    	break;
-		case WE: position.setX(position.getX() + distance);
-    	break;
+		if (position[0] != -1 && position[1] != -1) { //Test if car is in garage position
+			switch (carDirection) {
+			case NS: 
+				if (position[1] + distance <= this.lane.getRoad().getLength()) { //test if car is still inside of the simulation after movement
+					position[1] = position[1] + distance; 
+					this.visible = true;
+				}
+				else { //In case it leaves the simulation
+					position[0] = -1; //Putting car into garage position
+					position[1] = -1;
+					this.visible = false; //Set as invisible
+				}
+				
+				break;
+			case SN:
+				if (position[1] - distance >= 0) {
+				position[1] = position[1] - distance;
+				this.visible = true;
+				}
+				else { //In case it leaves the simulation
+					position[0] = -1; //Putting car into garage position
+					position[1] = -1;
+					this.visible = false; //Set as invisible
+				}
+	    		break;
+			case EW:
+				if (position[0] - distance >= 0) {
+				position[0] = position[0] - distance;
+				this.visible = true;
+				}
+				else { //In case it leaves the simulation
+					position[0] = -1; //Putting car into garage position
+					position[1] = -1;
+					this.visible = false; //Set as invisible
+				}
+	    		break;
+			case WE:
+				if (position[0] + distance <= this.lane.getRoad().getLength()) {
+				position[0] = position[0] + distance;
+				this.visible = true;
+				}
+				else { //In case it leaves the simulation
+					position[0] = -1; //Putting car into garage position
+					position[1] = -1;
+					this.visible = false; //Set as invisible
+				}
+	    		break;
+			}
 		}
+		
 		
 	}
 	
 	
-	/**
+	/** USELESS/REDONDANT ?
 	 *  This function computes the deceleration of a car
 	 * @param minVelocity
 	 * @param lane
 	 */
 	public void decelerate(double minVelocity, Lane lane) {
-		// Changing the velocity from .. to :
-		switch (profil) {
-		case slow: this.velocity -= 3;
-    	break;
-		case respectful: this.velocity -= 5;
-    	break;
-		case crazy: this.velocity -= 7;
-    	break;
-		case veryCrazy: this.velocity -= 10;
-    	break;
-		}
-
 		
 		// The car can't reach a velocity under minVelocity (0, 20, 30 km/h... it depends)
 		if (this.velocity < minVelocity) {
@@ -252,44 +288,112 @@ public class Car extends MobileObject {
 		OrientedDirection carDirection = this.lane.getOrientedDirection();
 		
 		switch (carDirection) {
-		case NS: position.setY(position.getY() + distance);
+		case NS: position[1] = position[1] + distance;
     	break;
-		case SN: position.setY(position.getY() - distance);
+		case SN: position[1] = position[1] - distance;
     	break;
-		case EW: position.setX(position.getX() - distance);
+		case EW: position[0] = position[0] - distance;
     	break;
-		case WE: position.setX(position.getX() + distance);
+		case WE: position[0] = position[0] + distance;
     	break;
 		}
 		
 	}
 	
-	// This function returns a boolean which is if there is an obstacle in the vision line of the car.
-	// The vision line is 3*velocity*3.6/0.8
-	// It is possible to add different cases (if the driver is slow, he may sees less far...)
+
+	@Override
+	public MobileType getType() {
+		return MobileType.Car;
+	}
+
+	
+	
+	public Type look(int viewSpan) {
+Orientation orientation = lane.getRoad().getOrientation();
+		
+		Cell[][] grid = null;
+		
+		if (this.movingParts.getSimulation().getListStates().size() > 1) { //We need two states to get a previous state
+			//Fetching previous state
+			SimulationState previousState = this.movingParts.getSimulation().getState(this.movingParts.getSimulation().getLastState().getStep()-1);
+			//Fetching grid of previous step
+			grid = previousState.getGrid();
+		}
+		else { //In case it is the first state
+			grid = this.movingParts.getSimulation().getLastState().getGrid();
+		}
+		
+		if (orientation == Orientation.Horizontal) {
+			int i = position[1]-1;
+			for (int j = position[0]+((int) length/2) + 1; j < viewSpan; j++) {
+				if (grid[i][j].getContainedMobileObjects().size() != 0) {
+					// There is a mobileObject in front of the car
+					if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Car) {
+						return Type.Car;
+					}
+					else if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Pedestrian) {
+						return Type.Pedestrian;
+					}
+				}
+				else if (grid[i][j].getTrafficLight() != null) {
+					return Type.TrafficLight;
+				}
+			}
+		}
+//		if (orientation == Orientation.Vertical) {
+//			int j = position[0] + ((int) length/2) + 1;
+//			for (int i = 0; i < 3*this.velocity; i++) {
+//				if (grid[i][j].getContainedMobileObjects().size() != 0) {
+//					// There is a mobileObject in front of the car
+//					return null;
+//				}
+//			}
+//		}
+		
+		return Type.TrafficLight;
+	}
+	
+	
 	/**
 	 * This function returns true if there is an obstacle in the view span of the car.
+	 * The view span is 3*velocity*3.6/0.8
 	 * @param gridSimulation
 	 * @return
 	 */
-	public boolean obstacle(Cell[][] grid) {
+	public boolean obstacle() {
+		
+		// DEV-NOTE: We could add different cases (if the driver is slow, he may see less far, ...) 
+		
 		Orientation orientation = lane.getRoad().getOrientation();
-		// The driver can see the triple his speed is.
-		// The faster he drives, the farther he anticipates.
-		// Compute distances : he can see from his position to 3*speed/1second
+		
+		Cell[][] grid = null;
+		
+		if (this.movingParts.getSimulation().getListStates().size() > 1) { //We need two states to get a previous state
+			//Fetching previous state
+			SimulationState previousState = this.movingParts.getSimulation().getState(this.movingParts.getSimulation().getLastState().getStep()-1);
+			//Fetching grid of previous step
+			grid = previousState.getGrid();
+		}
+		else { //In case it is the first state
+			grid = this.movingParts.getSimulation().getLastState().getGrid();
+		}
+		
+		/* The driver can see the three time his speed is.
+		   The faster he drives, the farther he anticipates.
+		   Compute distances : he can see from his position to 3*speed/1second */
 		if (orientation == Orientation.Horizontal) {
-			int i = position.getY() + ((int) length/2) + 1;
+			int i = position[1] + ((int) length/2) + 1;
 			for (int j = 0; j < 3*this.velocity; j++) {
-				if (grid[i][j].getListMobileObjects().size() != 0) {
+				if (grid[i][j].getContainedMobileObjects().size() != 0) {
 					// There is a mobileObject in front of the car
 					return true;
 				}
 			}
 		}
 		if (orientation == Orientation.Vertical) {
-			int j = position.getX() + ((int) length/2) + 1;
+			int j = position[0] + ((int) length/2) + 1;
 			for (int i = 0; i < 3*this.velocity; i++) {
-				if (grid[i][j].getListMobileObjects().size() != 0) {
+				if (grid[i][j].getContainedMobileObjects().size() != 0) {
 					// There is a mobileObject in front of the car
 					return true;
 				}
@@ -298,11 +402,9 @@ public class Car extends MobileObject {
 		return false;
 	}
 	
-	@Override
-	public MobileType getType() {
-		return MobileType.Car;
-	}
-
+	
+	
+	
 	/**
 	 * UNFINISHED (ask Arthur)
 	 * This function computes if there is a light traffic on the view span of the car.
@@ -313,9 +415,9 @@ public class Car extends MobileObject {
 	public Color lightTraffic(Cell[][] grid) {
 		Orientation orientation = lane.getRoad().getOrientation();
 		if (orientation == Orientation.Horizontal) {
-			int i = position.getY() + ((int) length/2) + 1;
+			int i = position[1] + ((int) length/2) + 1;
 			for (int j = 0; j < 3*this.velocity; j++) {
-				if (grid[i][j].getListMobileObjects().size() != 0) {
+				if (grid[i][j].getContainedMobileObjects().size() != 0) {
 					// There is a mobileObject in front of the car
 					return Color.Green;
 				}
@@ -324,9 +426,6 @@ public class Car extends MobileObject {
 		return Color.Green;
 	}
 
-	public void nextStep() {
-		this.computeCoverage(this.movingParts);
-		this.go();
-	}
+	
 
 }

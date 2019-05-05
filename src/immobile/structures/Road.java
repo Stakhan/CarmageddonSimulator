@@ -4,17 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import enumeration.Orientation;
+import immobile.StructureParts;
 
 public class Road {
 	
+	private StructureParts structureParts;
 	private int length;
 	private int laneSize;
 	private int sideWalkSize;
 	private int roadSize;
+	
 	private int laneNb;
 	private boolean bidirectional;
 	public int position;
 	private Orientation orientation;
+	
 	private List<Lane> listLanes;
 	private List<SideWalk> listSideWalks;
 	
@@ -106,6 +110,9 @@ public class Road {
 	}
 	public int getIndexOfLane(Lane lane) {
 		return listLanes.indexOf(lane);
+	}
+	public StructureParts getStructureParts() {
+		return structureParts;
 	}
 	
 	

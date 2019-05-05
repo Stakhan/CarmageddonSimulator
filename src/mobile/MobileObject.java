@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import enumeration.MobileType;
-import enumeration.StructureType;
+import jdk.internal.util.xml.impl.Pair;
 import model.Cell;
-import model.SimulationState;
 
 public abstract class MobileObject {
 
@@ -16,16 +15,16 @@ public abstract class MobileObject {
 	
 	protected int length;
 	protected int height;
-	protected Cell position;
-	protected Cell center;
-	protected List<Cell> objectCoverage; // list of cells from a same mobile object
+	protected int[] position;
+	protected boolean visible;
+	protected List<Integer[]> objectCoverage; // list of cells from a same mobile object
 
-	public MobileObject(int length, int height, Cell position) {
+	public MobileObject(int length, int height, int[] position) {
 		this.length = length;
 		this.height = height;
 		this.position = position;
-		System.out.println("MobileObject position is "+position.getX()+":"+position.getY());
-		objectCoverage = new ArrayList<Cell>();
+		this.visible = true;
+		objectCoverage = new ArrayList<Integer[]>();
 	}
 	
 	
@@ -36,10 +35,12 @@ public abstract class MobileObject {
 	 * @param grid where object should be drawn
 	 */
 	public void draw(Cell[][] grid) {
-		for(Cell cell : objectCoverage) {
-			int x = cell.getX();
-			int y = cell.getY();
-			grid[x][y].addMobileObjects(this);
+		if (visible) {
+			for(Integer[] cellCoord : objectCoverage) {
+				int x = cellCoord[0];
+				int y = cellCoord[1];
+				grid[x][y].addMobileObjects(this);
+			}
 		}
 	}
 
@@ -50,7 +51,7 @@ public abstract class MobileObject {
 	public abstract MobileType getType();
 
 	//Getters
-	public Cell getPosition() {
+	public int[] getPosition() {
 		return position;
 	}
 }
