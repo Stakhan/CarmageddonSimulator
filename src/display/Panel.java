@@ -179,18 +179,16 @@ public class Panel extends JPanel implements KeyListener{
 			System.out.println("step "+this.displayState.getStep()+": "+this.simulation.getState(this.displayState.getStep()).getGrid().toString());
 		}
 		if ((key == KeyEvent.VK_RIGHT)) {
-			this.simulation.nextState();
-			this.displayState = this.simulation.getLastState();
+			//System.out.println(this.simulation.getListStates().size()+" et "+this.displayState.);
+			if (this.displayState.getStep() < this.simulation.getListStates().size()-1) { //test if next step has already been computed
+				this.displayState = this.simulation.getState(this.displayState.getStep()+1);
+			}
+			else { //if not, compute it
+				this.simulation.nextState();
+				this.displayState = this.simulation.getLastState();
+			}
 			repaint();
-			System.out.println("step "+this.displayState.getStep());
-			System.out.println(this.simulation.getLastState().getGrid().toString());
-
-//			Cell position = this.simulation.getMovingParts().getListCars().get(0).getPosition();
-//			System.out.println("number of states: "+this.simulation.getListStates().size());
-//			System.out.println("position car1: "+position.getX()+","+position.getY());
-//			position = this.simulation.getMovingParts().getCar(0).getPosition();
-//			System.out.println(position.getX()+","+position.getY());
-//			this.simulation.getLastState().writeToFile("simulation-state1.grid");
+			System.out.println("step "+this.displayState.getStep()+": "+this.simulation.getLastState().getGrid().toString());
 		}
 		if ((key == KeyEvent.VK_UP)) { 
 			this.displayState = new SimulationState(this.simulation, -1, this.simulation.getLineNb(), this.simulation.getColumnNb());
