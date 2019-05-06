@@ -39,7 +39,7 @@ public class Simulation {
 	public void init() {
 		this.movingParts.generate(); //Adding MobileObjects to the simulation
 		
-		SimulationState initState = new SimulationState(this, 0, this.lineNb, this.columnNb);
+		SimulationState initState = new SimulationState(this, 0);
 		for(Car car : this.getMovingParts().getListCars()) {
 			car.nextStep();
 			car.draw(initState.getGrid());

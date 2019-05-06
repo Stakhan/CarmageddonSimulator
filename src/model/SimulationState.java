@@ -27,11 +27,10 @@ public class SimulationState {
 	 * @param columnNb
 	 * @param structureParts
 	 */
-	public SimulationState(Simulation simulation, int step, int lineNb, int columnNb) {
+	public SimulationState(Simulation simulation, int step) {
 		super();
 		this.simulation = simulation;
 		this.step = step;
-		//this.grid = new Cell[lineNb][columnNb];
 		this.grid = this.simulation.getStructureParts().cloneStructGrid();
 	}
 	
@@ -42,12 +41,13 @@ public class SimulationState {
 	 * @return SimulationState
 	 */
 	public  SimulationState nextState() {
-		SimulationState next = new SimulationState(this.simulation, this.step+1, this.simulation.getLineNb(), this.simulation.getColumnNb());
-			for(Car car : simulation.getMovingParts().getListCars()) {
+		SimulationState next = new SimulationState(this.simulation, this.step+1);
+		for(Car car : simulation.getMovingParts().getListCars()) {
+			if (!car.inGarage()) { //Make sure car is in simulation
 				car.nextStep();
 				car.draw(next.getGrid());
+			}
 		}
-		
 		
 		//DEV-NOTE: Should test for collision somehow (next.setStep(-1) could signal termination)
 		

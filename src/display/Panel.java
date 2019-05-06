@@ -166,7 +166,11 @@ public class Panel extends JPanel implements KeyListener{
 			}
 		}
 		
-
+		//Painting view span over
+//		g2d.setPaint(Color.yellow);
+//		for (Integer[] coord : this.simulation.getMovingParts().getCar(0).getViewSpan()){
+//			g2d.fillRect(coord[1]*wUnit, coord[0]*hUnit, wUnit, hUnit);
+//		}
 	}
 	
 	@Override
@@ -195,7 +199,7 @@ public class Panel extends JPanel implements KeyListener{
 			System.out.println("step "+this.displayState.getStep()+": "+this.simulation.getLastState().getGrid().toString());
 		}
 		if ((key == KeyEvent.VK_UP)) { 
-			this.displayState = new SimulationState(this.simulation, -1, this.simulation.getLineNb(), this.simulation.getColumnNb());
+			this.displayState = new SimulationState(this.simulation, -1);
 			repaint();
 			System.out.println("hop");
 //			System.out.println("=============");

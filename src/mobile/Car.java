@@ -3,7 +3,10 @@ package mobile;
 
 import enumeration.Type;
 import enumeration.OrientedDirection;
-import engine.Simulation;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import enumeration.Color;
 import enumeration.MobileType;
 import enumeration.Orientation;
@@ -23,6 +26,7 @@ public class Car extends MobileObject {
 	private double maxVelocity;
 	private double maxBrake;
 	private Lane lane;
+	private List<Integer[]> viewSpan;
 	
 
 	
@@ -60,6 +64,10 @@ public class Car extends MobileObject {
 		
 		this.crossingDuration = 0;
 		this.waitingTime = 0;
+		
+		this.viewSpan = new ArrayList<Integer[]>();
+		this.updateViewSpan(3*5);
+		System.out.println("Car "+this+" looking :"+this.look(10*this.length));
 		
 		computeCoverage(movingParts);
 	}
@@ -162,10 +170,15 @@ public class Car extends MobileObject {
 	
 	// Methods related to the movement of the car
 	
+	/**
+	 * Compilation of all actions of a car in one step. Calls other methods of this class.
+	 */
 	public void nextStep() {
 		this.computeCoverage(this.movingParts);
 		this.changeVelocity(true);
 		this.go();
+		this.updateViewSpan(3*5);
+		//System.out.println("Car "+this+" looking :"+this.look(10*this.length));
 	}
 	
 	/**
@@ -213,7 +226,7 @@ public class Car extends MobileObject {
 		// Changing the position of the car
 		OrientedDirection carDirection = this.lane.getOrientedDirection();
 		
-		if (position[0] != -1 && position[1] != -1) { //Test if car is in garage position
+		if (!this.inGarage()) { //Test if car is in garage position
 			switch (carDirection) {
 			case NS: 
 				if (position[1] + distance <= this.lane.getRoad().getLength()) { //test if car is still inside of the simulation after movement
@@ -221,9 +234,7 @@ public class Car extends MobileObject {
 					this.visible = true;
 				}
 				else { //In case it leaves the simulation
-					position[0] = -1; //Putting car into garage position
-					position[1] = -1;
-					this.visible = false; //Set as invisible
+					this.park();
 				}
 				
 				break;
@@ -233,9 +244,7 @@ public class Car extends MobileObject {
 				this.visible = true;
 				}
 				else { //In case it leaves the simulation
-					position[0] = -1; //Putting car into garage position
-					position[1] = -1;
-					this.visible = false; //Set as invisible
+					this.park();
 				}
 	    		break;
 			case EW:
@@ -244,9 +253,7 @@ public class Car extends MobileObject {
 				this.visible = true;
 				}
 				else { //In case it leaves the simulation
-					position[0] = -1; //Putting car into garage position
-					position[1] = -1;
-					this.visible = false; //Set as invisible
+					this.park();
 				}
 	    		break;
 			case WE:
@@ -255,9 +262,7 @@ public class Car extends MobileObject {
 				this.visible = true;
 				}
 				else { //In case it leaves the simulation
-					position[0] = -1; //Putting car into garage position
-					position[1] = -1;
-					this.visible = false; //Set as invisible
+					this.park();
 				}
 	    		break;
 			}
@@ -305,12 +310,23 @@ public class Car extends MobileObject {
 	public MobileType getType() {
 		return MobileType.Car;
 	}
-
 	
+	/**
+	 * Update the cells coordinates of the view span of the car
+	 * @param length of the view span
+	 */
+	public void updateViewSpan(int viewSpanLength){
+		this.viewSpan.clear(); //Clear previous viewSpan
+		int i = position[1]-1;
+		for (int j = position[0]-1/*+((int) length/2) + 1*/; j < position[0]-1 + viewSpanLength; j++) {
+			Integer[] couple = {i,j};
+			this.viewSpan.add(couple);
+		}
+	}
 	
 	public Type look(int viewSpan) {
-Orientation orientation = lane.getRoad().getOrientation();
 		
+		OrientedDirection carDirection = lane.getOrientedDirection();
 		Cell[][] grid = null;
 		
 		if (this.movingParts.getSimulation().getListStates().size() > 1) { //We need two states to get a previous state
@@ -320,14 +336,17 @@ Orientation orientation = lane.getRoad().getOrientation();
 			grid = previousState.getGrid();
 		}
 		else { //In case it is the first state
-			grid = this.movingParts.getSimulation().getLastState().getGrid();
+			grid = this.movingParts.getSimulation().getStructureParts().getStructGrid();
 		}
 		
-		if (orientation == Orientation.Horizontal) {
+		switch (carDirection) {
+		case WE:
 			int i = position[1]-1;
-			for (int j = position[0]+((int) length/2) + 1; j < viewSpan; j++) {
+//			System.out.println("starting point: "+(position[0]+((int) length/2) + 1));
+//			System.out.println("limit: "+(position[0]+((int) length/2) + 1 + viewSpan));
+			for (int j = position[0]+((int) length/2) + 1; j < position[0]+((int) length/2) + 1 + viewSpan; j++) {
 				if (grid[i][j].getContainedMobileObjects().size() != 0) {
-					// There is a mobileObject in front of the car
+					System.out.println("hop");
 					if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Car) {
 						return Type.Car;
 					}
@@ -335,11 +354,27 @@ Orientation orientation = lane.getRoad().getOrientation();
 						return Type.Pedestrian;
 					}
 				}
-				else if (grid[i][j].getTrafficLight() != null) {
-					return Type.TrafficLight;
-				}
 			}
+			break;
 		}
+		
+//		if (orientation == Orientation.Horizontal) {
+//			int i = position[1]-1;
+//			for (int j = position[0]+((int) length/2) + 1; j < viewSpan; j++) {
+//				if (grid[i][j].getContainedMobileObjects().size() != 0) {
+//					// There is a mobileObject in front of the car
+//					if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Car) {
+//						return Type.Car;
+//					}
+//					else if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Pedestrian) {
+//						return Type.Pedestrian;
+//					}
+//				}
+//				else if (grid[i][j].getTrafficLight() != null) {
+//					return Type.TrafficLight;
+//				}
+//			}
+//		}
 //		if (orientation == Orientation.Vertical) {
 //			int j = position[0] + ((int) length/2) + 1;
 //			for (int i = 0; i < 3*this.velocity; i++) {
@@ -350,7 +385,7 @@ Orientation orientation = lane.getRoad().getOrientation();
 //			}
 //		}
 		
-		return Type.TrafficLight;
+		return null;
 	}
 	
 	
@@ -426,6 +461,32 @@ Orientation orientation = lane.getRoad().getOrientation();
 		return Color.Green;
 	}
 
+	/**
+	 * Test if car is in garage position
+	 * @return boolean
+	 */
+	public boolean inGarage() {
+		if (this.position[0] == -1 && this.position[1] == -1) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 	
-
+	/**
+	 * Put car in position (-1,-1) and set it as invisible
+	 */
+	public void park() {
+		position[0] = -1; //Putting car into garage position
+		position[1] = -1;
+		this.visible = false; //Set as invisible
+	}
+	
+	
+	//Getters
+	
+	public List<Integer[]> getViewSpan() {
+		return viewSpan;
+	}
 }
