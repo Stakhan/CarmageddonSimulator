@@ -44,6 +44,30 @@ public abstract class MobileObject {
 		}
 	}
 
+	
+	/**
+	 * Test if car is in garage position
+	 * @return boolean
+	 */
+	public boolean inGarage() {
+		if (this.position[0] == -1 && this.position[1] == -1) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Put car in position (-1,-1) and set it as invisible
+	 */
+	public void park() {
+		position[0] = -1; //Putting car into garage position
+		position[1] = -1;
+		this.visible = false; //Set as invisible
+	}
+	
+	
 	/**
 	 * Abstract method that gives the type of such objects
 	 * @return type of this MobileObject

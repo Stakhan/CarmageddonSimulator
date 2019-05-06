@@ -33,7 +33,10 @@ public class MovingParts {
 		listCars.add(new Car(this, "voiture", 5, 3, Profil.crazy, 0, 2, 10, this.simulation.getStructureParts().getRoad(0).getLane(1)));
 		listCars.add(new Car(this, "voiture", 5, 3, Profil.crazy, 0, 2, 10, this.simulation.getStructureParts().getRoad(1).getLane(0)));
 		listCars.add(new Car(this, "voiture", 5, 3, Profil.crazy, 0, 2, 10, this.simulation.getStructureParts().getRoad(1).getLane(1)));
-
+		
+		//TESTING ONLY: adding a pedestrian on the Road
+		int[] position = {92,92};
+		listPedestrians.add(new Pedestrian(position));
 		
 	}
 	

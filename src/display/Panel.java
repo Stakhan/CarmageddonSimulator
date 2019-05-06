@@ -167,10 +167,13 @@ public class Panel extends JPanel implements KeyListener{
 		}
 		
 		//Painting view span over
-//		g2d.setPaint(Color.yellow);
-//		for (Integer[] coord : this.simulation.getMovingParts().getCar(0).getViewSpan()){
-//			g2d.fillRect(coord[1]*wUnit, coord[0]*hUnit, wUnit, hUnit);
-//		}
+		g2d.setPaint(Color.yellow);
+		for (Car car : this.simulation.getMovingParts().getListCars()) {
+			for (Integer[] coord : car.getViewSpan()){
+				g2d.fillRect(coord[1]*wUnit, coord[0]*hUnit, wUnit, hUnit);
+			}
+		}
+		
 	}
 	
 	@Override
@@ -194,6 +197,10 @@ public class Panel extends JPanel implements KeyListener{
 			else { //if not, compute it
 				this.simulation.nextState();
 				this.displayState = this.simulation.getLastState();
+				for(Car car : simulation.getMovingParts().getListCars()) {
+					if (!car.inGarage()) { //Make sure car is in simulation
+					}
+				}
 			}
 			repaint();
 			System.out.println("step "+this.displayState.getStep()+": "+this.simulation.getLastState().getGrid().toString());

@@ -7,6 +7,7 @@ import java.util.List;
 import immobile.StructureParts;
 import mobile.Car;
 import mobile.MovingParts;
+import mobile.Pedestrian;
 import model.ConfigureStructure;
 import model.SimulationState;
 
@@ -41,7 +42,7 @@ public class Simulation {
 		
 		SimulationState initState = new SimulationState(this, 0);
 		for(Car car : this.getMovingParts().getListCars()) {
-			car.nextStep();
+			//car.nextStep();
 			car.draw(initState.getGrid());
 		}
 		listStates.add(initState);
@@ -49,8 +50,25 @@ public class Simulation {
 	}
 	
 	public void nextState() {
-		SimulationState lastState = this.getLastState(); //fetch last state
-		listStates.add(lastState.nextState()); //compute next state and add it to the list of states
+		//Constructing next state
+		SimulationState next = new SimulationState(this, this.getLastState().getStep()+1);
+		
+		//updating cars
+		for(Car car : this.getMovingParts().getListCars()) {
+			if (!car.inGarage()) { //Make sure car is in simulation
+				car.nextStep();
+				car.draw(next.getGrid());
+			}
+		}
+		//updating pedestrians
+		for(Pedestrian ped : this.getMovingParts().getListPedestrians()) {
+			if (!ped.inGarage()) { //Make sure car is in simulation
+				//ped.nextStep();
+				ped.draw(next.getGrid());
+			}
+		}
+		 
+		listStates.add(next); //compute next state and add it to the list of states
 	}
 	
 

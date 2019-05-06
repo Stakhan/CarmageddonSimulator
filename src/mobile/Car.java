@@ -66,7 +66,7 @@ public class Car extends MobileObject {
 		this.waitingTime = 0;
 		
 		this.viewSpan = new ArrayList<Integer[]>();
-		this.updateViewSpan(3*5);
+		this.updateViewSpan(4*5);
 		System.out.println("Car "+this+" looking :"+this.look(10*this.length));
 		
 		computeCoverage(movingParts);
@@ -176,8 +176,8 @@ public class Car extends MobileObject {
 	public void nextStep() {
 		this.computeCoverage(this.movingParts);
 		this.changeVelocity(true);
+		this.updateViewSpan(4*5);
 		this.go();
-		this.updateViewSpan(3*5);
 		//System.out.println("Car "+this+" looking :"+this.look(10*this.length));
 	}
 	
@@ -316,12 +316,37 @@ public class Car extends MobileObject {
 	 * @param length of the view span
 	 */
 	public void updateViewSpan(int viewSpanLength){
+		
+		OrientedDirection carDirection = lane.getOrientedDirection();
 		this.viewSpan.clear(); //Clear previous viewSpan
 		int i = position[1]-1;
-		for (int j = position[0]-1/*+((int) length/2) + 1*/; j < position[0]-1 + viewSpanLength; j++) {
-			Integer[] couple = {i,j};
-			this.viewSpan.add(couple);
+		int j = position[0]-1;
+		switch (carDirection) {
+			case WE:
+				for (j = position[0]-1/*+((int) length/2) + 1*/; j < position[0]-1 + viewSpanLength; j++) {
+					Integer[] couple = {i,j};
+					this.viewSpan.add(couple);
+				}
+				break;
+			case EW:
+				for (j = position[0]-1; j > position[0]-1 - viewSpanLength; j--) {
+					Integer[] couple = {i,j};
+					this.viewSpan.add(couple);
+				}
+				break;
+			case NS:
+				for (i = position[1]-1; i < position[1]-1 + viewSpanLength; i++) {
+					Integer[] couple = {i,j};
+					this.viewSpan.add(couple);
+				}
+				break;
+			case SN:
+				for (i = position[1]-1; i > position[1]-1 - viewSpanLength; i--) {
+					Integer[] couple = {i,j};
+					this.viewSpan.add(couple);
+				}
 		}
+				
 	}
 	
 	public Type look(int viewSpan) {
@@ -339,52 +364,23 @@ public class Car extends MobileObject {
 			grid = this.movingParts.getSimulation().getStructureParts().getStructGrid();
 		}
 		
-		switch (carDirection) {
-		case WE:
-			int i = position[1]-1;
-//			System.out.println("starting point: "+(position[0]+((int) length/2) + 1));
-//			System.out.println("limit: "+(position[0]+((int) length/2) + 1 + viewSpan));
-			for (int j = position[0]+((int) length/2) + 1; j < position[0]+((int) length/2) + 1 + viewSpan; j++) {
-				if (grid[i][j].getContainedMobileObjects().size() != 0) {
-					System.out.println("hop");
-					if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Car) {
-						return Type.Car;
-					}
-					else if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Pedestrian) {
-						return Type.Pedestrian;
-					}
+		for (Integer[] coord : this.viewSpan) {
+			int i = coord[0];
+			int j = coord[1];
+			if (grid[i][j].getContainedMobileObjects().size() != 0) {
+				System.out.println("hop");
+				if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Car) {
+					return Type.Car;
+				}
+				else if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Pedestrian) {
+					return Type.Pedestrian;
 				}
 			}
-			break;
+			else if (grid[i][j].getTrafficLight() != null) {
+				return Type.TrafficLight;
+			}
 		}
-		
-//		if (orientation == Orientation.Horizontal) {
-//			int i = position[1]-1;
-//			for (int j = position[0]+((int) length/2) + 1; j < viewSpan; j++) {
-//				if (grid[i][j].getContainedMobileObjects().size() != 0) {
-//					// There is a mobileObject in front of the car
-//					if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Car) {
-//						return Type.Car;
-//					}
-//					else if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Pedestrian) {
-//						return Type.Pedestrian;
-//					}
-//				}
-//				else if (grid[i][j].getTrafficLight() != null) {
-//					return Type.TrafficLight;
-//				}
-//			}
-//		}
-//		if (orientation == Orientation.Vertical) {
-//			int j = position[0] + ((int) length/2) + 1;
-//			for (int i = 0; i < 3*this.velocity; i++) {
-//				if (grid[i][j].getContainedMobileObjects().size() != 0) {
-//					// There is a mobileObject in front of the car
-//					return null;
-//				}
-//			}
-//		}
-		
+		//In case nothing is in the viewSpan, returning null object
 		return null;
 	}
 	
@@ -461,27 +457,7 @@ public class Car extends MobileObject {
 		return Color.Green;
 	}
 
-	/**
-	 * Test if car is in garage position
-	 * @return boolean
-	 */
-	public boolean inGarage() {
-		if (this.position[0] == -1 && this.position[1] == -1) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
 	
-	/**
-	 * Put car in position (-1,-1) and set it as invisible
-	 */
-	public void park() {
-		position[0] = -1; //Putting car into garage position
-		position[1] = -1;
-		this.visible = false; //Set as invisible
-	}
 	
 	
 	//Getters
