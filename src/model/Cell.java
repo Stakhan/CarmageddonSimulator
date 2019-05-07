@@ -16,7 +16,7 @@ import mobile.MobileObject;
 public class Cell implements Cloneable{
 	private List<Structure> containedStructures;
 	private List<MobileObject> containedMobileObjects;
-	private TrafficLight trafficLight;
+	private List<TrafficLight> containedLights;
 	private List<Road> containedRoads;
 	private int x;
 	private int y;
@@ -27,7 +27,8 @@ public class Cell implements Cloneable{
 	public Cell(int x, int y) {
 		containedStructures = new ArrayList<Structure>();
 		containedMobileObjects = new ArrayList<MobileObject>();
-		containedRoads = new ArrayList<>();
+		containedRoads = new ArrayList<Road>();
+		containedLights = new ArrayList<TrafficLight>();
 		this.x = x;
 		this.y = y;
 	}
@@ -37,10 +38,10 @@ public class Cell implements Cloneable{
 	 * Constructor for clone() method
 	 */
 	public Cell(List<Structure> containedStructures, List<MobileObject> containedMobileObjects,
-			TrafficLight trafficLight, List<Road> containedRoads, int x, int y) {
+			List<TrafficLight> containedLights, List<Road> containedRoads, int x, int y) {
 		this.containedStructures = containedStructures;
 		this.containedMobileObjects = containedMobileObjects;
-		this.trafficLight = trafficLight;
+		this.containedLights = containedLights;
 		this.containedRoads = containedRoads;
 		this.x = x;
 		this.y = y;
@@ -66,8 +67,8 @@ public class Cell implements Cloneable{
 		
 	}
 	
-	public void setTrafficLight(TrafficLight trafficLight) {
-		this.trafficLight = trafficLight;
+	public void addLight(TrafficLight trafficLight) {
+		this.containedLights.add(trafficLight);
 	}
 	
 	public void setX(int i) {
@@ -91,8 +92,8 @@ public class Cell implements Cloneable{
 		return containedRoads;
 	}
 	
-	public TrafficLight getTrafficLight() {
-		return trafficLight;
+	public List<TrafficLight> getcontainedLights() {
+		return containedLights;
 	}
 	
 	public int getX() {
@@ -149,7 +150,7 @@ public class Cell implements Cloneable{
 	@Override
 	public Cell clone() {
 		
-        return new Cell((List<Structure>) ((ArrayList<Structure>) this.containedStructures).clone(), (List<MobileObject>) ((ArrayList) this.containedMobileObjects).clone(), this.trafficLight, (List<Road>) ((ArrayList)this.containedRoads).clone(), this.x, this.y);
+        return new Cell((List<Structure>) ((ArrayList<Structure>) this.containedStructures).clone(), (List<MobileObject>) ((ArrayList) this.containedMobileObjects).clone(), (List<TrafficLight>) ((ArrayList) this.containedLights).clone(), (List<Road>) ((ArrayList)this.containedRoads).clone(), this.x, this.y);
     
 	}
 }
