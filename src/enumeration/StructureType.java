@@ -2,5 +2,6 @@ package enumeration;
 
 public enum StructureType {
 	SideWalk,
-	Lane
+	Lane,
+	TrafficLight
 }

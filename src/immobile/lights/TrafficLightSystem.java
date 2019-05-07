@@ -91,18 +91,25 @@ public class TrafficLightSystem {
 				+ "\nSecond road pedestrian traffic light is " + listLights.get(3).currentColor ;
 	}
 	
-	public static void main(String args[]){
-		List<Road> listRoads = new ArrayList<Road>();
-		listRoads.add(new Road(10, 2, 0, Orientation.Horizontal, 1, false));
-		listRoads.add(new Road(10, 2, 0, Orientation.Vertical, 1, false));
-		TrafficLightSystem trafficLightSystem = new TrafficLightSystem(listRoads, 15, 12);
-		System.out.println("\nparam : timingMainRoad=" + timingMainRoad + ", timingSecondRoad=" + timingSecondRoad);
-		for(int i = 0; i <= 69; i++) {
-			trafficLightSystem.nextStep(i);
-			if (i % 3 == 0) {
-				System.out.println("\nStep " + i + ", stepmodulo " + i % (timingMainRoad + timeYellow + timingSecondRoad + timeYellow));
-				System.out.println(trafficLightSystem);
-			}
-		}
+	/*
+	 * Getters
+	 */
+	public List<TrafficLight> getListLights() {
+		return listLights;
 	}
+	
+//	public static void main(String args[]){
+//		List<Road> listRoads = new ArrayList<Road>();
+//		listRoads.add(new Road(10, 2, 0, Orientation.Horizontal, 1, false));
+//		listRoads.add(new Road(10, 2, 0, Orientation.Vertical, 1, false));
+//		TrafficLightSystem trafficLightSystem = new TrafficLightSystem(listRoads, 15, 12);
+//		System.out.println("\nparam : timingMainRoad=" + timingMainRoad + ", timingSecondRoad=" + timingSecondRoad);
+//		for(int i = 0; i <= 69; i++) {
+//			trafficLightSystem.nextStep(i);
+//			if (i % 3 == 0) {
+//				System.out.println("\nStep " + i + ", stepmodulo " + i % (timingMainRoad + timeYellow + timingSecondRoad + timeYellow));
+//				System.out.println(trafficLightSystem);
+//			}
+//		}
+//	}
 }

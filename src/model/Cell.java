@@ -66,6 +66,10 @@ public class Cell implements Cloneable{
 		
 	}
 	
+	public void setTrafficLight(TrafficLight trafficLight) {
+		this.trafficLight = trafficLight;
+	}
+	
 	public void setX(int i) {
 		this.x = i;
 	}

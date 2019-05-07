@@ -106,7 +106,13 @@ public class Panel extends JPanel implements KeyListener{
 					}
 
 					else { //In case it doesn't contain a MobileObject
-						if(grid[i][j].contains(StructureType.SideWalk) && grid[i][j].contains(StructureType.Lane)) { //Test if it contains a Lane and a SideWalk (in that case it should be considered a Lane)
+						
+						if(grid[i][j].getTrafficLight() != null) {
+							System.out.println("hop");
+							g2d.setPaint(Color.orange); 
+							g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
+						}
+						else if(grid[i][j].contains(StructureType.SideWalk) && grid[i][j].contains(StructureType.Lane)) { //Test if it contains a Lane and a SideWalk (in that case it should be considered a Lane)
 							//Paint cell in black
 							g2d.setPaint(Color.black); 
 							g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
@@ -147,6 +153,7 @@ public class Panel extends JPanel implements KeyListener{
 							}
 							
 						}
+						
 
 					}
 					
