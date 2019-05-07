@@ -3,6 +3,7 @@ package mobile;
 import java.util.ArrayList;
 import java.util.List;
 
+import enumeration.Direction;
 import enumeration.MobileType;
 import enumeration.ObstacleType;
 import enumeration.OrientedDirection;
@@ -94,6 +95,11 @@ public class Vision {
 			}
 			else if (grid[i][j].getTrafficLight() != null) {
 				return new Obstacle(distance, ObstacleType.TrafficLight);
+			}
+			else if (this.car.getNextDirection() != Direction.Straight) {
+				if (grid[i][j] == car.turnPosition()) {
+					return new Obstacle(distance, ObstacleType.TurnPosition);
+				}
 			}
 			distance++;
 		}

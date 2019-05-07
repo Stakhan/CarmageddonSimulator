@@ -4,13 +4,11 @@ package mobile;
 import enumeration.ObstacleType;
 import enumeration.OrientedDirection;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import enumeration.Color;
 import enumeration.MobileType;
 import enumeration.Orientation;
 import enumeration.Profil;
+import enumeration.Direction;
 import immobile.structures.Lane;
 import immobile.structures.Road;
 import model.Cell;
@@ -27,7 +25,7 @@ public class Car extends MobileObject {
 	private double maxBrake;
 	private Lane lane;
 	private Vision vision;
-	
+	private Direction nextDirection;
 
 	
 	/**UP-TO-DATE
@@ -67,6 +65,9 @@ public class Car extends MobileObject {
 		
 		this.vision = new Vision(4*5, this);
 		this.vision.update();
+		
+		int r = (int) (Math.random()*2);
+		this.nextDirection = enumeration.Direction.values()[r];
 		
 		computeCoverage(movingParts);
 	}
@@ -213,6 +214,68 @@ public class Car extends MobileObject {
 	}
 	
 	/**
+	 * This method determines the position where the car will turn
+	 * @return a Cell at the intersection between the actual and the future lane
+	 */
+	public Cell turnPosition() {
+		Road road = lane.getRoad();
+		OrientedDirection carDirection = lane.getOrientedDirection();
+
+		Cell position = new Cell(-1, -1);
+		
+		Road roadHorizontal = movingParts.getSimulation().getStructureParts().getRoad(0);
+		Road roadVertical = movingParts.getSimulation().getStructureParts().getRoad(1);
+		
+		int yWE = roadHorizontal.getLane(0).getCarPosition();
+		int xNS = roadVertical.getLane(0).getCarPosition();
+		int yEW = roadHorizontal.getLane(roadHorizontal.getListLanes().size() - 1).getCarPosition();
+		int xSN = roadVertical.getLane(roadVertical.getListLanes().size() - 1).getCarPosition();
+		
+		if (this.nextDirection == Direction.Right) {
+			switch (carDirection) {
+			case WE: 
+				position.setX(xNS);
+				position.setY(this.lane.getCarPosition());
+				break;
+			case NS: 
+				position.setX(this.lane.getCarPosition());
+				position.setY(yEW);
+				break;
+			case EW: 
+				position.setX(xSN);
+				position.setY(this.lane.getCarPosition());
+				break;
+			case SN: 
+				position.setX(this.lane.getCarPosition());
+				position.setY(yWE);
+				break;
+			}
+		}
+		else if (this.nextDirection == Direction.Left) {
+			switch (carDirection) {
+			case WE: 
+				position.setX(xSN);
+				position.setY(this.lane.getCarPosition());
+				break;
+			case NS: 
+				position.setX(this.lane.getCarPosition());
+				position.setY(yWE);
+				break;
+			case EW: 
+				position.setX(xNS);
+				position.setY(this.lane.getCarPosition());
+				break;
+			case SN: 
+				position.setX(this.lane.getCarPosition());
+				position.setY(yEW);
+				break;
+			}
+		}
+		
+		return position;
+	}
+
+	/**
 	 * changes the position of the car
 	 */
 	public void go() {
@@ -225,7 +288,7 @@ public class Car extends MobileObject {
 		// Changing the position of the car
 		OrientedDirection carDirection = this.lane.getOrientedDirection();
 		
-		if (!this.inGarage()) { //Test if car is in garage position
+		if (!this.inGarage()) { //Tests if car is in garage position
 			switch (carDirection) {
 			case NS: 
 				if (position[1] + distance <= this.lane.getRoad().getLength()) { //test if car is still inside of the simulation after movement
@@ -281,12 +344,11 @@ public class Car extends MobileObject {
 
 	
 	
-	/**
+	/** DEPRECATED
 	 * This function returns true if there is an obstacle in the view span of the car.
 	 * The view span is 3*velocity*3.6/0.8
 	 * @param gridSimulation
 	 * @return
-	 */
 	public boolean obstacle() {
 		
 		// DEV-NOTE: We could add different cases (if the driver is slow, he may see less far, ...) 
@@ -305,9 +367,9 @@ public class Car extends MobileObject {
 			grid = this.movingParts.getSimulation().getLastState().getGrid();
 		}
 		
-		/* The driver can see the three time his speed is.
-		   The faster he drives, the farther he anticipates.
-		   Compute distances : he can see from his position to 3*speed/1second */
+		// The driver can see the three time his speed is.
+		// The faster he drives, the farther he anticipates.
+		// Compute distances : he can see from his position to 3*speed/1second
 		if (orientation == Orientation.Horizontal) {
 			int i = position[1] + ((int) length/2) + 1;
 			for (int j = 0; j < 3*this.velocity; j++) {
@@ -328,7 +390,8 @@ public class Car extends MobileObject {
 		}
 		return false;
 	}
-	
+	*/
+
 	
 	
 	
@@ -370,5 +433,9 @@ public class Car extends MobileObject {
 	
 	public Vision getVision() {
 		return vision;
+	}
+
+	public Direction getNextDirection() {
+		return nextDirection;
 	}
 }

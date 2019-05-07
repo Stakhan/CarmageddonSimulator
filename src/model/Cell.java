@@ -3,7 +3,9 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import enumeration.Direction;
 import enumeration.MobileType;
+import enumeration.OrientedDirection;
 import enumeration.StructureType;
 
 import java.lang.Class;
@@ -11,6 +13,7 @@ import java.lang.Class;
 import immobile.lights.TrafficLight;
 import immobile.structures.Road;
 import immobile.structures.Structure;
+import mobile.Car;
 import mobile.MobileObject;
 
 public class Cell implements Cloneable{
@@ -140,7 +143,7 @@ public class Cell implements Cloneable{
 
 
 	
-	
+
 	
 	
 	/*

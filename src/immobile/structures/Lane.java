@@ -34,7 +34,7 @@ public class Lane extends Structure {
 		
 		int[] coord = Car.initializeCarPosition(state.getGrid(), this, length, 3);
 		int roadPosition = containingRoad.getPosition();
-		int carPositionOnRoad = containingRoad.getSideWalkSize() + containingRoad.getLaneSize()*(containingRoad.getIndexOfLane(this)+1) - ((int) containingRoad.getLaneSize()/2);
+		int carPositionOnRoad = getCarPosition();
 		
 		int x = coord[0];
 		int y = coord[1];
@@ -115,7 +115,9 @@ public class Lane extends Structure {
 		return null; // because Java needs a return statement :(
 	}
 	
-	
+	public int getCarPosition() {
+		return containingRoad.getSideWalkSize() + containingRoad.getLaneSize()*(containingRoad.getIndexOfLane(this)+1) - ((int) containingRoad.getLaneSize()/2);
+	}
 
 	
 	
