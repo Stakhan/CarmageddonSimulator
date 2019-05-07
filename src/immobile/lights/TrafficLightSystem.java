@@ -54,12 +54,12 @@ public class TrafficLightSystem {
 	 * @param timingMainRoad
 	 * @param timingSecondRoad
 	 */
-//	public TrafficLightSystem(List<TrafficLight> listLights, int timingMainRoad, int timingSecondRoad) {
-//		this.listLights = listLights;
-//		this.timingMainRoad = timingMainRoad;
-//		this.timingSecondRoad = timingSecondRoad;
-//		
-//	}
+	public TrafficLightSystem(int timingMainRoad, int timingSecondRoad, List<TrafficLight> listLights) {
+		this.listLights = listLights;
+		this.timingMainRoad = timingMainRoad;
+		this.timingSecondRoad = timingSecondRoad;
+	}
+	
 	
 	
 
@@ -111,11 +111,20 @@ public class TrafficLightSystem {
 	public List<TrafficLight> getListLights() {
 		return listLights;
 	}
+	public List<TrafficLight> getListLightsDeepCopy() {
+		
+		List<TrafficLight> newList = new ArrayList<TrafficLight>();
+		
+		for(TrafficLight light : this.listLights) {
+		    newList.add(light.clone());
+		}
+		return newList;
+	}
 	
 	@Override
 	public TrafficLightSystem clone() {
 		
-        return new TrafficLightSystem((List<Road>) ((ArrayList<Road>) this.structureParts.getListRoads()).clone(), this.timingMainRoad, this.timingSecondRoad);
+        return new TrafficLightSystem(this.timingMainRoad, this.timingSecondRoad, getListLightsDeepCopy()/*(List<TrafficLight>) ((ArrayList<TrafficLight>) this.getListLights()).clone()*/);
     
 	}
 }

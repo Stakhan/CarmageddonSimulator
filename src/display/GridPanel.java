@@ -4,13 +4,11 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
@@ -18,22 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-
 import engine.Simulation;
 import enumeration.MobileType;
 import enumeration.Profil;
 import enumeration.StructureType;
-import enumeration.ObstacleType;
-import enumeration.ObstacleType;
-import immobile.lights.TrafficLight;
 import immobile.structures.Lane;
 import immobile.structures.Structure;
 import mobile.Car;
-import mobile.Pedestrian;
 import model.Cell;
 import model.ConfigureStructure;
 import model.SimulationState;
@@ -238,7 +228,7 @@ public class GridPanel extends JPanel implements KeyListener{
 		//Display traffic lights
 		
 		//get current color for road 0
-		enumeration.Color current = this.simulation.getStructureParts().getTrafficLightSystem().getListLights().get(0).getCurrentColor(); 
+		enumeration.Color current = this.displayState.getTrafficLightSystem().getListLights().get(0).getCurrentColor(); 
 		BufferedImage imageLight = this.greenLight;
 		if (current == enumeration.Color.Green) {
 			imageLight = this.greenLight;
@@ -273,7 +263,7 @@ public class GridPanel extends JPanel implements KeyListener{
 		g2d.setTransform(backup);
 			
 		//get current color for road 1
-		current = this.simulation.getStructureParts().getTrafficLightSystem().getListLights().get(1).getCurrentColor(); 
+		current = this.displayState.getTrafficLightSystem().getListLights().get(1).getCurrentColor(); 
 		if (current == enumeration.Color.Green) {
 			imageLight = this.greenLight;
 		}
@@ -313,16 +303,17 @@ public class GridPanel extends JPanel implements KeyListener{
 	
 	@Override
 	public void keyPressed(KeyEvent e) { // pour implementer KeyListener
-		
+
 		int key = e.getKeyCode();
-		
+
 		if ((key == KeyEvent.VK_LEFT)) { // cas fleche de gauche
 			if (this.displayState.getStep() > 0) { //Make sure it's not the first state
 				this.displayState = this.simulation.getState(this.displayState.getStep()-1);
 				repaint();
 				System.out.println("step "+this.displayState.getStep()+": "+this.simulation.getState(this.displayState.getStep()).getGrid().toString());
+				System.out.println(this.displayState.getTrafficLightSystem().toString());
 			}
-			
+
 		}
 		if ((key == KeyEvent.VK_RIGHT)) {
 			//System.out.println(this.simulation.getListStates().size()+" et "+this.displayState.);
@@ -332,13 +323,12 @@ public class GridPanel extends JPanel implements KeyListener{
 			else { //if not, compute it
 				this.simulation.nextState();
 				this.displayState = this.simulation.getLastState();
-				for(Car car : simulation.getMovingParts().getListCars()) {
-					if (!car.inGarage()) { //Make sure car is in simulation
-					}
-				}
+
 			}
 			repaint();
 			System.out.println("step "+this.displayState.getStep()+": "+this.simulation.getLastState().getGrid().toString());
+			System.out.println(this.displayState.getTrafficLightSystem().toString());
+
 		}
 		if ((key == KeyEvent.VK_UP)) { 
 			this.displayState = new SimulationState(this.simulation, -1);
@@ -357,39 +347,39 @@ public class GridPanel extends JPanel implements KeyListener{
 			}
 		}
 		if ((key == KeyEvent.VK_T)) {
-//			int i = 92;
-//			int j = 92;
-//			int[] position = {i,j};
-//			this.simulation.getLastState().getGridValue(i, j).addMobileObjects(new Pedestrian(position));
-//			System.out.println("pedestrian added.");
-//			System.out.println("pedestrian? "+this.simulation.getLastState().getGridValue(i, j).contains(MobileType.Pedestrian));
-//			repaint();
+			//			int i = 92;
+			//			int j = 92;
+			//			int[] position = {i,j};
+			//			this.simulation.getLastState().getGridValue(i, j).addMobileObjects(new Pedestrian(position));
+			//			System.out.println("pedestrian added.");
+			//			System.out.println("pedestrian? "+this.simulation.getLastState().getGridValue(i, j).contains(MobileType.Pedestrian));
+			//			repaint();
 			System.out.println(this.simulation.getMovingParts().getListPedestrians().size());
 			System.out.println(this.simulation.getMovingParts().getListPedestrians().get(0).getObjectCoverage().toString());
 			for(Integer[] coord : this.simulation.getMovingParts().getListPedestrians().get(0).getObjectCoverage()) {
 				System.out.println("coverage: "+coord[0]+","+coord[1]);
 			}
-			
-			
+
+
 		}
 		if ((key == KeyEvent.VK_L)) {
 			for (Car car : this.simulation.getMovingParts().getListCars()) {
 				System.out.println("Car "+car+" looking :"+car.getVision().look().toString());
-		}
-			
+			}
+
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 

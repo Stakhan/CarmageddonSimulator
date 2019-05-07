@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 import engine.Simulation;
+import immobile.lights.TrafficLightSystem;
 import mobile.Car;
 
 public class SimulationState {
@@ -18,6 +19,7 @@ public class SimulationState {
 	Simulation simulation;
 	private int step;
 	private Cell[][] grid;
+	private TrafficLightSystem trafficLightSystem;
 	
 	/**
 	 * Constructor
@@ -32,6 +34,7 @@ public class SimulationState {
 		this.simulation = simulation;
 		this.step = step;
 		this.grid = this.simulation.getStructureParts().cloneStructGrid();
+		this.trafficLightSystem = this.simulation.getStructureParts().getTrafficLightSystem().clone();
 	}
 	
 	
@@ -109,5 +112,9 @@ public class SimulationState {
 	
 	public int getStep() {
 		return step;
+	}
+	
+	public TrafficLightSystem getTrafficLightSystem() {
+		return trafficLightSystem;
 	}
 }
