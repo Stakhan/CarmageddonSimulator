@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import enumeration.MobileType;
-import enumeration.StructureType;
 import model.Cell;
-import model.SimulationState;
 
 public abstract class MobileObject {
 
@@ -16,16 +14,23 @@ public abstract class MobileObject {
 	
 	protected int length;
 	protected int height;
-	protected Cell position;
-	protected Cell center;
-	protected List<Cell> objectCoverage; // list of cells from a same mobile object
-
-	public MobileObject(int length, int height, Cell position) {
+	
+	protected int[] position;
+	protected List<Integer[]> objectCoverage; // list of cells from a same mobile object
+	
+	protected boolean visible;
+	
+	public MobileObject(int length, int height, int[] position) {
 		this.length = length;
 		this.height = height;
+		
 		this.position = position;
-		System.out.println("MobileObject position is "+position.getX()+":"+position.getY());
-		objectCoverage = new ArrayList<Cell>();
+		objectCoverage = new ArrayList<Integer[]>();
+		
+		
+		
+		this.visible = true;
+		
 	}
 	
 	
@@ -33,20 +38,57 @@ public abstract class MobileObject {
 
 	/**
 	 * Draw MobileObject on grid using its coverage
-	 * @param grid where object should by drawn
+	 * @param grid where object should be drawn
 	 */
 	public void draw(Cell[][] grid) {
-		for(Cell cell : objectCoverage) {
-			int x = cell.getX();
-			int y = cell.getY();
-			grid[x][y].addMobileObjects(this);
+		if (visible) {
+			for(Integer[] cellCoord : objectCoverage) {
+				int x = cellCoord[0];
+				int y = cellCoord[1];
+				grid[x][y].addMobileObjects(this);
+			}
 		}
 	}
 
+	
+	/**
+	 * Test if car is in garage position
+	 * @return boolean
+	 */
+	public boolean inGarage() {
+		if (this.position[0] == -1 && this.position[1] == -1) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Put car in position (-1,-1) and set it as invisible
+	 */
+	public void park() {
+		position[0] = -1; //Putting car into garage position
+		position[1] = -1;
+		this.visible = false; //Set as invisible
+	}
+	
+	
 	/**
 	 * Abstract method that gives the type of such objects
 	 * @return type of this MobileObject
 	 */
 	public abstract MobileType getType();
 
+	//Getters
+	
+	public int[] getPosition() {
+		return position;
+	}
+	
+	
+	
+	public int getLength() {
+		return length;
+	}
 }

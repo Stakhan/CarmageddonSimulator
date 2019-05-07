@@ -17,17 +17,22 @@ public class StructureParts {
 	private Cell[][] structGrid;
 	
 	public StructureParts(ConfigureStructure structConfig) {
-		listRoads = new ArrayList<Road>();
-		
+		listRoads = new ArrayList<Road>();		
 		listRoads.add(new Road(structConfig.columnNb, structConfig.laneSize, structConfig.sideWalkSize, Orientation.Horizontal, 1, structConfig.bidirectional));
 		listRoads.add(new Road(structConfig.columnNb, structConfig.laneSize, structConfig.sideWalkSize, Orientation.Vertical, 1, structConfig.bidirectional));
+		
+		this.trafficLightSystem = new TrafficLightSystem(listRoads, 15, 12);
 		
 		this.structGrid = new Cell[structConfig.lineNb][structConfig.columnNb];
 		
 		defineCoordinates(structConfig.lineNb, structConfig.columnNb);
 		
 		initStructGrid();
+		
+		
 	}
+	
+	
 	
 	
 	/**
@@ -47,6 +52,7 @@ public class StructureParts {
 	 * Initializes base grid (only with structures)
 	 */
 	public void initStructGrid() {
+		
 		for (Road road : listRoads) {
 			if(road.getOrientation() == Orientation.Horizontal) {
 				
@@ -80,6 +86,21 @@ public class StructureParts {
 						}
 				}
 				
+				//Adding traffic light
+				for (Lane lane : road.getListLanes()) {
+					int lightPositionY = road.getPosition() + road.getSideWalkSize() + road.getLaneSize()*(road.getIndexOfLane(lane));
+					int j = 0;
+					if(lane.getDirection() == true) {
+						j = listRoads.get(1).getPosition() /*+ listRoads.get(1).getRoadSize() -1*/;
+					}
+					else if(lane.getDirection() == false) {
+						j = listRoads.get(1).getPosition() + listRoads.get(1).getRoadSize() + 1;
+					}
+					for (int i=lightPositionY; i < lightPositionY+road.getLaneSize(); i++) {
+						structGrid[i][j].setTrafficLight(trafficLightSystem.getListLights().get(0));
+					}
+				}
+			
 			}
 			else if(road.getOrientation() == Orientation.Vertical) {
 				
@@ -113,6 +134,20 @@ public class StructureParts {
 						}
 				}
 				
+				//Adding traffic light
+				for (Lane lane : road.getListLanes()) {
+					int lightPositionX = road.getPosition() + road.getSideWalkSize() + road.getLaneSize()*(road.getIndexOfLane(lane)) + 1;
+					int i = 0;
+					if(lane.getDirection() == true) {
+						i = listRoads.get(1).getPosition() /*+ listRoads.get(1).getRoadSize() -1*/;
+					}
+					else if(lane.getDirection() == false) {
+						i = listRoads.get(1).getPosition() + listRoads.get(1).getRoadSize() + 1;
+					}
+					for (int j=lightPositionX; j < lightPositionX+road.getLaneSize(); j++) {
+						structGrid[i][j].setTrafficLight(trafficLightSystem.getListLights().get(0));
+					}
+				}
 			}
 		}
 	}
@@ -122,6 +157,15 @@ public class StructureParts {
 	 */
 	public Cell[][] getStructGrid() {
 		return structGrid;
+	}
+	public Cell[][] cloneStructGrid(){
+		Cell[][] clonedGrid = new Cell[structGrid.length][structGrid[0].length];
+		for(int i=0; i<structGrid.length; i++) {
+			for(int j=0; j<structGrid[0].length; j++) {
+				clonedGrid[i][j] = structGrid[i][j].clone();
+			}
+		}
+		return clonedGrid;
 	}
 	
 	public Cell getCell(int x, int y) {

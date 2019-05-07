@@ -3,6 +3,7 @@ package immobile.structures;
 import enumeration.Orientation;
 import enumeration.OrientedDirection;
 import enumeration.StructureType;
+import enumeration.ObstacleType;
 
 public class SideWalk extends Structure {
 	

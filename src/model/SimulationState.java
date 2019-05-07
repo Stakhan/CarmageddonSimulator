@@ -8,13 +8,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-import immobile.StructureParts;
-import mobile.MovingParts;
+import engine.Simulation;
+import mobile.Car;
+import mobile.Pedestrian;
 
 public class SimulationState {
 	/**
 	 * This class represents the state of the simulation on the grid
 	 */
+	Simulation simulation;
 	private int step;
 	private Cell[][] grid;
 	
@@ -26,64 +28,56 @@ public class SimulationState {
 	 * @param columnNb
 	 * @param structureParts
 	 */
-	public SimulationState(int step, int lineNb, int columnNb, StructureParts structureParts) {
+	public SimulationState(Simulation simulation, int step) {
 		super();
+		this.simulation = simulation;
 		this.step = step;
-		this.grid = new Cell[lineNb][columnNb];
-		defineCoordinates(lineNb, columnNb);
-		this.grid = structureParts.getStructGrid();
+		this.grid = this.simulation.getStructureParts().cloneStructGrid();
 	}
 	
 	
+	
 	/**
-	 * Create cells with coordinates
-	 * @param xLength
-	 * @param yLength
+	 * Gives next simulation state from previous one
+	 * @return SimulationState
 	 */
-	public void defineCoordinates(int xLength, int yLength) {
-		for (int x = 0; x < xLength; x++) {
-			for (int y = 0; y < yLength; y++) {
-				Cell cell = new Cell(x, y);
-				grid[x][y] = cell;
+	public  SimulationState nextState() {
+		SimulationState next = new SimulationState(this.simulation, this.step+1);
+		for(Car car : simulation.getMovingParts().getListCars()) {
+			if (!car.inGarage()) { //Make sure car is in simulation
+				car.nextStep();
+				car.draw(next.getGrid());
 			}
 		}
-	}
-	
-	
-	/**
-	 * DEPRECATED
-	 * Generation of every element's position and parameter at this step in the simulation. Filling up every grid's cell.
-	 * 
-	 * @param previousState
-	 * @return true if a termination case presents itself
-	 */
-	public boolean generate(SimulationState previousState) {
-		//Updating grid 
-		return true; //true return statement only here for testing
-	}
-	
-	/**
-	 * update the position of every moving element on the grid starting from the structGrid model located in "StructureParts"
-	 */
-	public void updateGrid(MovingParts movingParts) {
 		
-	}
-
-	@Override
-	public String toString() {
-
-		String table = "";
-		for(int i=0; i<grid.length-1; i++) {
-			String line = "[";
-			for(int j=0; j<grid[0].length-1; j++) {
-				line += grid[i][j].toString() + " ";
+		for(Pedestrian pedestrian : simulation.getMovingParts().getListPedestrians()) {
+			if (!pedestrian.inGarage()) { //Make sure car is in simulation
+				pedestrian.nextStep();
+				pedestrian.draw(next.getGrid());
 			}
-			line += "]\n";
-			table += line;
 		}
-		return table;
-
+		
+		//DEV-NOTE: Should test for collision somehow (next.setStep(-1) could signal termination)
+		
+		return next;
 	}
+	
+
+//	@Override
+//	public String toString() {
+//
+//		String table = "";
+//		for(int i=0; i<grid.length-1; i++) {
+//			String line = "[";
+//			for(int j=0; j<grid[0].length-1; j++) {
+//				line += grid[i][j].toString() + " ";
+//			}
+//			line += "]\n";
+//			table += line;
+//		}
+//		return table;
+//
+//	}
 	
 	
 	/**
@@ -111,14 +105,17 @@ public class SimulationState {
 	}
 
 
-	/**
-	 * Getters
-	 */
+	//Getters
+	 
 	public Cell getGridValue(int i, int j) {
 		return grid[i][j];
 	}
+	
 	public Cell[][] getGrid() {
 		return grid;
 	}
 	
+	public int getStep() {
+		return step;
+	}
 }

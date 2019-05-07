@@ -3,33 +3,63 @@ package mobile;
 import java.util.ArrayList;
 import java.util.List;
 
+import engine.Simulation;
+import enumeration.OrientedDirection;
 import enumeration.Profil;
 import immobile.StructureParts;
-import immobile.structures.Lane;
-import immobile.structures.Road;
-import immobile.structures.Structure;
-import model.SimulationState;
 
-public abstract class MovingParts {
+
+public class MovingParts {
 	
+	private Simulation simulation;
 	private List<Car> listCars;
 	private List<Pedestrian> listPedestrians;
 	
 	/**
 	 * Constructor
 	 */
-	public MovingParts(StructureParts structureParts) {
+	public MovingParts(Simulation simulation, StructureParts structureParts) {
 		listCars = new ArrayList<Car>();
 		listPedestrians = new ArrayList<Pedestrian>();
-		populate(structureParts.getRoad(0), structureParts);
+		this.simulation = simulation;
+		
 	}
 	
 	/**
 	 * Add MovingObjects to the simulation
 	 */
-	public void populate(Road road, StructureParts structureParts) {
-		//Only one car for now
-		this.listCars.add(new Car("voiture", 5, 3, Profil.crazy, 0, 100, 55, road.getLane(0), structureParts));
+	public void generate() {
+		//TESTING ONLY : one car for each direction of each lane
+		listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 2, 20, this.simulation.getStructureParts().getRoad(0).getLane(0)));
+		listCars.add(new Car(this, "voiture", 5, 3, Profil.crazy, 0, 2, 10, this.simulation.getStructureParts().getRoad(0).getLane(1)));
+		listCars.add(new Car(this, "voiture", 5, 3, Profil.crazy, 0, 2, 10, this.simulation.getStructureParts().getRoad(1).getLane(0)));
+		listCars.add(new Car(this, "voiture", 5, 3, Profil.crazy, 0, 2, 10, this.simulation.getStructureParts().getRoad(1).getLane(1)));
 		
+		//TESTING ONLY: adding a pedestrian on the Road
+		//int[] position = {92,92};
+		/**
+		listPedestrians.add(new Pedestrian(this, this.simulation.getStructureParts().getRoad(0).getSideWalk(0), OrientedDirection.WE, 1, 1));
+		listPedestrians.add(new Pedestrian(this, this.simulation.getStructureParts().getRoad(1).getSideWalk(0), OrientedDirection.WE, 1, 1));
+		listPedestrians.add(new Pedestrian(this, this.simulation.getStructureParts().getRoad(0).getSideWalk(1), OrientedDirection.WE, 1, 1));
+		listPedestrians.add(new Pedestrian(this, this.simulation.getStructureParts().getRoad(1).getSideWalk(1), OrientedDirection.WE, 1, 1));
+		*/
+	}
+	
+	
+	//Getters
+	
+	public List<Car> getListCars() {
+		return listCars;
+	}
+	
+	public List<Pedestrian> getListPedestrians() {
+		return listPedestrians;
+	}
+	
+	public Simulation getSimulation() {
+		return simulation;
+	}
+	public Car getCar(int index) {
+		return listCars.get(index);
 	}
 }

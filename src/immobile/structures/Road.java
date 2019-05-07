@@ -4,22 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import enumeration.Orientation;
+import immobile.StructureParts;
 
 public class Road {
 	
+	private StructureParts structureParts;
 	private int length;
 	private int laneSize;
 	private int sideWalkSize;
 	private int roadSize;
+	
 	private int laneNb;
 	private boolean bidirectional;
 	public int position;
 	private Orientation orientation;
+	
 	private List<Lane> listLanes;
 	private List<SideWalk> listSideWalks;
 	
 	/**
-	 * Constructeur
+	 * Constructor
 	 * 
 	 * @param length
 	 * @param laneSize
@@ -64,7 +68,7 @@ public class Road {
 		
 		
 		//Computing position from length and size
-		this.position = (int) this.length/2 - this.roadSize/2 + 1;
+		this.position = (int) this.length/2 - this.roadSize/2 + this.roadSize%2;
 		System.out.println("Road object created.");
 		System.out.println("Position of this "+this.orientation+" road is "+this.position);
 		
@@ -106,6 +110,9 @@ public class Road {
 	}
 	public int getIndexOfLane(Lane lane) {
 		return listLanes.indexOf(lane);
+	}
+	public StructureParts getStructureParts() {
+		return structureParts;
 	}
 	
 	
