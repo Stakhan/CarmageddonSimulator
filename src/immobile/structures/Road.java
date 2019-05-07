@@ -62,8 +62,8 @@ public class Road {
 		
 		
 		//Creating Sidewalks
-		listSideWalks.add(new SideWalk());
-		listSideWalks.add(new SideWalk());
+		listSideWalks.add(new SideWalk(this));
+		listSideWalks.add(new SideWalk(this));
 		this.roadSize += 2*sideWalkSize;
 		
 		
@@ -104,6 +104,9 @@ public class Road {
 	}
 	public List<Lane> getListLanes() {
 		return listLanes;
+	}
+	public List<SideWalk> getListSideWalks() {
+		return listSideWalks;
 	}
 	public int getLength() {
 		return length;	

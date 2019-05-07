@@ -7,6 +7,7 @@ import enumeration.Orientation;
 import immobile.lights.TrafficLightSystem;
 import immobile.structures.Lane;
 import immobile.structures.Road;
+import immobile.structures.SideWalk;
 import model.Cell;
 import model.ConfigureStructure;
 
@@ -87,7 +88,7 @@ public class StructureParts {
 				}
 				
 				//Adding traffic light
-				for (Lane lane : road.getListLanes()) {
+				for (Lane lane : road.getListLanes()) { //On each lane for cars
 					int lightPositionY = road.getPosition() + road.getSideWalkSize() + road.getLaneSize()*(road.getIndexOfLane(lane));
 					int j = 0;
 					if(lane.getDirection() == true) {
@@ -135,7 +136,7 @@ public class StructureParts {
 				}
 				
 				//Adding traffic light
-				for (Lane lane : road.getListLanes()) {
+				for (Lane lane : road.getListLanes()) { //On each lane for cars
 					int lightPositionX = road.getPosition() + road.getSideWalkSize() + road.getLaneSize()*(road.getIndexOfLane(lane)) + 1;
 					int i = 0;
 					if(lane.getDirection() == true) {
@@ -146,6 +147,19 @@ public class StructureParts {
 					}
 					for (int j=lightPositionX; j < lightPositionX+road.getLaneSize(); j++) {
 						structGrid[i][j].setTrafficLight(trafficLightSystem.getListLights().get(0));
+					}
+				}
+				for (SideWalk sideWalk : road.getListSideWalks()) {
+					int lightPositionX = road.getPosition() + road.getSideWalkSize() + road.getLaneSize() + 5;
+					int i = 0;
+					if(sideWalk.getRoad().getOrientation() == Orientation.Horizontal) {
+						i = listRoads.get(1).getPosition() + listRoads.get(1).getRoadSize() ;
+					}
+					else if(sideWalk.getRoad().getOrientation() == Orientation.Vertical) {
+						i = listRoads.get(1).getPosition() - 1;
+					}
+					for (int j=lightPositionX; j < lightPositionX+road.getLaneSize(); j++) {
+						structGrid[i][j].setTrafficLight(trafficLightSystem.getListLights().get(2));
 					}
 				}
 			}

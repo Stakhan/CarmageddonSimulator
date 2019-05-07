@@ -105,7 +105,7 @@ public class GridPanel extends JPanel implements KeyListener{
 	@Override
 	public void paintComponent(Graphics g) {
 		//Show grid border
-		boolean border = false;
+		boolean border = true;
 		
 		defineUnits(structConfig);
 
@@ -157,8 +157,8 @@ public class GridPanel extends JPanel implements KeyListener{
 							g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 						}
 						else if(grid[i][j].contains(StructureType.SideWalk) && grid[i][j].contains(StructureType.Lane)) { //Test if it contains a Lane and a SideWalk (in that case it should be considered a Lane)
-							//Paint cell in black
-							g2d.setPaint(Color.black); 
+							//Paint cell in pink
+							g2d.setPaint(Color.pink); 
 							g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 							if(border) {
 								//Paint a white border around cell
@@ -170,7 +170,7 @@ public class GridPanel extends JPanel implements KeyListener{
 							for(Structure lane : grid[i][j].getContainedStructures()) {
 								if(((Lane)lane).getDirection() == false) {
 									//Paint cell in white
-									g2d.setPaint(Color.white);
+									g2d.setPaint(Color.lightGray);
 								}
 								else {
 									//Paint cell in black
