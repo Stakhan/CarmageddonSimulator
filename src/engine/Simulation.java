@@ -67,6 +67,8 @@ public class Simulation {
 				ped.draw(next.getGrid());
 			}
 		}
+		//updating traffic light system
+		this.structureParts.getTrafficLightSystem().nextStep(next.getStep());
 		 
 		listStates.add(next); //compute next state and add it to the list of states
 	}

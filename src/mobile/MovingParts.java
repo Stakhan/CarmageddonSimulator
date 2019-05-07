@@ -36,7 +36,7 @@ public class MovingParts {
 		
 		//TESTING ONLY: adding a pedestrian on the Road
 		int[] position = {92,92};
-		listPedestrians.add(new Pedestrian(position));
+		listPedestrians.add(new Pedestrian(this, position));
 		
 	}
 	

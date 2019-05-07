@@ -91,10 +91,10 @@ public class StructureParts {
 					int lightPositionY = road.getPosition() + road.getSideWalkSize() + road.getLaneSize()*(road.getIndexOfLane(lane));
 					int j = 0;
 					if(lane.getDirection() == true) {
-						j = listRoads.get(1).getPosition() /*+ listRoads.get(1).getRoadSize() -1*/;
+						j = listRoads.get(0).getPosition();
 					}
 					else if(lane.getDirection() == false) {
-						j = listRoads.get(1).getPosition() + listRoads.get(1).getRoadSize() + 1;
+						j = listRoads.get(0).getPosition() + listRoads.get(0).getRoadSize() + 1;
 					}
 					for (int i=lightPositionY; i < lightPositionY+road.getLaneSize(); i++) {
 						structGrid[i][j].setTrafficLight(trafficLightSystem.getListLights().get(0));
@@ -139,10 +139,10 @@ public class StructureParts {
 					int lightPositionX = road.getPosition() + road.getSideWalkSize() + road.getLaneSize()*(road.getIndexOfLane(lane)) + 1;
 					int i = 0;
 					if(lane.getDirection() == true) {
-						i = listRoads.get(1).getPosition() /*+ listRoads.get(1).getRoadSize() -1*/;
+						i = listRoads.get(1).getPosition() + listRoads.get(1).getRoadSize() ;
 					}
 					else if(lane.getDirection() == false) {
-						i = listRoads.get(1).getPosition() + listRoads.get(1).getRoadSize() + 1;
+						i = listRoads.get(1).getPosition() - 1;
 					}
 					for (int j=lightPositionX; j < lightPositionX+road.getLaneSize(); j++) {
 						structGrid[i][j].setTrafficLight(trafficLightSystem.getListLights().get(0));
@@ -174,6 +174,14 @@ public class StructureParts {
 	public Road getRoad(int i) {
 		return listRoads.get(i);
 	}
+	public TrafficLightSystem getTrafficLightSystem() {
+		return trafficLightSystem;
+	}
+	public List<Road> getListRoads() {
+		return listRoads;
+	}
+	
+	
 	@Override
 	public String toString() {
 		String table = "";

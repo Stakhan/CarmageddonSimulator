@@ -6,6 +6,9 @@ import java.util.List;
 import enumeration.Color;
 import enumeration.Orientation;
 import immobile.structures.Road;
+import immobile.structures.Structure;
+import mobile.MobileObject;
+import model.Cell;
 import immobile.StructureParts;
 
 /**
@@ -17,16 +20,20 @@ public class TrafficLightSystem {
 	/**
 	* Traffic Light System is a composition of Traffic Lights.
 	*/
-	private static List<TrafficLight> listLights;
+	private List<TrafficLight> listLights;
 	/**
 	 * Time to wait for changing the Traffic Light state belong to the road.
 	*/
-	private static int timingMainRoad;
-	private static int timingSecondRoad;
-	private static final int timeYellow = 3; // 3 seconds is the official duration for the Yellow Traffic Light in French agglomeration
+	private StructureParts structureParts;
+	private int timingMainRoad;
+	private int timingSecondRoad;
+	private final int timeYellow = 3; // 3 seconds is the official duration for the Yellow Traffic Light in French agglomeration
 
 	/**
 	* This constructor builds a determined list of Traffic Lights for Car and Pedestrian by road.
+	*  @param listRoads
+	 * @param timingMainRoad
+	 * @param timingSecondRoad
 	*/
 	public TrafficLightSystem(List<Road> listRoads, int timingMainRoad, int timingSecondRoad) {
 		this.timingMainRoad = timingMainRoad;
@@ -38,16 +45,23 @@ public class TrafficLightSystem {
 		listLights.add(new TrafficLightPedestrian(listRoads.get(0), Color.Green));
 		listLights.add(new TrafficLightPedestrian(listRoads.get(1), Color.Red));
 		
-		/*
-		 * deprecated
-		List<TrafficLight> listLights = new ArrayList<TrafficLight>();
-		listLights.add(new TrafficLightCar(listRoads.get(1), Color.Green, timingMainRoad, timeMainRed, timeYellow));
-		listLights.add(new TrafficLightCar(listRoads.get(2), Color.Red, timingSecondRoad, timeSecondRed, timeYellow));
-		listLights.add(new TrafficLightPedestrian(listRoads.get(1), Color.Green, timingMainRoad, timeMainRed + timeYellow));
-		listLights.add(new TrafficLightPedestrian(listRoads.get(2), Color.Red, timingSecondRoad, timeSecondRed + timeYellow));
-		*/
 		this.listLights = listLights;
-}
+	}
+	
+	/**
+	 * Constructor for deep copy (see method clone())
+	 * @param listLights
+	 * @param timingMainRoad
+	 * @param timingSecondRoad
+	 */
+//	public TrafficLightSystem(List<TrafficLight> listLights, int timingMainRoad, int timingSecondRoad) {
+//		this.listLights = listLights;
+//		this.timingMainRoad = timingMainRoad;
+//		this.timingSecondRoad = timingSecondRoad;
+//		
+//	}
+	
+	
 
 	/**
 	 * This method determines the color changing of the traffic lights from the step of the simulation.
@@ -57,7 +71,7 @@ public class TrafficLightSystem {
 	 * @return 
 	 * @return 
 	 */
-	public static void nextStep(int step) {
+	public void nextStep(int step) {
 		int stepModulo = step % (timingMainRoad + timeYellow + timingSecondRoad + timeYellow);
 		if (stepModulo == 0) {
 			// Beginning of the cycle : initial situation
@@ -98,6 +112,14 @@ public class TrafficLightSystem {
 		return listLights;
 	}
 	
+	@Override
+	public TrafficLightSystem clone() {
+		
+        return new TrafficLightSystem((List<Road>) ((ArrayList<Road>) this.structureParts.getListRoads()).clone(), this.timingMainRoad, this.timingSecondRoad);
+    
+	}
+}
+	
 //	public static void main(String args[]){
 //		List<Road> listRoads = new ArrayList<Road>();
 //		listRoads.add(new Road(10, 2, 0, Orientation.Horizontal, 1, false));
@@ -112,4 +134,4 @@ public class TrafficLightSystem {
 //			}
 //		}
 //	}
-}
+

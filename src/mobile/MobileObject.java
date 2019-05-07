@@ -27,8 +27,6 @@ public abstract class MobileObject {
 		this.position = position;
 		objectCoverage = new ArrayList<Integer[]>();
 		
-		
-		
 		this.visible = true;
 		
 	}
@@ -86,7 +84,9 @@ public abstract class MobileObject {
 		return position;
 	}
 	
-	
+	public List<Integer[]> getObjectCoverage() {
+		return objectCoverage;
+	}
 	
 	public int getLength() {
 		return length;

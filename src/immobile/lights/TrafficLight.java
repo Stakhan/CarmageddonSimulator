@@ -52,4 +52,11 @@ public abstract class TrafficLight {
 		}
 	}
 	 */
+	
+	
+	//Getters
+	
+	public Color getCurrentColor() {
+		return currentColor;
+	}
 }

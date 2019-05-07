@@ -4,9 +4,21 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -17,9 +29,11 @@ import enumeration.Profil;
 import enumeration.StructureType;
 import enumeration.ObstacleType;
 import enumeration.ObstacleType;
+import immobile.lights.TrafficLight;
 import immobile.structures.Lane;
 import immobile.structures.Structure;
 import mobile.Car;
+import mobile.Pedestrian;
 import model.Cell;
 import model.ConfigureStructure;
 import model.SimulationState;
@@ -35,18 +49,27 @@ public class GridPanel extends JPanel implements KeyListener{
 	private ConfigureStructure structConfig;
 	private Simulation simulation;
 	private SimulationState displayState;
+	private BufferedImage greenLight;
+	private BufferedImage yellowLight;
+	private BufferedImage redLight;
+	
 
 	public GridPanel(ConfigureStructure structConfig, Simulation simulation){
 		this.structConfig = structConfig;
 		this.simulation = simulation;
 		this.displayState = this.simulation.getLastState();
 		
+		try {
+			initImages();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		this.setFocusable(true); // sinon par defaut le panel n’a pas le focus : on ne peut pas interagir avec
 	    this.requestFocus();
 		this.addKeyListener(this); // on declare que this ecoute les evenements clavier
 
-//		JLabel label = new JLabel(this.simulation.getLastState().toString(), SwingConstants.RIGHT);
-//		this.add(label);
 	}
 
 	/**
@@ -57,7 +80,38 @@ public class GridPanel extends JPanel implements KeyListener{
 		this.wUnit = (int) this.getWidth()/structConfig.columnNb;
 		this.hUnit = (int) this.getHeight()/structConfig.lineNb;
 	}
+	
+	public void initImages() throws IOException {
 
+		List<URL> urls = new ArrayList<URL>();
+		urls.add(getClass().getResource("images/light_green.png"));
+		urls.add(getClass().getResource("images/light_yellow.png"));
+		urls.add(getClass().getResource("images/light_red.png"));
+		
+		if (urls.get(0) == null) {
+	        throw new FileNotFoundException();
+	    }
+	    this.greenLight = ImageIO.read(urls.get(0));
+	    if (urls.get(1) == null) {
+	        throw new FileNotFoundException();
+	    }
+	    this.yellowLight = ImageIO.read(urls.get(1));
+	    if (urls.get(2) == null) {
+	        throw new FileNotFoundException();
+	    }
+	    this.redLight = ImageIO.read(urls.get(2));
+	}
+	
+	public BufferedImage rotate(BufferedImage image, double angle) {
+		double rotationRequired = Math.toRadians(angle);
+		double locationX = image.getWidth(null) / 2;
+		double locationY = image.getHeight(null) / 2;
+		AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
+		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+		
+		return op.filter((BufferedImage) image, null);
+	}
+	
 	@Override
 	public void paintComponent(Graphics g) {
 		//Show grid border
@@ -181,6 +235,80 @@ public class GridPanel extends JPanel implements KeyListener{
 			}
 		}
 		
+		//Display traffic lights
+		
+		//get current color for road 0
+		enumeration.Color current = this.simulation.getStructureParts().getTrafficLightSystem().getListLights().get(0).getCurrentColor(); 
+		BufferedImage imageLight = this.greenLight;
+		if (current == enumeration.Color.Green) {
+			imageLight = this.greenLight;
+		}
+		else if (current == enumeration.Color.Yellow) {
+			imageLight = this.yellowLight;
+		}
+		else if (current == enumeration.Color.Red) {
+			imageLight = this.redLight;
+		}
+		
+		//ROAD 0
+		//light in true direction
+		int x = (int) (structConfig.lineNb*0.45*wUnit);
+		int y = (int) (structConfig.columnNb*0.542*hUnit);
+		int xSize = (int)(imageLight.getWidth(null)*0.15);
+		int ySize = (int)(imageLight.getHeight(null)*0.15);
+		AffineTransform backup = g2d.getTransform();
+		AffineTransform a = AffineTransform.getRotateInstance(Math.toRadians(90), x, y);
+		g2d.setTransform(a);
+		g2d.drawImage(imageLight, x, y, xSize, ySize, null);
+		g2d.setTransform(backup);
+		
+		//light in false direction
+		x = (int) (structConfig.lineNb*0.555*wUnit);
+		y = (int) (structConfig.columnNb*0.457*hUnit);
+		xSize = (int)(imageLight.getWidth(null)*0.15);
+		ySize = (int)(imageLight.getHeight(null)*0.15);
+		a = AffineTransform.getRotateInstance(Math.toRadians(-90), x, y);
+		g2d.setTransform(a);
+		g2d.drawImage(imageLight, x, y, xSize, ySize, null);
+		g2d.setTransform(backup);
+			
+		//get current color for road 1
+		current = this.simulation.getStructureParts().getTrafficLightSystem().getListLights().get(1).getCurrentColor(); 
+		if (current == enumeration.Color.Green) {
+			imageLight = this.greenLight;
+		}
+		else if (current == enumeration.Color.Yellow) {
+			imageLight = this.yellowLight;
+		}
+		else if (current == enumeration.Color.Red) {
+			imageLight = this.redLight;
+		}
+		
+		//ROAD 1
+		//light in true direction
+		x = (int) (structConfig.lineNb*0.46*wUnit);
+		y = (int) (structConfig.columnNb*0.45*hUnit);
+		xSize = (int)(imageLight.getWidth(null)*0.15);
+		ySize = (int)(imageLight.getHeight(null)*0.15);
+		a = AffineTransform.getRotateInstance(Math.toRadians(180), x, y);
+		g2d.setTransform(a);
+		g2d.drawImage(imageLight, x, y, xSize, ySize, null);
+		g2d.setTransform(backup);
+		
+		//light in false direction
+		x = (int) (structConfig.lineNb*0.548*wUnit);
+		y = (int) (structConfig.columnNb*0.552*hUnit);
+		xSize = (int)(imageLight.getWidth(null)*0.15);
+		ySize = (int)(imageLight.getHeight(null)*0.15);
+		
+		g2d.drawImage(imageLight, x, y, xSize, ySize, null);
+		g2d.setTransform(backup);
+		
+		//Paint a black border around cell
+		int i=92;
+		int j=92;
+		g2d.setPaint(Color.magenta);
+		//g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 	}
 	
 	@Override
@@ -229,12 +357,25 @@ public class GridPanel extends JPanel implements KeyListener{
 			}
 		}
 		if ((key == KeyEvent.VK_T)) {
-			System.out.println("lane available ? "+this.simulation.getStructureParts().getRoad(1).getLane(1).testAvailability(5, this.displayState));
+//			int i = 92;
+//			int j = 92;
+//			int[] position = {i,j};
+//			this.simulation.getLastState().getGridValue(i, j).addMobileObjects(new Pedestrian(position));
+//			System.out.println("pedestrian added.");
+//			System.out.println("pedestrian? "+this.simulation.getLastState().getGridValue(i, j).contains(MobileType.Pedestrian));
+//			repaint();
+			System.out.println(this.simulation.getMovingParts().getListPedestrians().size());
+			System.out.println(this.simulation.getMovingParts().getListPedestrians().get(0).getObjectCoverage().toString());
+			for(Integer[] coord : this.simulation.getMovingParts().getListPedestrians().get(0).getObjectCoverage()) {
+				System.out.println("coverage: "+coord[0]+","+coord[1]);
+			}
+			
+			
 		}
 		if ((key == KeyEvent.VK_L)) {
 			for (Car car : this.simulation.getMovingParts().getListCars()) {
 				System.out.println("Car "+car+" looking :"+car.getVision().look().toString());
-			}
+		}
 			
 		}
 	}
