@@ -18,8 +18,6 @@ public abstract class MobileObject {
 	protected int[] position;
 	protected List<Integer[]> objectCoverage; // list of cells from a same mobile object
 	
-	protected Vision vision;
-	
 	protected boolean visible;
 	
 	public MobileObject(int length, int height, int[] position) {
@@ -88,9 +86,7 @@ public abstract class MobileObject {
 		return position;
 	}
 	
-	public Vision getVision() {
-		return vision;
-	}
+	
 	
 	public int getLength() {
 		return length;

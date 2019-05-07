@@ -26,7 +26,7 @@ public class Car extends MobileObject {
 	private double maxVelocity;
 	private double maxBrake;
 	private Lane lane;
-	private List<Integer[]> viewSpan;
+	private Vision vision;
 	
 
 	
@@ -368,4 +368,7 @@ public class Car extends MobileObject {
 		return movingParts;
 	}
 	
+	public Vision getVision() {
+		return vision;
+	}
 }
