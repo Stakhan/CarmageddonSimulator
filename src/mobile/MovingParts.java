@@ -38,8 +38,8 @@ public class MovingParts {
 		//TESTING ONLY: adding a pedestrian on the Road
 
 		int[] position = {0,94};
-		listPedestrians.add(new Pedestrian(this, 3, 3, OrientedDirection.WE, this.simulation.getStructureParts().getRoad(0).getSideWalk(0)));
-		listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.NS, this.simulation.getStructureParts().getRoad(1).getSideWalk(0)));
+		listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.WE, this.simulation.getStructureParts().getRoad(0).getSideWalk(0)));
+		listPedestrians.add(new Pedestrian(this, 3, 3, OrientedDirection.NS, this.simulation.getStructureParts().getRoad(1).getSideWalk(0)));
 		listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.EW, this.simulation.getStructureParts().getRoad(0).getSideWalk(0)));
 		listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.SN, this.simulation.getStructureParts().getRoad(1).getSideWalk(0)));
 		
