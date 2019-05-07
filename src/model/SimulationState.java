@@ -21,7 +21,7 @@ public class SimulationState {
 	private Cell[][] grid;
 	
 	/**
-	 * Construtor
+	 * Constructor
 	 * 
 	 * @param step
 	 * @param lineNb

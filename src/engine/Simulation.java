@@ -45,6 +45,12 @@ public class Simulation {
 			//car.nextStep();
 			car.draw(initState.getGrid());
 		}
+		
+		for(Pedestrian pedestrian : this.getMovingParts().getListPedestrians()) {
+			//pedestrian.nextStep();
+			pedestrian.draw(initState.getGrid());
+		}
+		
 		listStates.add(initState);
 		
 	}
@@ -68,7 +74,10 @@ public class Simulation {
 				ped.draw(next.getGrid());
 			}
 		}
-		
+
+		//updating traffic light system
+		this.structureParts.getTrafficLightSystem().nextStep(next.getStep());
+
 		 
 		listStates.add(next); //compute next state and add it to the list of states
 	}
