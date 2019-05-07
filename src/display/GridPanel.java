@@ -15,8 +15,8 @@ import engine.Simulation;
 import enumeration.MobileType;
 import enumeration.Profil;
 import enumeration.StructureType;
-import enumeration.Type;
-import enumeration.Type;
+import enumeration.ObstacleType;
+import enumeration.ObstacleType;
 import immobile.structures.Lane;
 import immobile.structures.Structure;
 import mobile.Car;
@@ -40,9 +40,11 @@ public class GridPanel extends JPanel implements KeyListener{
 		this.structConfig = structConfig;
 		this.simulation = simulation;
 		this.displayState = this.simulation.getLastState();
-		this.setFocusable(true); // sinon par defaut le panel n’a pas le focus : on ne peut pas interagir avec
-		this.addKeyListener(this); // on declare que this ecoute les evenements clavier
 		
+		this.setFocusable(true); // sinon par defaut le panel n’a pas le focus : on ne peut pas interagir avec
+	    this.requestFocus();
+		this.addKeyListener(this); // on declare que this ecoute les evenements clavier
+
 //		JLabel label = new JLabel(this.simulation.getLastState().toString(), SwingConstants.RIGHT);
 //		this.add(label);
 	}
@@ -107,7 +109,6 @@ public class GridPanel extends JPanel implements KeyListener{
 					else { //In case it doesn't contain a MobileObject
 						
 						if(grid[i][j].getTrafficLight() != null) {
-							System.out.println("hop");
 							g2d.setPaint(Color.orange); 
 							g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 						}
@@ -175,7 +176,7 @@ public class GridPanel extends JPanel implements KeyListener{
 		//Painting view span over
 		g2d.setPaint(Color.yellow);
 		for (Car car : this.simulation.getMovingParts().getListCars()) {
-			for (Integer[] coord : car.getViewSpan()){
+			for (Integer[] coord : car.getVision().getViewSpan()){
 				g2d.fillRect(coord[1]*wUnit, coord[0]*hUnit, wUnit, hUnit);
 			}
 		}
@@ -215,9 +216,6 @@ public class GridPanel extends JPanel implements KeyListener{
 			this.displayState = new SimulationState(this.simulation, -1);
 			repaint();
 			System.out.println("hop");
-//			System.out.println("=============");
-//			System.out.println(this.simulation.getStructureParts().getStructGrid().toString());
-//			System.out.println("=============");
 
 		}
 		if ((key == KeyEvent.VK_DOWN)) {
@@ -232,6 +230,12 @@ public class GridPanel extends JPanel implements KeyListener{
 		}
 		if ((key == KeyEvent.VK_T)) {
 			System.out.println("lane available ? "+this.simulation.getStructureParts().getRoad(1).getLane(1).testAvailability(5, this.displayState));
+		}
+		if ((key == KeyEvent.VK_L)) {
+			for (Car car : this.simulation.getMovingParts().getListCars()) {
+				System.out.println("Car "+car+" looking :"+car.getVision().look().toString());
+			}
+			
 		}
 	}
 

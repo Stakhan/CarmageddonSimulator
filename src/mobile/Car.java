@@ -1,7 +1,7 @@
 package mobile;
 
 
-import enumeration.Type;
+import enumeration.ObstacleType;
 import enumeration.OrientedDirection;
 
 import java.util.ArrayList;
@@ -65,9 +65,8 @@ public class Car extends MobileObject {
 		this.crossingDuration = 0;
 		this.waitingTime = 0;
 		
-		this.viewSpan = new ArrayList<Integer[]>();
-		this.updateViewSpan(4*5);
-		System.out.println("Car "+this+" looking :"+this.look(10*this.length));
+		this.vision = new Vision(4*5, this);
+		this.vision.update();
 		
 		computeCoverage(movingParts);
 	}
@@ -176,7 +175,7 @@ public class Car extends MobileObject {
 	public void nextStep() {
 		this.computeCoverage(this.movingParts);
 		this.changeVelocity(true);
-		this.updateViewSpan(4*5);
+		this.vision.update();
 		this.go();
 		//System.out.println("Car "+this+" looking :"+this.look(10*this.length));
 	}
@@ -270,40 +269,7 @@ public class Car extends MobileObject {
 		
 		
 	}
-	
-	
-	/** USELESS/REDONDANT ?
-	 *  This function computes the deceleration of a car
-	 * @param minVelocity
-	 * @param lane
-	 */
-	public void decelerate(double minVelocity, Lane lane) {
-		
-		// The car can't reach a velocity under minVelocity (0, 20, 30 km/h... it depends)
-		if (this.velocity < minVelocity) {
-			this.velocity = minVelocity;		
-			}
-		
-		// the car goes to velocity*0,8 cells per state
-		int distance = (int) ((int) this.velocity*3.6/0.8);
-		// Changing the position of the car
-		
-		// /!\ The case where the car is out of the grid is not implemented
-		
-		OrientedDirection carDirection = this.lane.getOrientedDirection();
-		
-		switch (carDirection) {
-		case NS: position[1] = position[1] + distance;
-    	break;
-		case SN: position[1] = position[1] - distance;
-    	break;
-		case EW: position[0] = position[0] - distance;
-    	break;
-		case WE: position[0] = position[0] + distance;
-    	break;
-		}
-		
-	}
+
 	
 
 	@Override
@@ -311,78 +277,8 @@ public class Car extends MobileObject {
 		return MobileType.Car;
 	}
 	
-	/**
-	 * Update the cells coordinates of the view span of the car
-	 * @param length of the view span
-	 */
-	public void updateViewSpan(int viewSpanLength){
-		
-		OrientedDirection carDirection = lane.getOrientedDirection();
-		this.viewSpan.clear(); //Clear previous viewSpan
-		int i = position[1]-1;
-		int j = position[0]-1;
-		switch (carDirection) {
-			case WE:
-				for (j = position[0]-1/*+((int) length/2) + 1*/; j < position[0]-1 + viewSpanLength; j++) {
-					Integer[] couple = {i,j};
-					this.viewSpan.add(couple);
-				}
-				break;
-			case EW:
-				for (j = position[0]-1; j > position[0]-1 - viewSpanLength; j--) {
-					Integer[] couple = {i,j};
-					this.viewSpan.add(couple);
-				}
-				break;
-			case NS:
-				for (i = position[1]-1; i < position[1]-1 + viewSpanLength; i++) {
-					Integer[] couple = {i,j};
-					this.viewSpan.add(couple);
-				}
-				break;
-			case SN:
-				for (i = position[1]-1; i > position[1]-1 - viewSpanLength; i--) {
-					Integer[] couple = {i,j};
-					this.viewSpan.add(couple);
-				}
-		}
-				
-	}
 	
-	public Type look(int viewSpan) {
-		
-		OrientedDirection carDirection = lane.getOrientedDirection();
-		Cell[][] grid = null;
-		
-		if (this.movingParts.getSimulation().getListStates().size() > 1) { //We need two states to get a previous state
-			//Fetching previous state
-			SimulationState previousState = this.movingParts.getSimulation().getState(this.movingParts.getSimulation().getLastState().getStep()-1);
-			//Fetching grid of previous step
-			grid = previousState.getGrid();
-		}
-		else { //In case it is the first state
-			grid = this.movingParts.getSimulation().getStructureParts().getStructGrid();
-		}
-		
-		for (Integer[] coord : this.viewSpan) {
-			int i = coord[0];
-			int j = coord[1];
-			if (grid[i][j].getContainedMobileObjects().size() != 0) {
-				System.out.println("hop");
-				if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Car) {
-					return Type.Car;
-				}
-				else if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Pedestrian) {
-					return Type.Pedestrian;
-				}
-			}
-			else if (grid[i][j].getTrafficLight() != null) {
-				return Type.TrafficLight;
-			}
-		}
-		//In case nothing is in the viewSpan, returning null object
-		return null;
-	}
+
 	
 	
 	/**
@@ -462,7 +358,14 @@ public class Car extends MobileObject {
 	
 	//Getters
 	
-	public List<Integer[]> getViewSpan() {
-		return viewSpan;
+	
+	
+	public Lane getLane() {
+		return lane;
 	}
+	
+	public MovingParts getMovingParts() {
+		return movingParts;
+	}
+	
 }

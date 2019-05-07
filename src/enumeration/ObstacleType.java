@@ -1,6 +1,6 @@
 package enumeration;
 
-public enum Type {
+public enum ObstacleType {
 	Car,
 	Pedestrian,
 	TrafficLight

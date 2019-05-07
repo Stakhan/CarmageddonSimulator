@@ -14,16 +14,25 @@ public abstract class MobileObject {
 	
 	protected int length;
 	protected int height;
+	
 	protected int[] position;
-	protected boolean visible;
 	protected List<Integer[]> objectCoverage; // list of cells from a same mobile object
-
+	
+	protected Vision vision;
+	
+	protected boolean visible;
+	
 	public MobileObject(int length, int height, int[] position) {
 		this.length = length;
 		this.height = height;
+		
 		this.position = position;
-		this.visible = true;
 		objectCoverage = new ArrayList<Integer[]>();
+		
+		
+		
+		this.visible = true;
+		
 	}
 	
 	
@@ -74,7 +83,16 @@ public abstract class MobileObject {
 	public abstract MobileType getType();
 
 	//Getters
+	
 	public int[] getPosition() {
 		return position;
+	}
+	
+	public Vision getVision() {
+		return vision;
+	}
+	
+	public int getLength() {
+		return length;
 	}
 }

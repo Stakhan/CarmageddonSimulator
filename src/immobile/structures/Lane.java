@@ -4,7 +4,7 @@ import enumeration.MobileType;
 import enumeration.Orientation;
 import enumeration.OrientedDirection;
 import enumeration.StructureType;
-import enumeration.Type;
+import enumeration.ObstacleType;
 import mobile.Car;
 import model.ConfigureStructure;
 import model.SimulationState;

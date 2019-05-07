@@ -1,7 +1,7 @@
 package immobile.structures;
 
 import enumeration.StructureType;
-import enumeration.Type;
+import enumeration.ObstacleType;
 
 public abstract class Structure {
 	

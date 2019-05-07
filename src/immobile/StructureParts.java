@@ -97,7 +97,6 @@ public class StructureParts {
 						j = listRoads.get(1).getPosition() + listRoads.get(1).getRoadSize() + 1;
 					}
 					for (int i=lightPositionY; i < lightPositionY+road.getLaneSize(); i++) {
-						System.out.println("position light: "+i+","+j);
 						structGrid[i][j].setTrafficLight(trafficLightSystem.getListLights().get(0));
 					}
 				}
@@ -135,6 +134,20 @@ public class StructureParts {
 						}
 				}
 				
+				//Adding traffic light
+				for (Lane lane : road.getListLanes()) {
+					int lightPositionX = road.getPosition() + road.getSideWalkSize() + road.getLaneSize()*(road.getIndexOfLane(lane)) + 1;
+					int i = 0;
+					if(lane.getDirection() == true) {
+						i = listRoads.get(1).getPosition() /*+ listRoads.get(1).getRoadSize() -1*/;
+					}
+					else if(lane.getDirection() == false) {
+						i = listRoads.get(1).getPosition() + listRoads.get(1).getRoadSize() + 1;
+					}
+					for (int j=lightPositionX; j < lightPositionX+road.getLaneSize(); j++) {
+						structGrid[i][j].setTrafficLight(trafficLightSystem.getListLights().get(0));
+					}
+				}
 			}
 		}
 	}
