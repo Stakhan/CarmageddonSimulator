@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import enumeration.MobileType;
-import jdk.internal.util.xml.impl.Pair;
 import model.Cell;
 
 public abstract class MobileObject {

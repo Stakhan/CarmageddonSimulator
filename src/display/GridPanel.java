@@ -23,9 +23,8 @@ import mobile.Car;
 import model.Cell;
 import model.ConfigureStructure;
 import model.SimulationState;
-import sun.swing.MenuItemLayoutHelper.ColumnAlignment;
 
-public class Panel extends JPanel implements KeyListener{
+public class GridPanel extends JPanel implements KeyListener{
 
 	/**
 	 * This panel displays the simulation
@@ -37,7 +36,7 @@ public class Panel extends JPanel implements KeyListener{
 	private Simulation simulation;
 	private SimulationState displayState;
 
-	public Panel(ConfigureStructure structConfig, Simulation simulation){
+	public GridPanel(ConfigureStructure structConfig, Simulation simulation){
 		this.structConfig = structConfig;
 		this.simulation = simulation;
 		this.displayState = this.simulation.getLastState();

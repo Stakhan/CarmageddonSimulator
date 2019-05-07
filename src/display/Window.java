@@ -1,10 +1,12 @@
 package display;
 
 
+import java.awt.BorderLayout;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import engine.Simulation;
@@ -23,8 +25,22 @@ public class Window extends JFrame{
 	}
 	
 	private void init(ConfigureStructure structConfig, Simulation simulation){
-		Panel mainPanel = new Panel(structConfig, simulation); // on instancie un nouveal objet MyPanel
-		this.setContentPane(mainPanel);
+		
+		GridPanel mainPanel = new GridPanel(structConfig, simulation); // on instancie un nouveal objet MyPanel
+		
+		this.setLayout(new BorderLayout());
+	    //On ajoute le bouton au content pane de la JFrame
+	    //Au centre
+	    this.getContentPane().add(mainPanel, BorderLayout.CENTER);
+	    //Au nord
+	    this.getContentPane().add(new JButton("NORTH"), BorderLayout.NORTH);
+	    //Au sud
+	    this.getContentPane().add(new JButton("SOUTH"), BorderLayout.SOUTH);
+	    //À l'ouest
+	    this.getContentPane().add(new JButton("WEST"), BorderLayout.WEST);
+	    //À l'est
+	    this.getContentPane().add(new JButton("EAST"), BorderLayout.EAST);
+		
 		
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
