@@ -31,6 +31,7 @@ import immobile.lights.TrafficLight;
 import immobile.structures.Lane;
 import immobile.structures.Structure;
 import mobile.Car;
+import mobile.Pedestrian;
 import model.Cell;
 import model.ConfigureStructure;
 import model.SimulationState;
@@ -112,7 +113,7 @@ public class GridPanel extends JPanel implements KeyListener{
 	@Override
 	public void paintComponent(Graphics g) {
 		//Show grid border
-		boolean border = true;
+		boolean border = false;
 		
 		defineUnits(structConfig);
 
@@ -323,7 +324,6 @@ public class GridPanel extends JPanel implements KeyListener{
 				this.displayState = this.simulation.getState(this.displayState.getStep()-1);
 				repaint();
 				System.out.println("step "+this.displayState.getStep()+": "+this.simulation.getState(this.displayState.getStep()).getGrid().toString());
-				System.out.println(this.displayState.getTrafficLightSystem().toString());
 			}
 
 		}
@@ -339,7 +339,6 @@ public class GridPanel extends JPanel implements KeyListener{
 			}
 			repaint();
 			System.out.println("step "+this.displayState.getStep()+": "+this.simulation.getLastState().getGrid().toString());
-			System.out.println(this.displayState.getTrafficLightSystem().toString());
 
 		}
 		if ((key == KeyEvent.VK_UP)) { 
@@ -358,20 +357,8 @@ public class GridPanel extends JPanel implements KeyListener{
 				this.simulation.getMovingParts().getListCars().add(new Car(this.simulation.getMovingParts(), "voiture", 5, 3, Profil.respectful, 0, 2, 10, this.simulation.getStructureParts().getRoad(0).getLane(1)));
 			}
 		}
-		if ((key == KeyEvent.VK_T)) {
-			//			int i = 92;
-			//			int j = 92;
-			//			int[] position = {i,j};
-			//			this.simulation.getLastState().getGridValue(i, j).addMobileObjects(new Pedestrian(position));
-			//			System.out.println("pedestrian added.");
-			//			System.out.println("pedestrian? "+this.simulation.getLastState().getGridValue(i, j).contains(MobileType.Pedestrian));
-			//			repaint();
-			System.out.println(this.simulation.getMovingParts().getListPedestrians().size());
-			System.out.println(this.simulation.getMovingParts().getListPedestrians().get(0).getObjectCoverage().toString());
-			for(Integer[] coord : this.simulation.getMovingParts().getListPedestrians().get(0).getObjectCoverage()) {
-				System.out.println("coverage: "+coord[0]+","+coord[1]);
-			}
-
+		if ((key == KeyEvent.VK_P)) {
+			this.simulation.getMovingParts().getListPedestrians().add(new Pedestrian(this.simulation.getMovingParts(), 1, 1, OrientedDirection.WE, this.simulation.getStructureParts().getRoad(0).getSideWalk(0)));
 
 		}
 		if ((key == KeyEvent.VK_L)) {

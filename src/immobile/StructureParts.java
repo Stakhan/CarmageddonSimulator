@@ -19,8 +19,8 @@ public class StructureParts {
 	
 	public StructureParts(ConfigureStructure structConfig) {
 		listRoads = new ArrayList<Road>();		
-		listRoads.add(new Road(structConfig.columnNb, structConfig.laneSize, structConfig.sideWalkSize, Orientation.Horizontal, 1, structConfig.bidirectional));
-		listRoads.add(new Road(structConfig.columnNb, structConfig.laneSize, structConfig.sideWalkSize, Orientation.Vertical, 1, structConfig.bidirectional));
+		listRoads.add(new Road(this, structConfig.columnNb, structConfig.laneSize, structConfig.sideWalkSize, Orientation.Horizontal, 1, structConfig.bidirectional));
+		listRoads.add(new Road(this, structConfig.columnNb, structConfig.laneSize, structConfig.sideWalkSize, Orientation.Vertical, 1, structConfig.bidirectional));
 		
 		this.trafficLightSystem = new TrafficLightSystem(listRoads, 15, 12);
 		
@@ -151,8 +151,7 @@ public class StructureParts {
 				}
 			}
 		}
-	
-		
+
 		//Adding traffic lights for pedestrian
 		
 		Road road = this.listRoads.get(1);

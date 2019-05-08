@@ -32,7 +32,8 @@ public class Road {
 	 * @param laneNb, represents the number of lanes, must be even if road is bidirectional
 	 * @param bidirectional
 	 */
-	public Road(int length, int laneSize, int sideWalkSize, Orientation orientation, int laneNb, boolean bidirectional) {
+	public Road(StructureParts structureParts, int length, int laneSize, int sideWalkSize, Orientation orientation, int laneNb, boolean bidirectional) {
+		this.structureParts = structureParts;
 		this.length = length;
 		this.laneSize = laneSize;
 		this.sideWalkSize = sideWalkSize;

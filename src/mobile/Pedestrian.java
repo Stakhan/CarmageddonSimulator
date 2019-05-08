@@ -5,11 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
+
+import enumeration.Color;
 import enumeration.MobileType;
+import enumeration.Orientation;
 import enumeration.OrientedDirection;
 import enumeration.StructureType;
+import immobile.StructureParts;
 import immobile.structures.Road;
 import immobile.structures.SideWalk;
+import immobile.structures.Structure;
 import model.Cell;
 
 public class Pedestrian extends MobileObject{
@@ -19,8 +25,8 @@ public class Pedestrian extends MobileObject{
 	private double velocity;
 	private SideWalk sideWalk;
 	private OrientedDirection pedestrianDirection;
+	private boolean hasChangedDirection; // this boolean is used to know if a pedestrian already turned on a bigger crossing section. Useful for turn() and nextStep() methods
 	private List<enumeration.OrientedDirection> path;
-	private boolean turningPoints;
 
 	
 
@@ -42,7 +48,7 @@ public class Pedestrian extends MobileObject{
 		
 		this.waitingTime = 0;
 		this.crossingDuration = 0;
-		this.velocity = 0.8/3.6;
+		this.velocity = 1;
 		this.pedestrianDirection = pedestrianDir;
 		
 		this.path = new ArrayList<OrientedDirection>();
@@ -51,9 +57,8 @@ public class Pedestrian extends MobileObject{
 		
 		this.sideWalk = sideWalk;
 		this.movingParts = movingParts;
+		this.hasChangedDirection = false;
 	}
-	
-	
 
 	
 	
@@ -66,31 +71,54 @@ public class Pedestrian extends MobileObject{
 		
 			Road road = sideWalk.getRoad();
 			
+			
 			int roadPosition = road.getPosition();
 			int pedestrianPositionOnRoad = (int) road.getSideWalkSize()/2;
 			
 			Integer x = Integer.valueOf(-1);
 			Integer y = Integer.valueOf(-1);
 
-			switch (pedestrianDirection) {
-	        case WE:
-	        	y = roadPosition + pedestrianPositionOnRoad ;
-	        	x = (int) length/2 + length%2 - 1;
-	        	break;
-	        case NS:
-				x = grid[0].length - roadPosition - pedestrianPositionOnRoad;
-				y = (int) length/2 + length%2 - 1; //taking length of pedestrian in account	
-				break;
-	        case SN:
-				x = grid[0].length - roadPosition - pedestrianPositionOnRoad;
-				y = grid[0].length - ((int) length/2) - 1; //taking length of pedestrian in account		
-				break;
-	        case EW:
-				y = roadPosition + pedestrianPositionOnRoad;
-				x = grid[0].length - ((int) length/2) - 1;
-				break;
+			if(sideWalk.getIndex() == 0) {
+				switch (pedestrianDirection) {
+		        case WE:
+		        	y = roadPosition + pedestrianPositionOnRoad ;
+		        	x = (int) length/2 + length%2 - 1;
+		        	break;
+		        case NS:
+					x = grid[0].length - roadPosition - pedestrianPositionOnRoad;
+					y = (int) length/2 + length%2 - 1; //taking length of pedestrian in account	
+					break;
+		        case SN:
+					x = grid[0].length - roadPosition - pedestrianPositionOnRoad;
+					y = grid[0].length - ((int) length/2) - 1; //taking length of pedestrian in account		
+					break;
+		        case EW:
+					y = roadPosition + pedestrianPositionOnRoad;
+					x = grid[0].length - ((int) length/2) - 1;
+					break;
+				}
 			}
-			//System.out.println("initializePedestrianPosition:");
+			else if(sideWalk.getIndex() == 1) {
+				switch (pedestrianDirection) {
+		        case WE:
+		        	x = (int) length/2 + length%2 - 1;
+		        	y = roadPosition + road.getSideWalkSize() + road.getLaneSize()*road.getListLanes().size() + pedestrianPositionOnRoad;
+		        	break;
+		        case NS:
+					x = grid[0].length - roadPosition - road.getSideWalkSize() - road.getLaneSize()*road.getListLanes().size() - pedestrianPositionOnRoad;
+					y = (int) length/2 + length%2 - 1; //taking length of pedestrian in account	
+					break;
+		        case SN:
+					x = grid[0].length - roadPosition - road.getSideWalkSize() - road.getLaneSize()*road.getListLanes().size() - pedestrianPositionOnRoad;
+					y = grid[0].length - ((int) length/2) - 1; //taking length of pedestrian in account		
+					break;
+		        case EW:
+					y = roadPosition + road.getSideWalkSize() + road.getLaneSize()*road.getListLanes().size() + pedestrianPositionOnRoad;
+					x = grid[0].length - ((int) length/2) - 1;
+					break;
+				}
+			}
+			
 			int[] position = {y, x};
 			return position;
 		}
@@ -113,11 +141,9 @@ public class Pedestrian extends MobileObject{
 
 		int x0 = position[0] - (int) length/2;
 		int y0 = position[1] - (int) height/2;
-		//System.out.println("origine" + x0 +","+ y0);
 		for (int i = x0; i < x0 + length; i++) {
 			for (int j = y0; j < y0 + height; j++) {
 				Integer[] pos = {i, j};
-				//System.out.println(i + "," + j);
 				objectCoverage.add(pos);
 			}
 		}
@@ -125,7 +151,6 @@ public class Pedestrian extends MobileObject{
 		Integer[] pos = {this.position[0],this.position[1]};
 		objectCoverage.add(pos);
 		
-		//System.out.println();
 	}
 	
 	
@@ -140,16 +165,14 @@ public class Pedestrian extends MobileObject{
 			listPossibleDirections.add(OrientedDirection.EW);
 		}
 		if(probNS) {
-			listPossibleDirections.add(OrientedDirection.EW);
+			listPossibleDirections.add(OrientedDirection.NS);
 		}
 		if(probSN) {
-			listPossibleDirections.add(OrientedDirection.EW);
+			listPossibleDirections.add(OrientedDirection.SN);
 		}
-		
 		//Separating several probability spans between 0 and 1 for each direction 
 		int sectionNumber = (probWE ? 1 : 0)+(probEW ? 1 : 0)+(probNS ? 1 : 0)+(probSN ? 1 : 0); //FYI : this strange code casts booleans to integers
-		double sectionSpan = 1/sectionNumber;
-		
+		double sectionSpan = 1.0/sectionNumber;
 		Random rand = new Random();
 		double decider = rand.nextDouble();
 		
@@ -173,6 +196,7 @@ public class Pedestrian extends MobileObject{
 			this.path.add(pickRandDirection(probWE, probEW, probNS, probSN));
 		}
 		else if (this.path.size() != 0){
+
 			//Preventing pedestrian to come back on its path
 			OrientedDirection previous = this.path.get(this.path.size()-1);
 			switch(previous) {
@@ -184,24 +208,29 @@ public class Pedestrian extends MobileObject{
 				break;
 			case NS:
 				probSN = false;
+				break;
 			case SN:
 				probNS = false;
+				break;
 			}
 			
-			//Preventing pedestrian to go back on direction he has already been into
-			for(int i=0;i < this.path.size()-1;i++) {
-				switch(previous) {
-				case WE:
-					probEW = false;
-					break;
-				case EW:
-					probWE = false;
-					break;
-				case NS:
-					probSN = false;
-				case SN:
-					probNS = false;
-				}
+			if (this.path.size() > 1) {
+				//Preventing pedestrian to go back on direction he has already been into
+				for(int i=0;i < this.path.size()-1;i++) {
+					switch(previous) {
+					case WE:
+						probEW = false;
+						break;
+					case EW:
+						probWE = false;
+						break;
+					case NS:
+						probSN = false;
+					case SN:
+						probNS = false;
+					}
+			}
+			
 			}
 			//Adding new direction to path
 			this.path.add(pickRandDirection(probWE, probEW, probNS, probSN));
@@ -213,10 +242,9 @@ public class Pedestrian extends MobileObject{
 public void go() {
 		
 		
-		// the car goes to velocity*0,8 cells per state
-		int distance = (int) (this.velocity*3.6/0.8); //int sup
+		// the pedestrian goes to velocity*0,8 cells per state
+		int distance = (int) (this.velocity/1); //int sup
 
-		
 		if (!this.inGarage()) { //Test if a pedestrian is in garage position
 			switch (pedestrianDirection) {
 			case NS: 
@@ -264,7 +292,10 @@ public void go() {
 
 
 
-	
+	/**
+	 * Deviate methods, it moves the position of the pedestrian to another case, only on a sidewalk
+	 * @param proba : the probability to deviate
+	 */
 	public void deviate(double proba) {
 
 		Cell[][] grid = this.movingParts.getSimulation().getStructureParts().getStructGrid(); // get the grid of the simulation, to know the position of the different sidewalk
@@ -278,11 +309,9 @@ public void go() {
 				if ((grid[x + (int) length/2 + 1][y].contains(StructureType.SideWalk))&&(grid[x - (int) length/2 - 1][y].contains(StructureType.SideWalk))) {
 					double rd = Math.random();
 					if (rd < 0.5) {
-						System.out.println(Math.random());
 						position[0] += 1;
 					}
 					else {
-						System.out.println(true);
 						position[0] -= 1;
 					}
 				}
@@ -299,11 +328,9 @@ public void go() {
 				if ((grid[x][y + (int) length/2 + 1].contains(StructureType.SideWalk))&&(grid[x][y - (int) length/2 - 1].contains(StructureType.SideWalk))) {
 					double rd = Math.random();
 					if (rd < 0.5) {
-						System.out.println(Math.random());
 						position[1] += 1;
 					}
 					else {
-						System.out.println(true);
 						position[1] -= 1;
 					}
 				}
@@ -319,32 +346,212 @@ public void go() {
 
 	}
 	
-
-	public void lookTrafficLight() {
-		
-		Cell[][] grid = this.movingParts.getSimulation().getStructureParts().getStructGrid(); // get the grid of the simulation, to know the position of the different sidewalk
-		
-		//if (grid[position[1]][position[0]].getContainedLights()[0])
-		
-		
+	
+	/**
+	 * Getter, return the orientation of the pedestrian
+	 * @return Orientation
+	 */
+	public Orientation getOrientation() {
+		// get the orientation of the pedestrian, to know which traffic light he needs to take into account
+		Orientation orientation = Orientation.Vertical;
+		if ((pedestrianDirection == OrientedDirection.NS)||(pedestrianDirection == OrientedDirection.SN)) {
+			orientation = Orientation.Horizontal;
+		}
+		return orientation;
+	}
+	
+	
+	/**
+	 * This method compute the local position of a pedestrian, to know if he is at a crossing section
+	 * @return boolean : true if he is at a crossing section
+	 */
+	public boolean isAtCrossingSection() {
+		if(!inGarage()) {
+			Cell[][] grid = this.movingParts.getSimulation().getStructureParts().getStructGrid(); // get the grid of the simulation, to know the position of the different sidewalk
+			if (grid[position[0]][position[1]].getContainedLights().size() != 0) {
+				return true;
+			}
+			return false;
+		}
+		return false;
+				
+	}
+	
+	
+	/**
+	 * This methods is used to know if the next movement of the pedestrian will be on a pedestrian crossing, or if he stays on the side walk.
+	 * @return boolean : true the pedestrian will cross the road
+	 */
+	public boolean pedestrianCrossing() {
+		Cell[][] grid = this.movingParts.getSimulation().getStructureParts().getStructGrid();
+		// get the grid of the simulation, to know the position of the different sidewalk
+		if (isAtCrossingSection()) {
+			// if he is at a crossing section
+			int distance = (int) (this.velocity/1); // compute his distance
+			switch(pedestrianDirection) {
+			case NS:
+				if (grid[position[0] + distance][position[1]].contains(StructureType.Lane)) {
+					// if the next case is a road
+					return true;
+				}
+				break;
+			case SN:
+				if (grid[position[0] - distance][position[1]].contains(StructureType.Lane)) {
+					return true;
+				}
+				break;
+			case WE:
+				if (grid[position[0]][position[1] + distance].contains(StructureType.Lane)) {
+					return true;
+				}
+				break;
+			case EW:
+				if (grid[position[0]][position[1] - distance].contains(StructureType.Lane)) {
+					return true;
+				}
+				break;
+			}
+		}
+		return false;
 	}
 
 
+	/**
+	 * This methods is used to know if the pedestrian needs to stop and wait at a crossing section.
+	 * In that case, the crossing duration is taking into account.
+	 * @return boolean : true the pedestrian needs to stop
+	 */
+	public boolean stop() {
+		Cell[][] grid = this.movingParts.getSimulation().getStructureParts().getStructGrid();
+		
+		if (isAtCrossingSection()) {
+			if (pedestrianCrossing()) {
+				Orientation orientation = getOrientation();
+				switch (orientation) {
+				case Vertical:
+					if (grid[position[0]][position[1]].getContainedLights().get(0).getCurrentColor() == Color.Red) {
+						return true;
+					}
+					break;
+				case Horizontal:
+					if (grid[position[0]][position[1]].getContainedLights().get(1).getCurrentColor() == Color.Red) {
+						return true;
+					}
+					break;
+				} // end switch
+			}
+		}
+		return false;
+	}
 
-
-
-
+	/**
+	 * Each node gets an index from 1 to 4, starting from top left and going clockwise. Gives the node index on which the pedestrian lies. 
+	 * @return node index (zero if not on a node)
+	 */
+	public int whatNode() {
+		
+		//Extracting list of SideWalk from cell of current position
+		List<Structure> listStructures = new ArrayList<Structure>();
+		listStructures = this.sideWalk.getRoad().getStructureParts().getStructGrid()[this.position[0]][this.position[1]].getContainedStructures();
+		List<SideWalk> listSideWalks = new ArrayList<SideWalk>();
+		for(Structure struct: listStructures) {
+			if(struct.getType() == StructureType.SideWalk) {
+				listSideWalks.add((SideWalk) struct);
+			}
+		}
+		
+		//Affecting index depending on sidewalk association
+		if(listSideWalks.size() >1) {
+			
+			int road0 = listSideWalks.get(0).getIndex();
+			int road1 = listSideWalks.get(1).getIndex();
+			
+			if(road0 == 0 && road1 == 1) {
+				return 1;
+			}
+			else if (road0 == 0 && road1 == 0) {
+				return 2;
+			}
+			else if (road0 == 1 && road1 == 0) {
+				return 3;
+			}
+			else if (road0 == 1 && road1 == 1) {
+				return 4;
+			}
+		}
+		return 0; //In case pedestrian isn't on a node
+	}
+	
+	public void turn() {
+		
+		OrientedDirection nextDirection = this.path.get(this.path.size()-1);
+		int indexSideWalk = this.sideWalk.getIndex();
+		int node = this.whatNode();
+		
+		if (node == 1) {
+			if (nextDirection == OrientedDirection.WE || nextDirection == OrientedDirection.EW) {
+    			this.sideWalk = this.sideWalk.getRoad().getStructureParts().getRoad(0).getListSideWalks().get(0);
+			}
+			else if (nextDirection == OrientedDirection.NS || nextDirection == OrientedDirection.SN) {
+    			this.sideWalk = this.sideWalk.getRoad().getStructureParts().getRoad(1).getListSideWalks().get(1);
+			}
+		}
+		else if (node == 2) {
+			if (nextDirection == OrientedDirection.WE || nextDirection == OrientedDirection.EW) {
+    			this.sideWalk = this.sideWalk.getRoad().getStructureParts().getRoad(0).getListSideWalks().get(0);
+			}
+			else if (nextDirection == OrientedDirection.NS || nextDirection == OrientedDirection.SN) {
+    			this.sideWalk = this.sideWalk.getRoad().getStructureParts().getRoad(1).getListSideWalks().get(0);
+			}
+		}
+		else if (node == 3) {
+			if (nextDirection == OrientedDirection.WE || nextDirection == OrientedDirection.EW) {
+    			this.sideWalk = this.sideWalk.getRoad().getStructureParts().getRoad(0).getListSideWalks().get(1);
+			}
+			else if (nextDirection == OrientedDirection.NS || nextDirection == OrientedDirection.SN) {
+    			this.sideWalk = this.sideWalk.getRoad().getStructureParts().getRoad(1).getListSideWalks().get(0);
+			}
+		}
+		else if (node == 4) {
+			if (nextDirection == OrientedDirection.WE || nextDirection == OrientedDirection.EW) {
+    			this.sideWalk = this.sideWalk.getRoad().getStructureParts().getRoad(0).getListSideWalks().get(1);
+			}
+			else if (nextDirection == OrientedDirection.NS || nextDirection == OrientedDirection.SN) {
+    			this.sideWalk = this.sideWalk.getRoad().getStructureParts().getRoad(1).getListSideWalks().get(1);
+			}
+		}
+		
+		this.pedestrianDirection = this.path.get(this.path.size()-1); //Change Pedestrian's direction
+	}
 
 	public void nextStep() {
+		System.out.println(this+":"+this.path);
 		this.computeCoverage();
 		
-		this.go();
-		//this.deviate(0.5);
-		//System.out.println("Car "+this+" looking :"+this.look(10*this.length));
+		if(isAtCrossingSection() && hasChangedDirection == false) {				
+			this.turn();
+			this.nextDirection(); //Add next direction to path
+			this.hasChangedDirection = true;
+		}
+		else if(!isAtCrossingSection() && hasChangedDirection == true) {
+			this.hasChangedDirection = false;
+		}
+		if (!stop()) {
+			this.go();
+		}
+		if (!isAtCrossingSection()) {
+			this.deviate(0.5);
+		}
+		
+
 	}
 	
 	@Override
 	public MobileType getType() {
 		return MobileType.Pedestrian;
 	}
+	
+//	public static void main(String[] args) {
+//		System.out.println(Pedestrian.pickRandDirection(true,false,false,false));
+//	}
 }
