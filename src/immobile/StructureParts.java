@@ -151,8 +151,7 @@ public class StructureParts {
 				}
 			}
 		}
-	
-		
+
 		//Adding traffic lights for pedestrian
 		
 		Road road = this.listRoads.get(1);

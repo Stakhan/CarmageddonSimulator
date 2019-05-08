@@ -3,6 +3,7 @@ package mobile;
 
 import java.util.List;
 
+import enumeration.Color;
 import enumeration.MobileType;
 import enumeration.Orientation;
 import enumeration.OrientedDirection;
@@ -19,6 +20,7 @@ public class Pedestrian extends MobileObject{
 	private double velocity;
 	private SideWalk sideWalk;
 	private OrientedDirection pedestrianDirection;
+	private boolean hasAlreadyTurned; // this boolean is used to know if a pedestrian already turned on a bigger crossing section. Useful for crossing methods
 	private List<enumeration.OrientedDirection> path;
 
 	
@@ -58,10 +60,11 @@ public class Pedestrian extends MobileObject{
 		
 		this.waitingTime = 0;
 		this.crossingDuration = 0;
-		this.velocity = 0.8/3.6;
+		this.velocity = 1;
 		this.pedestrianDirection = pedestrianDirection;
 		this.sideWalk = sideWalk;
 		this.movingParts = movingParts;
+		this.hasAlreadyTurned = false;
 	}
 	
 	
@@ -81,7 +84,7 @@ public class Pedestrian extends MobileObject{
 		
 		this.waitingTime = 0;
 		this.crossingDuration = 0;
-		this.velocity = 0.8/3.6;
+		this.velocity = 1;
 		this.pedestrianDirection = pedestrianDirection;
 		this.length = 1;
 		this.height = 1;
@@ -166,10 +169,9 @@ public class Pedestrian extends MobileObject{
 public void go() {
 		
 		
-		// the car goes to velocity*0,8 cells per state
-		int distance = (int) (this.velocity*3.6/0.8); //int sup
+		// the pedestrian goes to velocity*0,8 cells per state
+		int distance = (int) (this.velocity/1); //int sup
 
-		
 		if (!this.inGarage()) { //Test if a pedestrian is in garage position
 			switch (pedestrianDirection) {
 			case NS: 
@@ -217,7 +219,10 @@ public void go() {
 
 
 
-	
+	/**
+	 * Deviate methods, it moves the position of the pedestrian to another case, only on a sidewalk
+	 * @param proba : the probability to deviate
+	 */
 	public void deviate(double proba) {
 
 		Cell[][] grid = this.movingParts.getSimulation().getStructureParts().getStructGrid(); // get the grid of the simulation, to know the position of the different sidewalk
@@ -272,26 +277,114 @@ public void go() {
 
 	}
 	
-
-	public void lookTrafficLight() {
-		
+	
+	/**
+	 * Getter, return the orientation of the pedestrian
+	 * @return Orientation
+	 */
+	public Orientation getOrientation() {
+		// get the orientation of the pedestrian, to know which traffic light he needs to take into account
+		Orientation orientation = Orientation.Vertical;
+		if ((pedestrianDirection == OrientedDirection.NS)||(pedestrianDirection == OrientedDirection.SN)) {
+			orientation = Orientation.Horizontal;
+		}
+		return orientation;
+	}
+	
+	
+	/**
+	 * This method compute the local position of a pedestrian, to know if he is at a crossing section
+	 * @return boolean : true if he is at a crossing section
+	 */
+	public boolean isAtCrossingSection() {
 		Cell[][] grid = this.movingParts.getSimulation().getStructureParts().getStructGrid(); // get the grid of the simulation, to know the position of the different sidewalk
-		
-		//if (grid[position[1]][position[0]].getContainedLights()[0])
-		
-		
+		if (grid[position[0]][position[1]].getContainedLights().size() != 0) {
+			return true;
+		}
+		return false;		
+	}
+	
+	
+	/**
+	 * This methods is used to know if the next movement of the pedestrian will be on a pedestrian crossing, or if he stays on the side walk.
+	 * @return boolean : true the pedestrian will cross the road
+	 */
+	public boolean pedestrianCrossing() {
+		Cell[][] grid = this.movingParts.getSimulation().getStructureParts().getStructGrid();
+		// get the grid of the simulation, to know the position of the different sidewalk
+		if (isAtCrossingSection()) {
+			// if he is at a crossing section
+			int distance = (int) (this.velocity/1); // compute his distance
+			switch(pedestrianDirection) {
+			case NS:
+				if (grid[position[0] + distance][position[1]].contains(StructureType.Lane)) {
+					// if the next case is a road
+					return true;
+				}
+				break;
+			case SN:
+				if (grid[position[0] - distance][position[1]].contains(StructureType.Lane)) {
+					return true;
+				}
+				break;
+			case WE:
+				if (grid[position[0]][position[1] + distance].contains(StructureType.Lane)) {
+					return true;
+				}
+				break;
+			case EW:
+				if (grid[position[0]][position[1] - distance].contains(StructureType.Lane)) {
+					return true;
+				}
+				break;
+			}
+		}
+		return false;
 	}
 
 
-
+	/**
+	 * This methods is used to know if the pedestrian needs to stop and wait at a crossing section.
+	 * In that case, the crossing duration is taking into account.
+	 * @return boolean : true the pedestrian needs to stop
+	 */
+	public boolean stop() {
+		Cell[][] grid = this.movingParts.getSimulation().getStructureParts().getStructGrid();
+		
+		if (isAtCrossingSection()) {
+			if (pedestrianCrossing()) {
+				System.out.println(true);
+				Orientation orientation = getOrientation();
+				switch (orientation) {
+				case Vertical:
+					if (grid[position[0]][position[1]].getContainedLights().get(0).getCurrentColor() == Color.Red) {
+						return true;
+					}
+					break;
+				case Horizontal:
+					if (grid[position[0]][position[1]].getContainedLights().get(1).getCurrentColor() == Color.Red) {
+						return true;
+					}
+					break;
+				} // end switch
+			}
+		}
+		return false;
+	}
 
 
 
 
 	public void nextStep() {
 		this.computeCoverage();
-		this.go();
-		//this.deviate(0.5);
+		if (!stop()) {
+			this.go();
+		}
+		//this.go();
+		if (!isAtCrossingSection()) {
+			this.deviate(0.5);
+		}
+
 		//System.out.println("Car "+this+" looking :"+this.look(10*this.length));
 	}
 	
