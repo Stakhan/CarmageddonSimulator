@@ -152,7 +152,7 @@ public class GridPanel extends JPanel implements KeyListener{
 
 					else { //In case it doesn't contain a MobileObject
 						
-						if(grid[i][j].getcontainedLights().size() != 0) {
+						if(grid[i][j].getContainedLights().size() != 0) {
 							g2d.setPaint(Color.orange); 
 							g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 						}

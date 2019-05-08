@@ -92,7 +92,7 @@ public class Cell implements Cloneable{
 		return containedRoads;
 	}
 	
-	public List<TrafficLight> getcontainedLights() {
+	public List<TrafficLight> getContainedLights() {
 		return containedLights;
 	}
 	

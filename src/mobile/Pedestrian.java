@@ -8,8 +8,25 @@ import enumeration.MobileType;
 public class Pedestrian extends MobileObject{
 
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	private List<enumeration.OrientedDirection> path;
-
+	
+	public void nextDirection() {
+		if (this.path.size() == 0) {
+			
+		}
+	}
+	
 	public Pedestrian(MovingParts movingParts, int[] position) {
 		
 		super(2, 3, position);
