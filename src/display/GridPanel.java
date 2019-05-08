@@ -1,6 +1,7 @@
 package display;
 
 import java.awt.BasicStroke;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -21,6 +22,12 @@ import engine.Simulation;
 import enumeration.MobileType;
 import enumeration.Profil;
 import enumeration.StructureType;
+
+import enumeration.ObstacleType;
+import enumeration.OrientedDirection;
+import enumeration.ObstacleType;
+import immobile.lights.TrafficLight;
+
 import immobile.structures.Lane;
 import immobile.structures.Structure;
 import mobile.Car;
@@ -121,6 +128,9 @@ public class GridPanel extends JPanel implements KeyListener{
 		
 		
 		Cell[][] grid = this.displayState.getGrid();
+		
+		
+		
 		
 		//Go over all cells of the grid
 		for(int i=0; i<structConfig.columnNb; i++) {
@@ -225,6 +235,7 @@ public class GridPanel extends JPanel implements KeyListener{
 			}
 		}
 		
+
 		//Display traffic lights
 		
 		//get current color for road 0
@@ -299,6 +310,7 @@ public class GridPanel extends JPanel implements KeyListener{
 		int j=92;
 		g2d.setPaint(Color.magenta);
 		//g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
+
 	}
 	
 	@Override
@@ -365,10 +377,14 @@ public class GridPanel extends JPanel implements KeyListener{
 		if ((key == KeyEvent.VK_L)) {
 			for (Car car : this.simulation.getMovingParts().getListCars()) {
 				System.out.println("Car "+car+" looking :"+car.getVision().look().toString());
+
 			}
+
 
 		}
 	}
+			
+	
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {

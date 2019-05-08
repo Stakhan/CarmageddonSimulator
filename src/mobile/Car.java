@@ -235,7 +235,7 @@ public class Car extends MobileObject {
 				else { //In case it leaves the simulation
 					this.park();
 				}
-				
+
 				break;
 			case SN:
 				if (position[1] - distance >= 0) {
@@ -266,8 +266,7 @@ public class Car extends MobileObject {
 	    		break;
 			}
 		}
-		
-		
+
 	}
 
 	

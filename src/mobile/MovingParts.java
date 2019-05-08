@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import engine.Simulation;
+import enumeration.OrientedDirection;
 import enumeration.Profil;
 import immobile.StructureParts;
 
@@ -35,10 +36,15 @@ public class MovingParts {
 		listCars.add(new Car(this, "voiture", 5, 3, Profil.crazy, 0, 2, 10, this.simulation.getStructureParts().getRoad(1).getLane(1)));
 		
 		//TESTING ONLY: adding a pedestrian on the Road
-		int[] position = {92,92};
-		listPedestrians.add(new Pedestrian(this, position));
+
+		int[] position = {0,94};
+		listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.WE, this.simulation.getStructureParts().getRoad(0).getSideWalk(0)));
+		listPedestrians.add(new Pedestrian(this, 3, 3, OrientedDirection.NS, this.simulation.getStructureParts().getRoad(1).getSideWalk(0)));
+		listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.EW, this.simulation.getStructureParts().getRoad(0).getSideWalk(0)));
+		listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.SN, this.simulation.getStructureParts().getRoad(1).getSideWalk(0)));
 		
 	}
+	
 	
 	//Getters
 	

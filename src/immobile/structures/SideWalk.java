@@ -1,23 +1,27 @@
 package immobile.structures;
 
+import enumeration.Orientation;
+import enumeration.OrientedDirection;
 import enumeration.StructureType;
 import enumeration.ObstacleType;
 
 public class SideWalk extends Structure {
 	
-	private Road road;
+
+	private Road containingRoad;
 	
-	public SideWalk(Road road) {
-		this.road = road;
+	
+	public SideWalk(Road containingRoad) {
+		this.containingRoad = containingRoad;
 	}
+
 	
+	// Getters
+		public Road getRoad() {
+			return containingRoad;
+		}
 	
-	//Getters
-	
-	public Road getRoad() {
-		return road;
-	}
-	
+
 	
 	@Override
 	public StructureType getType() {

@@ -46,6 +46,7 @@ public class Simulation {
 			car.nextStep();
 			car.draw(initState.getGrid());
 		}
+
 		//updating pedestrians
 		for(Pedestrian ped : this.getMovingParts().getListPedestrians()) {
 			if (!ped.inGarage()) { //Make sure car is in simulation
@@ -55,7 +56,6 @@ public class Simulation {
 		}
 		//updating traffic light system
 		this.structureParts.getTrafficLightSystem().nextStep(initState.getStep());
-		
 		listStates.add(initState);
 		
 	}
@@ -71,15 +71,18 @@ public class Simulation {
 				car.draw(next.getGrid());
 			}
 		}
+		
 		//updating pedestrians
 		for(Pedestrian ped : this.getMovingParts().getListPedestrians()) {
 			if (!ped.inGarage()) { //Make sure car is in simulation
-				//ped.nextStep();
+				ped.nextStep();
 				ped.draw(next.getGrid());
 			}
 		}
+
 		//updating traffic light system
 		this.structureParts.getTrafficLightSystem().nextStep(next.getStep());
+
 		 
 		listStates.add(next); //compute next state and add it to the list of states
 	}

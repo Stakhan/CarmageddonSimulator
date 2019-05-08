@@ -11,6 +11,7 @@ import java.nio.file.StandardOpenOption;
 import engine.Simulation;
 import immobile.lights.TrafficLightSystem;
 import mobile.Car;
+import mobile.Pedestrian;
 
 public class SimulationState {
 	/**
@@ -49,6 +50,13 @@ public class SimulationState {
 			if (!car.inGarage()) { //Make sure car is in simulation
 				car.nextStep();
 				car.draw(next.getGrid());
+			}
+		}
+		
+		for(Pedestrian pedestrian : simulation.getMovingParts().getListPedestrians()) {
+			if (!pedestrian.inGarage()) { //Make sure pedestrian is in simulation
+				pedestrian.nextStep();
+				pedestrian.draw(next.getGrid());
 			}
 		}
 		
