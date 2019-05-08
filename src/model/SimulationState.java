@@ -51,7 +51,7 @@ public class SimulationState {
 		}
 		
 		for(Pedestrian pedestrian : simulation.getMovingParts().getListPedestrians()) {
-			if (!pedestrian.inGarage()) { //Make sure car is in simulation
+			if (!pedestrian.inGarage()) { //Make sure pedestrian is in simulation
 				pedestrian.nextStep();
 				pedestrian.draw(next.getGrid());
 			}

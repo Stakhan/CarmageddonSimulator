@@ -221,57 +221,53 @@ public void go() {
 		double random = Math.random();
 		
 		if (random < proba) {
-			
-		}
-
-		
-		if ((pedestrianDirection == OrientedDirection.WE)||(pedestrianDirection == OrientedDirection.EW)) {
-			if ((grid[x + (int) length/2 + 1][y].contains(StructureType.SideWalk))&&(grid[x - (int) length/2 - 1][y].contains(StructureType.SideWalk))) {
-				double rd = Math.random();
-				if (rd < 0.5) {
-					System.out.println(Math.random());
+			if ((pedestrianDirection == OrientedDirection.WE)||(pedestrianDirection == OrientedDirection.EW)) {
+				if ((grid[x + (int) length/2 + 1][y].contains(StructureType.SideWalk))&&(grid[x - (int) length/2 - 1][y].contains(StructureType.SideWalk))) {
+					double rd = Math.random();
+					if (rd < 0.5) {
+						System.out.println(Math.random());
+						position[0] += 1;
+					}
+					else {
+						System.out.println(true);
+						position[0] -= 1;
+					}
+				}
+				
+				if (grid[x + (int) length/2 + 1][y].contains(StructureType.SideWalk)) {
 					position[0] += 1;
 				}
-				else {
-					System.out.println(true);
+				if (grid[x - (int) length/2 - 1][y].contains(StructureType.SideWalk)) {
 					position[0] -= 1;
 				}
-			}
+			} // end
 			
-			if (grid[x + (int) length/2 + 1][y].contains(StructureType.SideWalk)) {
-				position[0] += 1;
-			}
-			if (grid[x - (int) length/2 - 1][y].contains(StructureType.SideWalk)) {
-				position[0] -= 1;
-			}
-		} //end
-		
-		if ((pedestrianDirection == OrientedDirection.NS)||(pedestrianDirection == OrientedDirection.SN)) {
-			if ((grid[x][y + (int) length/2 + 1].contains(StructureType.SideWalk))&&(grid[x][y - (int) length/2 - 1].contains(StructureType.SideWalk))) {
-				double rd = Math.random();
-				if (rd < 0.5) {
-					System.out.println(Math.random());
+			if ((pedestrianDirection == OrientedDirection.NS)||(pedestrianDirection == OrientedDirection.SN)) {
+				if ((grid[x][y + (int) length/2 + 1].contains(StructureType.SideWalk))&&(grid[x][y - (int) length/2 - 1].contains(StructureType.SideWalk))) {
+					double rd = Math.random();
+					if (rd < 0.5) {
+						System.out.println(Math.random());
+						position[1] += 1;
+					}
+					else {
+						System.out.println(true);
+						position[1] -= 1;
+					}
+				}
+				
+				if (grid[x][y + (int) length/2 + 1].contains(StructureType.SideWalk)) {
 					position[1] += 1;
 				}
-				else {
-					System.out.println(true);
+				if (grid[x][y - (int) length/2 - 1].contains(StructureType.SideWalk)) {
 					position[1] -= 1;
 				}
-			}
-			
-			if (grid[x][y + (int) length/2 + 1].contains(StructureType.SideWalk)) {
-				position[1] += 1;
-			}
-			if (grid[x][y - (int) length/2 - 1].contains(StructureType.SideWalk)) {
-				position[1] -= 1;
-			}
-		} //end
-		
-		
+			} // end
+		} // end if proba
+
 	}
 	
 
-
+	
 
 
 
@@ -286,7 +282,7 @@ public void go() {
 	public void nextStep() {
 		this.computeCoverage();
 		this.go();
-		this.deviate(1);
+		this.deviate(0.5);
 		//System.out.println("Car "+this+" looking :"+this.look(10*this.length));
 	}
 	
