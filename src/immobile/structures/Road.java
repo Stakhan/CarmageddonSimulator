@@ -105,6 +105,9 @@ public class Road {
 	public List<Lane> getListLanes() {
 		return listLanes;
 	}
+	public List<SideWalk> getListSideWalks() {
+		return listSideWalks;
+	}
 	public int getLength() {
 		return length;	
 	}

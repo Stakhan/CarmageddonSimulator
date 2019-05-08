@@ -2,6 +2,7 @@ package immobile.lights;
 
 import enumeration.Color;
 import immobile.structures.Road;
+import model.Cell;
 
 /**
 * Abstract Traffic Light class
@@ -58,5 +59,10 @@ public abstract class TrafficLight {
 	
 	public Color getCurrentColor() {
 		return currentColor;
+	}
+	
+	@Override
+	protected TrafficLight clone() {
+		return new TrafficLightCar(this.road, this.currentColor);
 	}
 }

@@ -92,7 +92,7 @@ public class Vision {
 					return new Obstacle(distance, ObstacleType.Pedestrian);
 				}
 			}
-			else if (grid[i][j].getTrafficLight() != null) {
+			else if (grid[i][j].getContainedLights().size() != 0) {
 				return new Obstacle(distance, ObstacleType.TrafficLight);
 			}
 			distance++;

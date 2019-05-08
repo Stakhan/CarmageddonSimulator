@@ -41,16 +41,21 @@ public class Simulation {
 		this.movingParts.generate(); //Adding MobileObjects to the simulation
 		
 		SimulationState initState = new SimulationState(this, 0);
+		
 		for(Car car : this.getMovingParts().getListCars()) {
-			//car.nextStep();
+			car.nextStep();
 			car.draw(initState.getGrid());
 		}
-		
-		for(Pedestrian pedestrian : this.getMovingParts().getListPedestrians()) {
-			//pedestrian.nextStep();
-			pedestrian.draw(initState.getGrid());
+
+		//updating pedestrians
+		for(Pedestrian ped : this.getMovingParts().getListPedestrians()) {
+			if (!ped.inGarage()) { //Make sure car is in simulation
+				//ped.nextStep();
+				ped.draw(initState.getGrid());
+			}
 		}
-		
+		//updating traffic light system
+		this.structureParts.getTrafficLightSystem().nextStep(initState.getStep());
 		listStates.add(initState);
 		
 	}

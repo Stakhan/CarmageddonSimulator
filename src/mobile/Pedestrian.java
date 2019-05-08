@@ -1,5 +1,8 @@
 package mobile;
 
+
+import java.util.List;
+
 import enumeration.MobileType;
 import enumeration.Orientation;
 import enumeration.OrientedDirection;
@@ -15,14 +18,18 @@ public class Pedestrian extends MobileObject{
 	private MovingParts movingParts;
 	private double velocity;
 	private SideWalk sideWalk;
-	OrientedDirection pedestrianDirection;
-	
+	private OrientedDirection pedestrianDirection;
+	private List<enumeration.OrientedDirection> path;
+
 	
 	/**
 	 * First constructor, with position
 	 * @param movingParts
 	 * @param position
 	 */
+	
+
+
 	public Pedestrian(MovingParts movingParts, int[] position) {
 		
 		super(1, 1, position);
@@ -160,7 +167,7 @@ public void go() {
 		
 		
 		// the car goes to velocity*0,8 cells per state
-		int distance = (int) (this.velocity*3.6/0.8) + 1; //int sup
+		int distance = (int) (this.velocity*3.6/0.8); //int sup
 
 		
 		if (!this.inGarage()) { //Test if a pedestrian is in garage position
@@ -207,7 +214,6 @@ public void go() {
 	}
 	
 	
-
 
 
 
@@ -267,7 +273,14 @@ public void go() {
 	}
 	
 
-	
+	public void lookTrafficLight() {
+		
+		Cell[][] grid = this.movingParts.getSimulation().getStructureParts().getStructGrid(); // get the grid of the simulation, to know the position of the different sidewalk
+		
+		//if (grid[position[1]][position[0]].getContainedLights()[0])
+		
+		
+	}
 
 
 
@@ -275,14 +288,10 @@ public void go() {
 
 
 
-
-
-
-	
 	public void nextStep() {
 		this.computeCoverage();
 		this.go();
-		this.deviate(0.5);
+		//this.deviate(0.5);
 		//System.out.println("Car "+this+" looking :"+this.look(10*this.length));
 	}
 	

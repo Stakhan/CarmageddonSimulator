@@ -1,16 +1,15 @@
 package display;
 
 import java.awt.BasicStroke;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
@@ -18,23 +17,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-
 import engine.Simulation;
 import enumeration.MobileType;
 import enumeration.Profil;
 import enumeration.StructureType;
+
 import enumeration.ObstacleType;
 import enumeration.OrientedDirection;
 import enumeration.ObstacleType;
 import immobile.lights.TrafficLight;
+
 import immobile.structures.Lane;
 import immobile.structures.Structure;
 import mobile.Car;
-import mobile.Pedestrian;
 import model.Cell;
 import model.ConfigureStructure;
 import model.SimulationState;
@@ -116,7 +112,7 @@ public class GridPanel extends JPanel implements KeyListener{
 	@Override
 	public void paintComponent(Graphics g) {
 		//Show grid border
-		boolean border = false;
+		boolean border = true;
 		
 		defineUnits(structConfig);
 
@@ -166,13 +162,13 @@ public class GridPanel extends JPanel implements KeyListener{
 
 					else { //In case it doesn't contain a MobileObject
 						
-						if(grid[i][j].getTrafficLight() != null) {
+						if(grid[i][j].getContainedLights().size() != 0) {
 							g2d.setPaint(Color.orange); 
 							g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 						}
 						else if(grid[i][j].contains(StructureType.SideWalk) && grid[i][j].contains(StructureType.Lane)) { //Test if it contains a Lane and a SideWalk (in that case it should be considered a Lane)
-							//Paint cell in black
-							g2d.setPaint(Color.black); 
+							//Paint cell in pink
+							g2d.setPaint(Color.pink); 
 							g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 							if(border) {
 								//Paint a white border around cell
@@ -184,7 +180,7 @@ public class GridPanel extends JPanel implements KeyListener{
 							for(Structure lane : grid[i][j].getContainedStructures()) {
 								if(((Lane)lane).getDirection() == false) {
 									//Paint cell in white
-									g2d.setPaint(Color.white);
+									g2d.setPaint(Color.lightGray);
 								}
 								else {
 									//Paint cell in black
@@ -243,7 +239,7 @@ public class GridPanel extends JPanel implements KeyListener{
 		//Display traffic lights
 		
 		//get current color for road 0
-		enumeration.Color current = this.simulation.getStructureParts().getTrafficLightSystem().getListLights().get(0).getCurrentColor(); 
+		enumeration.Color current = this.displayState.getTrafficLightSystem().getListLights().get(0).getCurrentColor(); 
 		BufferedImage imageLight = this.greenLight;
 		if (current == enumeration.Color.Green) {
 			imageLight = this.greenLight;
@@ -278,7 +274,7 @@ public class GridPanel extends JPanel implements KeyListener{
 		g2d.setTransform(backup);
 			
 		//get current color for road 1
-		current = this.simulation.getStructureParts().getTrafficLightSystem().getListLights().get(1).getCurrentColor(); 
+		current = this.displayState.getTrafficLightSystem().getListLights().get(1).getCurrentColor(); 
 		if (current == enumeration.Color.Green) {
 			imageLight = this.greenLight;
 		}
@@ -319,16 +315,17 @@ public class GridPanel extends JPanel implements KeyListener{
 	
 	@Override
 	public void keyPressed(KeyEvent e) { // pour implementer KeyListener
-		
+
 		int key = e.getKeyCode();
-		
+
 		if ((key == KeyEvent.VK_LEFT)) { // cas fleche de gauche
 			if (this.displayState.getStep() > 0) { //Make sure it's not the first state
 				this.displayState = this.simulation.getState(this.displayState.getStep()-1);
 				repaint();
 				System.out.println("step "+this.displayState.getStep()+": "+this.simulation.getState(this.displayState.getStep()).getGrid().toString());
+				System.out.println(this.displayState.getTrafficLightSystem().toString());
 			}
-			
+
 		}
 		if ((key == KeyEvent.VK_RIGHT)) {
 			//System.out.println(this.simulation.getListStates().size()+" et "+this.displayState.);
@@ -338,13 +335,12 @@ public class GridPanel extends JPanel implements KeyListener{
 			else { //if not, compute it
 				this.simulation.nextState();
 				this.displayState = this.simulation.getLastState();
-				for(Car car : simulation.getMovingParts().getListCars()) {
-					if (!car.inGarage()) { //Make sure car is in simulation
-					}
-				}
+
 			}
 			repaint();
 			System.out.println("step "+this.displayState.getStep()+": "+this.simulation.getLastState().getGrid().toString());
+			System.out.println(this.displayState.getTrafficLightSystem().toString());
+
 		}
 		if ((key == KeyEvent.VK_UP)) { 
 			this.displayState = new SimulationState(this.simulation, -1);
@@ -363,45 +359,27 @@ public class GridPanel extends JPanel implements KeyListener{
 			}
 		}
 		if ((key == KeyEvent.VK_T)) {
-//			int i = 92;
-//			int j = 92;
-//			int[] position = {i,j};
-//			this.simulation.getLastState().getGridValue(i, j).addMobileObjects(new Pedestrian(position));
-//			System.out.println("pedestrian added.");
-//			System.out.println("pedestrian? "+this.simulation.getLastState().getGridValue(i, j).contains(MobileType.Pedestrian));
-//			repaint();
+			//			int i = 92;
+			//			int j = 92;
+			//			int[] position = {i,j};
+			//			this.simulation.getLastState().getGridValue(i, j).addMobileObjects(new Pedestrian(position));
+			//			System.out.println("pedestrian added.");
+			//			System.out.println("pedestrian? "+this.simulation.getLastState().getGridValue(i, j).contains(MobileType.Pedestrian));
+			//			repaint();
 			System.out.println(this.simulation.getMovingParts().getListPedestrians().size());
 			System.out.println(this.simulation.getMovingParts().getListPedestrians().get(0).getObjectCoverage().toString());
 			for(Integer[] coord : this.simulation.getMovingParts().getListPedestrians().get(0).getObjectCoverage()) {
 				System.out.println("coverage: "+coord[0]+","+coord[1]);
 			}
-			
-			
+
+
 		}
 		if ((key == KeyEvent.VK_L)) {
 			for (Car car : this.simulation.getMovingParts().getListCars()) {
 				System.out.println("Car "+car+" looking :"+car.getVision().look().toString());
 
 			}
-		}	
-		if ((key == KeyEvent.VK_A)) {
-			System.out.println(this.simulation.getLastState().getGridValue(92, 92).contains(MobileType.Pedestrian));
 
-		}
-		if ((key == KeyEvent.VK_P)) {
-			int i = 92;
-			int j = 92;
-			int[] position = {i, j};
-			
-			this.simulation.getMovingParts().getListPedestrians().add(new Pedestrian(this.simulation.getMovingParts(), 1, 1, 
-					OrientedDirection.WE, this.simulation.getStructureParts().getRoad(0).getSideWalk(0)));
-			
-			//this.simulation.getMovingParts().getListPedestrians().add(new Pedestrian(this.simulation.getMovingParts(), position));
-			/**
-			this.simulation.getLastState().getGridValue(i, j).addMobileObjects(
-					new Pedestrian(this.simulation.getMovingParts(), position));
-					*/
-			System.out.println("pedestrian created at " + i + "," + j);
 
 		}
 	}
@@ -411,13 +389,13 @@ public class GridPanel extends JPanel implements KeyListener{
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 

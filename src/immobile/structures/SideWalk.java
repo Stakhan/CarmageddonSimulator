@@ -7,6 +7,7 @@ import enumeration.ObstacleType;
 
 public class SideWalk extends Structure {
 	
+
 	private Road containingRoad;
 	
 	
@@ -20,7 +21,7 @@ public class SideWalk extends Structure {
 			return containingRoad;
 		}
 	
-	
+
 	
 	@Override
 	public StructureType getType() {
