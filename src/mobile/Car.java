@@ -84,7 +84,7 @@ public class Car extends MobileObject {
 		this.crossingDuration = 0;
 		this.waitingTime = 0;
 		
-		this.vision = new Vision(this);
+		this.vision = new Vision(10, this);
 		this.vision.update();
 		
 		this.destination = this.destinationRandom();
@@ -193,27 +193,7 @@ public class Car extends MobileObject {
 	public void nextStep() {
 		this.go();
 		this.computeCoverage(this.movingParts);
-		this.changeVelocity(true);
-		this.vision.update();
-//		System.out.println(this+" position: "+position[0]+","+position[1]);
-//		String vis = "";
-//		for(Integer[] view: vision.getViewSpan()) {
-//			vis+= "|"+view[0]+","+view[1];
-//		}
-//		System.out.println(this+"vision: "+vis);
 		
-		//System.out.println("Car "+this+" looking :"+this.look(10*this.length));
-	}
-	
-	/**
-	 * Changes the velocity of the car depending on the profil of its driver and whether there shall be acceleration or deceleration
-	 */
-	public void changeVelocity(boolean accelerate) {
-		
-		int sign = 1; //Positve or negative (accelerate or decelerate)
-		if (!accelerate) {
-			sign = -1;
-
 		int distanceIntersection = this.vision.getViewSpanDepth() + 1;
 
 		// Span view limitation if the driver wants to turn
@@ -232,7 +212,7 @@ public class Car extends MobileObject {
 				this.changeVelocity(this.maxVelocity);
 			}
 			else {
-				this.changeVelocity(this.velocityCalculation(20, distanceIntersection)); 
+				this.changeVelocity(this.velocityCalculation(7, distanceIntersection)); // Velocity to turn = 20 km/h = 7 boxes
 				if (this.velocity > distanceIntersection) this.turn(distanceIntersection);
 			}
 		}
@@ -241,12 +221,10 @@ public class Car extends MobileObject {
 					this.changeVelocity(this.velocityCalculation(0, obstacle.getDistance()));
 				}
 				else {
-					int distanceMaxBrake = this.velocity - maxBrake;
 					this.velocity -= maxBrake;
 				}
 			}
 		}
-	}
 	
 	/**
 	 * changes the position of the car
@@ -407,12 +385,12 @@ public class Car extends MobileObject {
 		int[] position = {-1, -1};
 		if (!this.lane.equals(this.destination)) {
 			if (this.lane.getRoad().getOrientation().equals(Orientation.Horizontal)) {
-				position[0] = (this.destination.getRoad().position - this.destination.getCarPositionOnRoad());
-				position[1] = (this.lane.getRoad().position + this.lane.getCarPositionOnRoad());
+				position[0] = (this.destination.getRoad().getPosition() + this.destination.getCarPositionOnRoad());
+				position[1] = (this.lane.getRoad().getPosition() + this.lane.getCarPositionOnRoad());
 			}
 			else if (this.lane.getRoad().getOrientation().equals(Orientation.Vertical)) {
-				position[0] = (this.lane.getRoad().position - this.lane.getCarPositionOnRoad());
-				position[1] = (this.destination.getRoad().position + this.destination.getCarPositionOnRoad());
+				position[0] = (this.lane.getRoad().getPosition() + this.lane.getCarPositionOnRoad());
+				position[1] = (this.destination.getRoad().getPosition() + this.destination.getCarPositionOnRoad());
 			}
 		}
 		return position;
@@ -428,6 +406,9 @@ public class Car extends MobileObject {
 	}
 	public int getMaxVelocity() {
 		return maxVelocity;
+	}
+	public int getMaxChange() {
+		return maxChange;
 	}
 	public Lane getLane() {
 		return lane;
@@ -447,25 +428,23 @@ public class Car extends MobileObject {
 	public double getCrossingDuration() {
 		return crossingDuration;
 	}
-	
-
+		
 	public static void main(String args[]){
-		ConfigureStructure structConfig = new ConfigureStructure(120, 120);
+		ConfigureStructure structConfig = new ConfigureStructure(100, 700, true);
 		StructureParts structureParts = new StructureParts(structConfig);
 		Simulation simulation = new Simulation(structConfig);
 		MovingParts movingParts = new MovingParts(simulation, structureParts);
 		// Lane lane = structureParts.getRoad(0).getLane(0);
-		for (int i=0; i<10; i++) {
-			Car car = new Car(movingParts, "voiture", 5, 3, Profil.slow, 10, 17, structureParts.getRoad(0).getLane(0));
-//			System.out.println(car.destinationRandom().getOrientedDirection());
-			System.out.println("position pour "+car.lane.getOrientedDirection()+"/"+car.destination.getOrientedDirection()+" : "+car.intersectionCalculation()[0]+", "+car.intersectionCalculation()[1]);
-			System.out.println("intersection : "+car.intersectionCalculation()[0]+", "+car.intersectionCalculation()[0]);
-		}
-		Car car2 = new Car(movingParts, "voiture", 5, 3, Profil.respectful, 10, 17, structureParts.getRoad(1).getLane(0));
-		System.out.println("position car2 : x="+car2.position[0]+" y="+car2.position[1]+" on lane "+car2.lane.getOrientedDirection());
-		
-		
+		Car car = new Car(movingParts, "voiture", 5, 3, Profil.respectful, 10, 17, structureParts.getRoad(0).getLane(0));
+		car.destination = structureParts.getRoad(1).getLane(0);
+		System.out.println("intersection : "+car.intersectionCalculation()[0]+", "+car.intersectionCalculation()[1]);
+		System.out.println("velocity : "+car.velocity+", vue "+car.vision.getViewSpanDepth());
+		car.nextStep();
 		/*
+		int x_pos = car.destination.getRoad().getPosition() + car.destination.getCarPositionOnRoad();
+		int y_pos = car.lane.getRoad().getPosition() + car.lane.getCarPositionOnRoad();
+		System.out.println("position pour "+car.lane.getOrientedDirection()+"/"+car.destination.getOrientedDirection()+" : "+x_pos+", "+y_pos);
+		
 		Car car = new Car(movingParts, "voiture", 5, 3, Profil.slow, 10, 17, structureParts.getRoad(0).getLane(0));
 		System.out.println("id : "+car+", model : "+", profile : "+car.profil);
 		System.out.println("destination : "+car.destination);

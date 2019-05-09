@@ -303,10 +303,10 @@ public class GridPanel extends JPanel implements KeyListener{
 		g2d.setTransform(backup);
 		
 		// TESTING ONLY: Painting single cell
-//		int i= 52;
-//		int j = 30;
-//		g2d.setPaint(Color.blue);
-//		g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
+		int i= 53;
+		int j = 48;
+		g2d.setPaint(Color.blue);
+		g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 //		 i= 52;
 //		 j = 10;
 //		g2d.setPaint(Color.blue);

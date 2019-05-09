@@ -22,12 +22,6 @@ public class Vision {
 			this.car = car;
 		}
 
-	public Vision(Car car) {
-		this.viewSpanDepth = Math.round(20 + car.getVelocity() / car.getMaxVelocity() * 40); // visibility depends on velocity, between 20 and 35
-		this.viewSpan = new ArrayList<Integer[]>();
-		this.car = car;
-	}
-	
 	/**
 	 * Update the cells coordinates of the view span of the MobileObject
 	 */
@@ -36,8 +30,9 @@ public class Vision {
 			OrientedDirection carDirection = this.car.getLane().getOrientedDirection();
 			int[] position = this.car.getPosition();
 			int length = this.car.getLength();
-
+			
 			this.viewSpan.clear(); //Clear previous viewSpan
+			this.viewSpanDepth = this.viewSpanDepthCalculation();
 			
 			int i = position[1]-1;
 			int j = position[0]-1;
@@ -77,6 +72,13 @@ public class Vision {
 //			Collections.reverse(this.viewSpan);				
 		}
 	
+	/*
+	 * Visibility depends on velocity, between 20 and 50
+	 */
+	private int viewSpanDepthCalculation() {
+		return Math.round(this.car.getMaxChange()*3);
+	}
+
 	public Obstacle look() {
 		
 		Obstacle obstacle = new Obstacle(0, ObstacleType.Empty);
