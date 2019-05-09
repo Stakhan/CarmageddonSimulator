@@ -6,7 +6,6 @@ import java.util.List;
 import enumeration.MobileType;
 import enumeration.StructureType;
 
-import java.lang.Class;
 
 import immobile.lights.TrafficLight;
 import immobile.structures.Road;

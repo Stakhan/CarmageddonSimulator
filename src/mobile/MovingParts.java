@@ -30,10 +30,11 @@ public class MovingParts {
 	 */
 	public void generate() {
 		//TESTING ONLY : one car for each direction of each lane
-//		listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 2, 20, this.simulation.getStructureParts().getRoad(0).getLane(0)));
-//		listCars.add(new Car(this, "voiture", 5, 3, Profil.crazy, 0, 2, 10, this.simulation.getStructureParts().getRoad(0).getLane(1)));
-//		listCars.add(new Car(this, "voiture", 5, 3, Profil.crazy, 0, 2, 10, this.simulation.getStructureParts().getRoad(1).getLane(0)));
-//		listCars.add(new Car(this, "voiture", 5, 3, Profil.crazy, 0, 2, 10, this.simulation.getStructureParts().getRoad(1).getLane(1)));
+
+		listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 2, 17, this.simulation.getStructureParts().getRoad(0).getLane(0)));
+		listCars.add(new Car(this, "voiture", 5, 3, Profil.crazy, 3, 10, this.simulation.getStructureParts().getRoad(0).getLane(1)));
+		listCars.add(new Car(this, "voiture", 5, 3, Profil.crazy, 4, 10, this.simulation.getStructureParts().getRoad(1).getLane(0)));
+		listCars.add(new Car(this, "voiture", 5, 3, Profil.crazy, 5, 10, this.simulation.getStructureParts().getRoad(1).getLane(1)));
 		
 		//TESTING ONLY: adding a pedestrian on the Road
 
@@ -98,18 +99,18 @@ public class MovingParts {
 		// Change possible : Initialize with probability a profil, velocity...
 		if (Math.random() < 0.5) {
 			if (Math.random() < 0.5) {
-				listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 2, 20, this.simulation.getStructureParts().getRoad(0).getLane(0)));
+				listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 2, this.simulation.getStructureParts().getRoad(0).getLane(0)));
 			}
 			else {
-				listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 2, 20, this.simulation.getStructureParts().getRoad(0).getLane(1)));
+				listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 2, this.simulation.getStructureParts().getRoad(0).getLane(1)));
 			}
 		}
 		else {
 			if (Math.random() < 0.5) {
-				listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 2, 20, this.simulation.getStructureParts().getRoad(1).getLane(0)));
+				listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 2, this.simulation.getStructureParts().getRoad(1).getLane(0)));
 			}
 			else {
-				listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 2, 20, this.simulation.getStructureParts().getRoad(1).getLane(1)));
+				listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 2, this.simulation.getStructureParts().getRoad(1).getLane(1)));
 			}
 		}
 	}

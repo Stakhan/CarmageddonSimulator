@@ -19,4 +19,10 @@ public class Obstacle {
 	public String toString() {
 		return this.type+" at "+this.distance;
 	}
+	public int getDistance() {
+		return distance;
+	}
+	public ObstacleType getType() {
+		return type;
+	}
 }

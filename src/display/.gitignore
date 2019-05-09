@@ -9,6 +9,7 @@
 /LightPanel.class
 >>>>>>> dafbf8fce71a1fe83ac299da35d492f932adfc20
 <<<<<<< HEAD
+<<<<<<< HEAD
 /GridPanel$1.class
 /ComputeGridWorker.class
 =======
@@ -25,3 +26,7 @@
 /Window$6.class
 /Window$7.class
 >>>>>>> 6ea3df7e199f60f28a8e539a0aaea78da2d11e8e
+=======
+/WindowTest.class
+/MyFirstJFrame.class
+>>>>>>> 6a5be576ebc98c9d2a08e562aca340778dde72d7

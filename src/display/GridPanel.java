@@ -15,23 +15,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
-
 import engine.Simulation;
 import enumeration.MobileType;
 import enumeration.Profil;
 import enumeration.StructureType;
 
-import enumeration.ObstacleType;
 import enumeration.OrientedDirection;
-import enumeration.ObstacleType;
-import immobile.lights.TrafficLight;
-
 import immobile.structures.Lane;
 import immobile.structures.Structure;
 import mobile.Car;
@@ -66,7 +57,6 @@ public class GridPanel extends JPanel implements KeyListener{
 		try {
 			initImages();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -389,10 +379,11 @@ public class GridPanel extends JPanel implements KeyListener{
 		}
 		if ((key == KeyEvent.VK_C)) {
 			if(this.simulation.getStructureParts().getRoad(0).getLane(1).testAvailability(5, this.displayState)) { //Test if room available for poping
-				this.simulation.getMovingParts().getListCars().add(new Car(this.simulation.getMovingParts(), "voiture", 5, 3, Profil.respectful, 0, 2, 10, this.simulation.getStructureParts().getRoad(0).getLane(1)));
+				this.simulation.getMovingParts().getListCars().add(new Car(this.simulation.getMovingParts(), "voiture", 5, 3, Profil.respectful, 0, 2, this.simulation.getStructureParts().getRoad(0).getLane(1)));
 				this.simulation.getMovingParts().getLastCar().nextStep();
 				this.simulation.getMovingParts().getLastCar().draw(this.displayState.getGrid());
 				repaint();
+
 			}
 			
 		}

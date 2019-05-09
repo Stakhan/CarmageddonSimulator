@@ -34,8 +34,8 @@ public class Lane extends Structure {
 		
 		int[] coord = Car.initializeCarPosition(state.getGrid(), this, length, 3);
 		int roadPosition = containingRoad.getPosition();
-		int carPositionOnRoad = containingRoad.getSideWalkSize() + containingRoad.getLaneSize()*(containingRoad.getIndexOfLane(this)+1) - ((int) containingRoad.getLaneSize()/2);
-		
+ 		int carPositionOnRoad = getCarPositionOnRoad();
+ 		
 		int x = coord[0];
 		int y = coord[1];
 		switch (this.getOrientedDirection()) {
@@ -79,6 +79,9 @@ public class Lane extends Structure {
 		return StructureType.Lane;
 	}
 
+	public int getCarPositionOnRoad() {
+		return containingRoad.getSideWalkSize() + containingRoad.getLaneSize()*(containingRoad.getIndexOfLane(this)+1) - ((int) containingRoad.getLaneSize()/2);
+	}
 
 	// Getters
 	public boolean getDirection() {

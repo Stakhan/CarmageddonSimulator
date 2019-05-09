@@ -18,6 +18,12 @@ import engine.Simulation;
 import model.ConfigureStructure;
 
 public class Window extends JFrame implements ActionListener{
+	/**
+	 * Cette classe cree une fenetre simple pour l'affichage du panel affichant la simulation
+	 * 
+	 */
+	// on fait heriter notre classe de JFrame (fenetre graphique)
+	// pour pouvoir eventuellement personnaliser son comportement (surcharge)
 
 	
 	public Window(ConfigureStructure structConfig, Simulation simulation){
