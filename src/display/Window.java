@@ -214,15 +214,15 @@ public class Window extends JFrame implements ActionListener{
 		//-----------------------------------------------------------------------------------------------
 		// Next | Pause/Start | Previous
 		buttonPrevious.setBounds(simulationLength + 20,
-				(buttonHeight + 20)*4, (int) buttonLength/3, (int) buttonHeight/3);
+				(buttonHeight + 20)*4, (int) buttonLength/3, (int) buttonHeight/2);
 		content.add(buttonPrevious);
 		
 		buttonNext.setBounds(simulationLength + 20 + 2 * (int) (buttonLength/3) + 2*5,
-				(buttonHeight + 20)*4, (int) buttonLength/3, (int) buttonHeight/3);
+				(buttonHeight + 20)*4, (int) buttonLength/3, (int) buttonHeight/2);
 		content.add(buttonNext);
 		
 		buttonStart.setBounds(simulationLength + 20 + (int) (buttonLength/3) + 5,
-				(buttonHeight + 20)*4, (int) buttonLength/3, (int) buttonHeight/3);
+				(buttonHeight + 20)*4, (int) buttonLength/3, (int) buttonHeight/2);
 		content.add(buttonStart);
 		
 		//
