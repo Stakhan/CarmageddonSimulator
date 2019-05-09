@@ -72,9 +72,16 @@ public class StructWindow extends JFrame implements ActionListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String sizeString = textSize.getText();
+				//Test is the string is empty, to add a default value
+				if (sizeString.equals("")) {
+					sizeString = "100";
+				}
 				int size = Integer.parseInt(sizeString);
 				
 				String sizePixString = textPixelSize.getText();
+				if (sizePixString.equals("")) {
+					sizePixString = "700";
+				}
 				int sizePix = Integer.parseInt(sizePixString);
 
 				ConfigureStructure structConfig = new ConfigureStructure(size, sizePix, true);

@@ -1,6 +1,8 @@
 package mobile;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import enumeration.MobileType;
@@ -38,29 +40,31 @@ public class Vision {
 			int j = position[0]-1;
 			switch (carDirection) {
 				case WE:
-					for (j = position[0]+((int) length/2); j < position[0]-1 + viewSpanDepth; j++) {
+					for (j = position[0] + ((int) length/2) ; j < position[0] + ((int) length/2) + viewSpanDepth; j++) {
 						Integer[] couple = {i,j};
 						this.viewSpan.add(couple);
 					}
 					break;
 				case EW:
-					for (j = position[0]-2-((int) length/2); j > position[0]-1 - viewSpanDepth; j--) {
+					for (j = position[0]- 2 - ((int) length/2); j >= position[0] - 1 - ((int) length/2) - viewSpanDepth; j--) {
 						Integer[] couple = {i,j};
 						this.viewSpan.add(couple);
 					}
 					break;
 				case NS:
-					for (i = position[1]+((int) length/2); i < position[1]-1 + viewSpanDepth; i++) {
+					for (i = position[1] + ((int) length/2); i < position[1] + ((int) length/2) + viewSpanDepth; i++) {
 						Integer[] couple = {i,j};
 						this.viewSpan.add(couple);
 					}
 					break;
 				case SN:
-					for (i = position[1]-2-((int) length/2); i > position[1]-1 - viewSpanDepth; i--) {
+					for (i = position[1] - 2 - ((int) length/2); i > position[1] - 2 - ((int) length/2) - viewSpanDepth; i--) {
 						Integer[] couple = {i,j};
 						this.viewSpan.add(couple);
 					}
 			}
+//			System.out.println("inverting list");
+//			Collections.reverse(this.viewSpan);
 					
 		}
 	
@@ -79,8 +83,7 @@ public class Vision {
 			grid = this.car.getMovingParts().getSimulation().getStructureParts().getStructGrid();
 		}
 		
-		int distance = 0;
-		
+		int distance = 1;
 		for (Integer[] coord : this.viewSpan) {
 			int i = coord[0];
 			int j = coord[1];

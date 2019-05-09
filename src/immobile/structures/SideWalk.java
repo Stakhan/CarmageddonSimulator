@@ -17,9 +17,14 @@ public class SideWalk extends Structure {
 
 	
 	// Getters
-		public Road getRoad() {
-			return containingRoad;
-		}
+	
+	public Road getRoad() {
+		return containingRoad;
+	}
+	
+	public int getIndex() {
+		return this.containingRoad.getListSideWalks().indexOf(this);
+	}
 	
 
 	
