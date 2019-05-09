@@ -248,7 +248,7 @@ public void go() {
 		if (!this.inGarage()) { //Test if a pedestrian is in garage position
 			switch (pedestrianDirection) {
 			case NS: 
-				if (position[0] + distance <= this.sideWalk.getRoad().getLength()) { //test if a pedestrian is still inside of the simulation after movement
+				if (position[0] + distance <= this.sideWalk.getRoad().getLength() - 1) { //test if a pedestrian is still inside of the simulation after movement
 					position[0] = position[0] + distance; 
 					this.visible = true;
 				}
@@ -276,7 +276,7 @@ public void go() {
 				}
 	    		break;
 			case WE:
-				if (position[1] + distance <= this.sideWalk.getRoad().getLength()) {
+				if (position[1] + distance <= this.sideWalk.getRoad().getLength() - 1) {
 				position[1] = position[1] + distance;
 				this.visible = true;
 				}
@@ -297,53 +297,54 @@ public void go() {
 	 * @param proba : the probability to deviate
 	 */
 	public void deviate(double proba) {
-
-		Cell[][] grid = this.movingParts.getSimulation().getStructureParts().getStructGrid(); // get the grid of the simulation, to know the position of the different sidewalk
+		if (!inGarage()) {
+			Cell[][] grid = this.movingParts.getSimulation().getStructureParts().getStructGrid(); // get the grid of the simulation, to know the position of the different sidewalk
 			
-		int x = position[0];
-		int y = position[1];
-		double random = Math.random();
-		
-		if (random < proba) {
-			if ((pedestrianDirection == OrientedDirection.WE)||(pedestrianDirection == OrientedDirection.EW)) {
-				if ((grid[x + (int) length/2 + 1][y].contains(StructureType.SideWalk))&&(grid[x - (int) length/2 - 1][y].contains(StructureType.SideWalk))) {
-					double rd = Math.random();
-					if (rd < 0.5) {
+			int x = position[0];
+			int y = position[1];
+			double random = Math.random();
+			
+			if (random < proba) {
+				if ((pedestrianDirection == OrientedDirection.WE)||(pedestrianDirection == OrientedDirection.EW)) {
+					if ((grid[x + (int) length/2 + 1][y].contains(StructureType.SideWalk))&&(grid[x - (int) length/2 - 1][y].contains(StructureType.SideWalk))) {
+						double rd = Math.random();
+						if (rd < 0.5) {
+							position[0] += 1;
+						}
+						else {
+							position[0] -= 1;
+						}
+					}
+					
+					if (grid[x + (int) length/2 + 1][y].contains(StructureType.SideWalk)) {
 						position[0] += 1;
 					}
-					else {
+					if (grid[x - (int) length/2 - 1][y].contains(StructureType.SideWalk)) {
 						position[0] -= 1;
 					}
-				}
+				} // end
 				
-				if (grid[x + (int) length/2 + 1][y].contains(StructureType.SideWalk)) {
-					position[0] += 1;
-				}
-				if (grid[x - (int) length/2 - 1][y].contains(StructureType.SideWalk)) {
-					position[0] -= 1;
-				}
-			} // end
-			
-			if ((pedestrianDirection == OrientedDirection.NS)||(pedestrianDirection == OrientedDirection.SN)) {
-				if ((grid[x][y + (int) length/2 + 1].contains(StructureType.SideWalk))&&(grid[x][y - (int) length/2 - 1].contains(StructureType.SideWalk))) {
-					double rd = Math.random();
-					if (rd < 0.5) {
+				if ((pedestrianDirection == OrientedDirection.NS)||(pedestrianDirection == OrientedDirection.SN)) {
+					if ((grid[x][y + (int) length/2 + 1].contains(StructureType.SideWalk))&&(grid[x][y - (int) length/2 - 1].contains(StructureType.SideWalk))) {
+						double rd = Math.random();
+						if (rd < 0.5) {
+							position[1] += 1;
+						}
+						else {
+							position[1] -= 1;
+						}
+					}
+					
+					if (grid[x][y + (int) length/2 + 1].contains(StructureType.SideWalk)) {
 						position[1] += 1;
 					}
-					else {
+					if (grid[x][y - (int) length/2 - 1].contains(StructureType.SideWalk)) {
 						position[1] -= 1;
 					}
-				}
-				
-				if (grid[x][y + (int) length/2 + 1].contains(StructureType.SideWalk)) {
-					position[1] += 1;
-				}
-				if (grid[x][y - (int) length/2 - 1].contains(StructureType.SideWalk)) {
-					position[1] -= 1;
-				}
-			} // end
-		} // end if proba
+				} // end
+			} // end if proba
 
+		}
 	}
 	
 	
@@ -366,6 +367,8 @@ public void go() {
 	 * @return boolean : true if he is at a crossing section
 	 */
 	public boolean isAtCrossingSection() {
+		System.out.println("isAtCrossingSection(): "+position[0]+", "+position[1]);
+
 		if(!inGarage()) {
 			Cell[][] grid = this.movingParts.getSimulation().getStructureParts().getStructGrid(); // get the grid of the simulation, to know the position of the different sidewalk
 			if (grid[position[0]][position[1]].getContainedLights().size() != 0) {
