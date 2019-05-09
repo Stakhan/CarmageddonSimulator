@@ -68,4 +68,7 @@ public class MovingParts {
 	public Car getCar(int index) {
 		return listCars.get(index);
 	}
+	public Car getLastCar() {
+		return listCars.get(listCars.size()-1);
+	}
 }

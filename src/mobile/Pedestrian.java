@@ -367,7 +367,6 @@ public void go() {
 	 * @return boolean : true if he is at a crossing section
 	 */
 	public boolean isAtCrossingSection() {
-		System.out.println("isAtCrossingSection(): "+position[0]+", "+position[1]);
 
 		if(!inGarage()) {
 			Cell[][] grid = this.movingParts.getSimulation().getStructureParts().getStructGrid(); // get the grid of the simulation, to know the position of the different sidewalk

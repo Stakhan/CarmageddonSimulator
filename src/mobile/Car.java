@@ -173,10 +173,17 @@ public class Car extends MobileObject {
 	 * Compilation of all actions of a car in one step. Calls other methods of this class.
 	 */
 	public void nextStep() {
+		this.go();
 		this.computeCoverage(this.movingParts);
 		this.changeVelocity(true);
 		this.vision.update();
-		this.go();
+//		System.out.println(this+" position: "+position[0]+","+position[1]);
+//		String vis = "";
+//		for(Integer[] view: vision.getViewSpan()) {
+//			vis+= "|"+view[0]+","+view[1];
+//		}
+//		System.out.println(this+"vision: "+vis);
+		
 		//System.out.println("Car "+this+" looking :"+this.look(10*this.length));
 	}
 	
@@ -280,7 +287,7 @@ public class Car extends MobileObject {
 
 	
 	
-	/**
+	/**@deprecated
 	 * This function returns true if there is an obstacle in the view span of the car.
 	 * The view span is 3*velocity*3.6/0.8
 	 * @param gridSimulation
@@ -331,7 +338,7 @@ public class Car extends MobileObject {
 	
 	
 	
-	/**
+	/**@deprecated
 	 * UNFINISHED (ask Arthur)
 	 * This function computes if there is a light traffic on the view span of the car.
 	 * If there is one, it returns the color of the light
