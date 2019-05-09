@@ -3,6 +3,7 @@ package mobile;
 import java.util.ArrayList;
 import java.util.List;
 
+import enumeration.Color;
 import enumeration.MobileType;
 import enumeration.ObstacleType;
 import enumeration.OrientedDirection;
@@ -14,8 +15,6 @@ public class Vision {
 	private int viewSpanDepth;
 	private List<Integer[]> viewSpan;
 	private Car car;
-	
-	
 	
 	public Vision(int viewSpanDepth, Car car) {
 			this.viewSpanDepth = viewSpanDepth;
@@ -31,42 +30,47 @@ public class Vision {
 			OrientedDirection carDirection = this.car.getLane().getOrientedDirection();
 			int[] position = this.car.getPosition();
 			int length = this.car.getLength();
-			
+
 			this.viewSpan.clear(); //Clear previous viewSpan
 			
 			int i = position[1]-1;
 			int j = position[0]-1;
+			int maxSight;
 			switch (carDirection) {
 				case WE:
-					for (j = position[0]+((int) length/2); j < position[0]-1 + viewSpanDepth; j++) {
+					int nbColumn = this.car.getMovingParts().getSimulation().getColumnNb();
+					maxSight = Math.min(position[0]-1 + viewSpanDepth, nbColumn - position[0]);
+					for (j = position[0] + Math.round(length/2); j < maxSight; j++) {
 						Integer[] couple = {i,j};
 						this.viewSpan.add(couple);
 					}
 					break;
 				case EW:
-					for (j = position[0]-2-((int) length/2); j > position[0]-1 - viewSpanDepth; j--) {
+					maxSight = Math.max(position[0]-1 - viewSpanDepth, 0);
+					for (j = position[0] - 2 - Math.round(length/2); j > position[0]-1 - viewSpanDepth; j--) {
 						Integer[] couple = {i,j};
 						this.viewSpan.add(couple);
 					}
 					break;
 				case NS:
-					for (i = position[1]+((int) length/2); i < position[1]-1 + viewSpanDepth; i++) {
+					maxSight = Math.max(position[1]-1 + viewSpanDepth, 0);
+					for (i = position[1] + Math.round(length/2); i < position[1]-1 + viewSpanDepth; i++) {
 						Integer[] couple = {i,j};
 						this.viewSpan.add(couple);
 					}
 					break;
 				case SN:
-					for (i = position[1]-2-((int) length/2); i > position[1]-1 - viewSpanDepth; i--) {
+					int nbLine = this.car.getMovingParts().getSimulation().getLineNb();
+					maxSight = Math.min(position[1]-1 + viewSpanDepth, nbLine - position[1]);
+					for (i = position[1] - 2 - Math.round(length/2); i > maxSight; i--) {
 						Integer[] couple = {i,j};
 						this.viewSpan.add(couple);
 					}
 			}
-					
 		}
 	
 	public Obstacle look() {
 		
-		OrientedDirection carDirection = this.car.getLane().getOrientedDirection();
 		Cell[][] grid = null;
 		
 		if (this.car.getMovingParts().getSimulation().getListStates().size() > 1) { //We need two states to get a previous state
@@ -81,29 +85,40 @@ public class Vision {
 		
 		int distance = 0;
 		
+		Obstacle obstacle = new Obstacle(0, ObstacleType.Empty);
 		for (Integer[] coord : this.viewSpan) {
 			int i = coord[0];
 			int j = coord[1];
 			if (grid[i][j].getContainedMobileObjects().size() != 0) {
 				if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Car) {
-					return new Obstacle(distance, ObstacleType.Car);
+					obstacle = new Obstacle(distance, ObstacleType.Car);
+					break;
 				}
 				else if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Pedestrian) {
-					return new Obstacle(distance, ObstacleType.Pedestrian);
+					obstacle = new Obstacle(distance, ObstacleType.Pedestrian);
+					break;
 				}
 			}
 			else if (grid[i][j].getContainedLights().size() != 0) {
-				return new Obstacle(distance, ObstacleType.TrafficLight);
+				if (!grid[i][j].getContainedLights().get(0).getCurrentColor().equals(Color.Green)) {
+					obstacle = new Obstacle(distance, ObstacleType.TrafficLight);
+					break;
+				}
 			}
 			distance++;
 		}
-		//In case nothing is in the viewSpan, returning null object
-		return new Obstacle();
+		return obstacle;
 	}
 	
-	//Getters
-	
+	//Getters	
 	public List<Integer[]> getViewSpan() {
 		return viewSpan;
+	}
+	public int getViewSpanDepth() {
+		return viewSpanDepth;
+	}
+	//Setters	
+	public void setViewSpanDepth(int viewSpanDepth) {
+		this.viewSpanDepth = viewSpanDepth;
 	}
 }

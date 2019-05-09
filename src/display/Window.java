@@ -17,7 +17,7 @@ import model.ConfigureStructure;
 
 public class Window extends JFrame{
 	/**
-	 * Cette classe crée une fenêtre simple pour l'affichage du panel affichant la simulation
+	 * Cette classe cree une fenetre simple pour l'affichage du panel affichant la simulation
 	 * 
 	 */
 	// on fait heriter notre classe de JFrame (fenetre graphique)
