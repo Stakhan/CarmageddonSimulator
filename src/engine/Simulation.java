@@ -4,10 +4,12 @@ package engine;
 import java.util.ArrayList;
 import java.util.List;
 
+import enumeration.OrientedDirection;
 import immobile.StructureParts;
 import mobile.Car;
 import mobile.MovingParts;
 import mobile.Pedestrian;
+import model.ConfigureFlow;
 import model.ConfigureStructure;
 import model.SimulationState;
 
@@ -18,6 +20,7 @@ public class Simulation {
 	private int columnNb;
 	private StructureParts structureParts;
 	private MovingParts movingParts;
+	private ConfigureFlow configuredFlow;
 	
 	
 	//Constructeur
@@ -30,7 +33,6 @@ public class Simulation {
 		
 		this.structureParts = new StructureParts(structConfig);
 		this.movingParts = new MovingParts(this, this.structureParts);
-		
 	}
 	
 
@@ -63,6 +65,10 @@ public class Simulation {
 	public void nextState() {
 		//Constructing next state
 		SimulationState next = new SimulationState(this, this.getLastState().getStep()+1);
+		
+		// *** Updating moving object with flow ***
+		this.getConfiguredFlow().configureFlowCar();
+		this.getConfiguredFlow().configureFlowPedestrian();
 		
 		//updating cars
 		for(Car car : this.getMovingParts().getListCars()) {
@@ -121,6 +127,16 @@ public class Simulation {
 	 */
 	public SimulationState getState(int index) {
 		return this.listStates.get(index);
+	}
+	
+	public ConfigureFlow getConfiguredFlow() {
+		return configuredFlow;
+	}
+	
+	
+	// SETTERS
+	public void setConfiguredFlow(ConfigureFlow configuredFlow) {
+		this.configuredFlow = configuredFlow;
 	}
 	
 }

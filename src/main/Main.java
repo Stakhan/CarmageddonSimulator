@@ -4,6 +4,7 @@ package main;
 import display.StructWindow;
 import display.Window;
 import engine.Simulation;
+import model.ConfigureFlow;
 import model.ConfigureStructure;
 
 
@@ -17,6 +18,9 @@ public class Main {
 		
 		Simulation simulation1 = new Simulation(structConfig);
 		simulation1.init();
+		
+		// Adding the flow to the simulation
+		simulation1.setConfiguredFlow(new ConfigureFlow(simulation1));
 		
 		
 

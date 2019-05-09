@@ -25,7 +25,7 @@ public class TrafficLightSystem {
 	 * Time to wait for changing the Traffic Light state belong to the road.
 	*/
 	private StructureParts structureParts;
-	private int timingMainRoad;
+	private int timingMainRoad;  // green horizontal
 	private int timingSecondRoad;
 	private final int timeYellow = 3; // 3 seconds is the official duration for the Yellow Traffic Light in French agglomeration
 

@@ -19,6 +19,9 @@ import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
+
 import engine.Simulation;
 import enumeration.MobileType;
 import enumeration.Profil;
@@ -310,12 +313,23 @@ public class GridPanel extends JPanel implements KeyListener{
 		g2d.setTransform(backup);
 		
 		// TESTING ONLY: Painting car position
-//		for (Car car : this.simulation.getMovingParts().getListCars()) {
-//			g2d.setPaint(Color.blue);
-//			g2d.fillRect(car.getPosition()[0]-1)*wUnit, car.getPosition()[1]*hUnit, wUnit, hUnit);
-//		}
+		int i= 52;
+		int j = 30;
+		g2d.setPaint(Color.blue);
+		g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
+		 i= 52;
+		 j = 10;
+		g2d.setPaint(Color.blue);
+		g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
+		
 		
 
+	}
+	
+	public void update() {
+		
+
+		repaint();
 	}
 	
 	@Override
@@ -324,26 +338,18 @@ public class GridPanel extends JPanel implements KeyListener{
 		int key = e.getKeyCode();
 		
 		if ((key == KeyEvent.VK_SPACE)) {
-			continueRunning = true;
-			while (continueRunning) {
-				if (this.displayState.getStep() < this.simulation.getListStates().size()-1) { //test if next step has already been computed
-					this.displayState = this.simulation.getState(this.displayState.getStep()+1);
-				}
-				else { //if not, compute it
-					this.simulation.nextState();
-					this.displayState = this.simulation.getLastState();
-
-				}
-				repaint();
-                try {
-					TimeUnit.SECONDS.sleep(1);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				System.out.println("step "+this.displayState.getStep()+": "+this.simulation.getLastState().getGrid().toString());
-				
-			}
+			 //Creating the SwingWorker   
+		    ComputeGridWorker computeGridWorker= new ComputeGridWorker(this);
+		    if(continueRunning == false) {
+		    	continueRunning = true;
+		    	//Launching the SwingWorker
+			    computeGridWorker.execute();
+		    }
+		    else {
+		    	continueRunning = false;
+		    }
+		    
+			
 		}
 		if ((key == KeyEvent.VK_S)) {
 			continueRunning = false;
@@ -384,8 +390,8 @@ public class GridPanel extends JPanel implements KeyListener{
 		if ((key == KeyEvent.VK_C)) {
 			if(this.simulation.getStructureParts().getRoad(0).getLane(1).testAvailability(5, this.displayState)) { //Test if room available for poping
 				this.simulation.getMovingParts().getListCars().add(new Car(this.simulation.getMovingParts(), "voiture", 5, 3, Profil.respectful, 0, 2, 10, this.simulation.getStructureParts().getRoad(0).getLane(1)));
-				this.simulation.getMovingParts().getLastCar().draw(this.displayState.getGrid());
 				this.simulation.getMovingParts().getLastCar().nextStep();
+				this.simulation.getMovingParts().getLastCar().draw(this.displayState.getGrid());
 				repaint();
 			}
 			
@@ -396,12 +402,27 @@ public class GridPanel extends JPanel implements KeyListener{
 		}
 		if ((key == KeyEvent.VK_L)) {
 			for (Car car : this.simulation.getMovingParts().getListCars()) {
-				System.out.println("Car "+this.simulation.getMovingParts().getListCars().indexOf(car)+" looking :"+car.getVision().look().toString());
-
+				if(!car.inGarage()) {
+					System.out.println("Car "+this.simulation.getMovingParts().getListCars().indexOf(car)+" looking :"+car.getVision().look().toString());
+				}
 			}
-
-
 		}
+		if ((key == KeyEvent.VK_T)) {
+			Cell[][] grid = null;
+			if (this.simulation.getListStates().size() > 1) { //We need two states to get a previous state
+				//Fetching previous state
+				SimulationState previousState = this.simulation.getState(this.simulation.getLastState().getStep());
+				//Fetching grid of previous step
+				grid = previousState.getGrid();
+			}
+			else { //In case it is the first state
+				grid = this.simulation.getMovingParts().getSimulation().getStructureParts().getStructGrid();
+			}
+			int i = 52;
+			int j = 10;
+			System.out.println(i+","+j+": "+grid[i][j].contains(MobileType.Car));
+		}
+		
 	}
 			
 	
@@ -413,13 +434,25 @@ public class GridPanel extends JPanel implements KeyListener{
 	public Simulation getSimulation() {
 		return simulation;
 	}
+	public SimulationState getDisplayState() {
+		return displayState;
+	}
+
+	public boolean getContinueRunning() {
+		return this.continueRunning;
+	}
 	
 	// SETTERS
 	public void setSimulationState(SimulationState simulationState) {
 		this.displayState = simulationState;
 	}
+	public void setDisplayState(SimulationState displayState) {
+		this.displayState = displayState;
+	}
+	public void setContinueRunning(boolean continueRunning) {
+		this.continueRunning = continueRunning;
+	}
 	
-
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub
@@ -433,4 +466,5 @@ public class GridPanel extends JPanel implements KeyListener{
 	}
 
 
+	
 }

@@ -70,37 +70,80 @@ public class Vision {
 	
 	public Obstacle look() {
 		
-		OrientedDirection carDirection = this.car.getLane().getOrientedDirection();
-		Cell[][] grid = null;
-		
-		if (this.car.getMovingParts().getSimulation().getListStates().size() > 1) { //We need two states to get a previous state
-			//Fetching previous state
-			SimulationState previousState = this.car.getMovingParts().getSimulation().getState(this.car.getMovingParts().getSimulation().getLastState().getStep()-1);
-			//Fetching grid of previous step
-			grid = previousState.getGrid();
-		}
-		else { //In case it is the first state
-			grid = this.car.getMovingParts().getSimulation().getStructureParts().getStructGrid();
-		}
-		
-		int distance = 1;
-		for (Integer[] coord : this.viewSpan) {
-			int i = coord[0];
-			int j = coord[1];
-			if (grid[i][j].getContainedMobileObjects().size() != 0) {
-				if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Car) {
-					return new Obstacle(distance, ObstacleType.Car);
-				}
-				else if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Pedestrian) {
-					return new Obstacle(distance, ObstacleType.Pedestrian);
-				}
+		if(!this.car.inGarage()) {
+			Cell[][] grid = null;
+			
+			if (this.car.getMovingParts().getSimulation().getListStates().size() > 1) { //We need two states to get a previous state
+				//Fetching previous state
+				SimulationState previousState = this.car.getMovingParts().getSimulation().getLastState();
+				//Fetching grid of previous step
+				grid = previousState.getGrid();
 			}
-			else if (grid[i][j].getContainedLights().size() != 0) {
-				return new Obstacle(distance, ObstacleType.TrafficLight);
+			else { //In case it is the first state
+				grid = this.car.getMovingParts().getSimulation().getStructureParts().getStructGrid();
 			}
-			distance++;
+			
+			int distance = 1;
+			for (Integer[] coord : this.viewSpan) {
+				int i = coord[0];
+				int j = coord[1];
+
+				if (grid[i][j].getContainedMobileObjects().size() != 0) {
+					if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Car) {
+						return new Obstacle(distance, ObstacleType.Car);
+					}
+					else if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Pedestrian) {
+						return new Obstacle(distance, ObstacleType.Pedestrian);
+					}
+				}
+				else if (grid[i][j].getContainedLights().size() != 0) {
+					return new Obstacle(distance, ObstacleType.TrafficLight);
+				}
+				distance++;
+			}
 		}
-		//In case nothing is in the viewSpan, returning null object
+		
+		//In case nothing is in the viewSpan or car is in garage, returning null object
+				return new Obstacle();
+	}
+		
+		public Obstacle look(ObstacleType obType) {
+			
+			if(!this.car.inGarage()) {
+				Cell[][] grid = null;
+				
+				
+				if (this.car.getMovingParts().getSimulation().getListStates().size() > 1) { //We need two states to get a previous state
+					//Fetching previous state
+					SimulationState previousState = this.car.getMovingParts().getSimulation().getLastState();
+					//Fetching grid of previous step
+					grid = previousState.getGrid();
+				}
+				else { //In case it is the first state
+					grid = this.car.getMovingParts().getSimulation().getStructureParts().getStructGrid();
+				}
+				
+				int distance = 1;
+				for (Integer[] coord : this.viewSpan) {
+					int i = coord[0];
+					int j = coord[1];
+					if ((obType == ObstacleType.Car || obType == ObstacleType.Pedestrian) && grid[i][j].getContainedMobileObjects().size() != 0) {
+						if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Car) {
+							return new Obstacle(distance, ObstacleType.Car);
+						}
+						else if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Pedestrian) {
+							return new Obstacle(distance, ObstacleType.Pedestrian);
+						}
+					}
+					else if (obType == ObstacleType.TrafficLight && grid[i][j].getContainedLights().size() != 0) {
+						return new Obstacle(distance, ObstacleType.TrafficLight);
+					}
+					distance++;
+				}
+
+			}
+		
+		//In case nothing is in the viewSpan or car is in garage, returning null object
 		return new Obstacle();
 	}
 	
