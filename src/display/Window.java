@@ -1,56 +1,122 @@
 package display;
 
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import engine.Simulation;
 import model.ConfigureStructure;
 
-public class Window extends JFrame{
-	/**
-	 * Cette classe crée une fenêtre simple pour l'affichage du panel affichant la simulation
-	 * 
-	 */
-	// on fait heriter notre classe de JFrame (fenetre graphique)
-	// pour pouvoir eventuellement personnaliser son comportement (surcharge)
+public class Window extends JFrame implements ActionListener{
+
 	
 	public Window(ConfigureStructure structConfig, Simulation simulation){
-		this.init(structConfig, simulation); // on separe le constructeur du code d’initialisation des parametres graphiques (bonne pratique)
+		// *** Useful Dimension ***
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int lengthFactor = (int) (screenSize.height)/simulation.getColumnNb();
+		
+		int simulationLength = simulation.getColumnNb()*(lengthFactor);
+		int simulationHeight = simulation.getLineNb()*(lengthFactor);
+		
+		int buttonLength = 300;
+		int buttonHeight = 80;
+		
+		//Dimension windowSize = new Dimension(simulationLength, simulationHeight);
+
+		//System.out.println(simulation.getColumnNb() + "," + simulation.getLineNb());
+		
+		//=====================================================================================================
+		// *** Creation of main window ***
+		this.setTitle("CARMAGEDDON");
+	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    setBounds(0,0,simulationLength + buttonLength + 20*2, simulationHeight + buttonHeight);
+	    
+		//---------------------------------------------------------------
+		// *** Main Panel ***
+		JPanel content = new JPanel(null);
+		content.setBackground(Color.WHITE);
+
+		// *** Grid Panel of the simulation ***
+		GridPanel gridPanel = new GridPanel(structConfig, simulation);
+
+		// *** Text Area ***
+		JTextArea textStats = new JTextArea();
+		String displayStats = simulation.getLastState().getStatistics().toString();
+		textStats.append(displayStats);
+		textStats.setEditable(false);
+		textStats.setOpaque(false);
+		
+		// *** Button ***
+		// Adding a button to compute stats
+		JButton buttonStats = new JButton("Updtate Stats");
+		buttonStats.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String displayStats = simulation.getLastState().getStatistics().toString();
+				textStats.setText(displayStats);
+				
+				// Focus on the mainPanel
+				gridPanel.setFocusable(true);
+			    gridPanel.requestFocus();
+			    gridPanel.addKeyListener(gridPanel); 
+			}
+		});
+		
+		
+		// Adding a button to compute flows
+		JButton buttonFlows = new JButton("Updtate Flows");
+		buttonStats.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				// Focus on the mainPanel
+				gridPanel.setFocusable(true);
+			    gridPanel.requestFocus();
+			    gridPanel.addKeyListener(gridPanel); 
+			}
+		});
+		
+		
+		
+		
+		
+		
+
+
+		// ====================================================================================================
+		// *** Pannel Size | Adding Pannel to the main content ***
+		gridPanel.setBounds(0, 0, simulationLength, simulationHeight);
+		content.add(gridPanel);
+
+		textStats.setBounds(simulationLength + 20, 0, buttonLength, buttonHeight);
+		content.add(textStats);
+		
+		buttonStats.setBounds(simulationLength + 20, 0 + buttonHeight + 20, buttonLength, buttonHeight);
+		content.add(buttonStats);
+
+		// *** Adding different panels to the main Panel ***
+		
+	    this.getContentPane().add(content);
+	    
+	    // *** Display ***
+
+		this.setVisible(true);
+		
 	}
+
 	
-	private void init(ConfigureStructure structConfig, Simulation simulation){
-		
-		GridPanel mainPanel = new GridPanel(structConfig, simulation); // on instancie un nouveal objet MyPanel
-		JTextArea textPane = new JTextArea();
-		textPane.append("test");
-		
-		this.setLayout(new BorderLayout());
-	    //Au centre
-	    this.getContentPane().add(mainPanel, BorderLayout.CENTER);
-
-	    this.getContentPane().add(textPane, BorderLayout.EAST);
-		
-
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds(screenSize.width/2,0,screenSize.width/2, screenSize.height);
-        
-		this.setTitle("Etat de la simulation"); // titre de la fenetre
-		//this.setSize(structConfig.hDisplaySize, structConfig.vDisplaySize); // taille de la fenetre. On utilise plutot setPreferredSize si le composant parent
-		//this.setResizable(true); //On empêche/autorise le redimensionnement
-
-		
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // comportement lors d’un clic sur la croix rouge
-		this.setVisible(true); // on la rend visible
-		
+	// BUTTON
+	@Override
+	public void actionPerformed(ActionEvent e) {
 	}
 	
 	

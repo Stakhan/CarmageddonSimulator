@@ -46,6 +46,29 @@ public class MovingParts {
 	}
 	
 	
+	// **** WARNING ****
+	// THIS METHODS NEEDS TO BE UPDATED WITH A RECENT VERSION, SO PEDESTRIANS CAN POP A EACH SIDEWALK
+	// >>> TO DO : COPY PASTE OF THIS FOUR IF/ELSE, TO COMPLETE EVERY SIDEWALKS. NEED TO CHANGE THE INDEX OF ROADS / SIDEWALK ON THE UPDATE
+	public void addRandomPedestrian() {
+		if (Math.random() < 0.5) {
+			if (Math.random() < 0.5) {
+				listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.WE, this.simulation.getStructureParts().getRoad(0).getSideWalk(0)));
+			}
+			else {
+				listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.EW, this.simulation.getStructureParts().getRoad(0).getSideWalk(0)));
+			}
+		}
+		else {
+			if (Math.random() < 0.5) {
+				listPedestrians.add(new Pedestrian(this, 3, 3, OrientedDirection.NS, this.simulation.getStructureParts().getRoad(1).getSideWalk(0)));
+			}
+			else {
+				listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.SN, this.simulation.getStructureParts().getRoad(1).getSideWalk(0)));
+			}
+		}
+	}
+	
+	// *** TO DO ***
 	//Getters
 	
 	public List<Car> getListCars() {

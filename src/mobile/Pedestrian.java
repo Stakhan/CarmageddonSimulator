@@ -21,27 +21,11 @@ public class Pedestrian extends MobileObject{
 	private SideWalk sideWalk;
 	private OrientedDirection pedestrianDirection;
 	private boolean hasAlreadyTurned; // this boolean is used to know if a pedestrian already turned on a bigger crossing section. Useful for crossing methods
+	// NOT USED 
+	
 	private List<enumeration.OrientedDirection> path;
-
+	private int indexOfPath; // not used currently
 	
-	/**
-	 * First constructor, with position
-	 * @param movingParts
-	 * @param position
-	 */
-	
-
-
-	public Pedestrian(MovingParts movingParts, int[] position) {
-		
-		super(1, 1, position);
-		computeCoverage();
-		
-		this.waitingTime = 0;
-		this.crossingDuration = 0;
-		this.velocity = 0.8/3.6;
-		this.movingParts = movingParts;
-	}
 	
 	
 	/**
@@ -62,6 +46,8 @@ public class Pedestrian extends MobileObject{
 		this.crossingDuration = 0;
 		this.velocity = 1;
 		this.pedestrianDirection = pedestrianDirection;
+		// Here should be an update, and pedestrianDirection should be the first index of path
+		
 		this.sideWalk = sideWalk;
 		this.movingParts = movingParts;
 		this.hasAlreadyTurned = false;
@@ -69,30 +55,13 @@ public class Pedestrian extends MobileObject{
 	
 	
 	/**
-	 * Third constructor, same as 2nd without size
+	 * Second constructor, with all details
 	 * @param movingParts
 	 * @param length
 	 * @param height
 	 * @param pedestrianDirection
 	 * @param sideWalk
 	 */
-	public Pedestrian(MovingParts movingParts, OrientedDirection pedestrianDirection, SideWalk sideWalk) {
-		
-		super(1, 1, initializePedestrianPosition(movingParts.getSimulation().getStructureParts().getStructGrid(),
-					sideWalk, 1, 1, pedestrianDirection));
-		computeCoverage();
-		
-		this.waitingTime = 0;
-		this.crossingDuration = 0;
-		this.velocity = 1;
-		this.pedestrianDirection = pedestrianDirection;
-		this.length = 1;
-		this.height = 1;
-		this.sideWalk = sideWalk;
-	}
-	
-	
-	
 
 
 	static public int[] initializePedestrianPosition(Cell[][] structGrid, SideWalk sideWalk, int length, int height, OrientedDirection pedestrianDirection) {
@@ -167,15 +136,13 @@ public class Pedestrian extends MobileObject{
 	
 
 public void go() {
-		
-		
-		// the pedestrian goes to velocity*0,8 cells per state
-		int distance = (int) (this.velocity/1); //int sup
 
 		if (!this.inGarage()) { //Test if a pedestrian is in garage position
+			int distance = (int) (this.velocity/1); //int sup
+			
 			switch (pedestrianDirection) {
 			case NS: 
-				if (position[0] + distance <= this.sideWalk.getRoad().getLength()) { //test if a pedestrian is still inside of the simulation after movement
+				if (position[0] + distance <= this.sideWalk.getRoad().getLength() - 1) { //test if a pedestrian is still inside of the simulation after movement
 					position[0] = position[0] + distance; 
 					this.visible = true;
 				}
@@ -203,7 +170,7 @@ public void go() {
 				}
 	    		break;
 			case WE:
-				if (position[1] + distance <= this.sideWalk.getRoad().getLength()) {
+				if (position[1] + distance <= this.sideWalk.getRoad().getLength() - 1) {
 				position[1] = position[1] + distance;
 				this.visible = true;
 				}
@@ -212,6 +179,14 @@ public void go() {
 				}
 	    		break;
 			}
+			
+			// if the pedestrian is on a crossing section, we update the crossingDuration
+			Cell[][] grid = this.movingParts.getSimulation().getStructureParts().getStructGrid(); // get the grid of the simulation, to know the position of the different sidewalk
+			
+			if (grid[position[0]][position[1]].contains(StructureType.Lane)) {
+				crossingDuration += 1;
+			}
+			
 		}
 	}
 	
@@ -236,11 +211,9 @@ public void go() {
 				if ((grid[x + (int) length/2 + 1][y].contains(StructureType.SideWalk))&&(grid[x - (int) length/2 - 1][y].contains(StructureType.SideWalk))) {
 					double rd = Math.random();
 					if (rd < 0.5) {
-						System.out.println(Math.random());
 						position[0] += 1;
 					}
 					else {
-						System.out.println(true);
 						position[0] -= 1;
 					}
 				}
@@ -257,11 +230,9 @@ public void go() {
 				if ((grid[x][y + (int) length/2 + 1].contains(StructureType.SideWalk))&&(grid[x][y - (int) length/2 - 1].contains(StructureType.SideWalk))) {
 					double rd = Math.random();
 					if (rd < 0.5) {
-						System.out.println(Math.random());
 						position[1] += 1;
 					}
 					else {
-						System.out.println(true);
 						position[1] -= 1;
 					}
 				}
@@ -353,16 +324,17 @@ public void go() {
 		
 		if (isAtCrossingSection()) {
 			if (pedestrianCrossing()) {
-				System.out.println(true);
 				Orientation orientation = getOrientation();
 				switch (orientation) {
 				case Vertical:
 					if (grid[position[0]][position[1]].getContainedLights().get(0).getCurrentColor() == Color.Red) {
+						waitingTime += 1;
 						return true;
 					}
 					break;
 				case Horizontal:
 					if (grid[position[0]][position[1]].getContainedLights().get(1).getCurrentColor() == Color.Red) {
+						waitingTime += 1;
 						return true;
 					}
 					break;
@@ -387,6 +359,17 @@ public void go() {
 
 		//System.out.println("Car "+this+" looking :"+this.look(10*this.length));
 	}
+	
+	// GETTERS
+	
+	public double getWaitingTime() {
+		return waitingTime;
+	}
+	
+	public double getCrossingDuration() {
+		return crossingDuration;
+	}
+	
 	
 	@Override
 	public MobileType getType() {
