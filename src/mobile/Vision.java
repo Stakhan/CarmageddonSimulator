@@ -32,7 +32,6 @@ public class Vision {
 	 * Update the cells coordinates of the view span of the MobileObject
 	 */
 	public void update(){
-			
 			OrientedDirection carDirection = this.car.getLane().getOrientedDirection();
 			int[] position = this.car.getPosition();
 			int length = this.car.getLength();
@@ -42,10 +41,11 @@ public class Vision {
 			int i = position[1]-1;
 			int j = position[0]-1;
 			int maxSight;
+
 			switch (carDirection) {
 				case WE:
-					int nbColumn = this.car.getMovingParts().getSimulation().getColumnNb();
-					maxSight = Math.min(position[0]-1 + viewSpanDepth, nbColumn - position[0]);
+					int columnNb = this.car.getMovingParts().getSimulation().getColumnNb();
+					maxSight = Math.min(position[0]-1 + viewSpanDepth, columnNb - position[0]);
 					for (j = position[0] + Math.round(length/2); j < maxSight; j++) {
 						Integer[] couple = {i,j};
 						this.viewSpan.add(couple);
@@ -109,15 +109,21 @@ public class Vision {
 					}
 				}
 				else if (grid[i][j].getContainedLights().size() != 0) {
-					obstacle = new Obstacle(distance, ObstacleType.TrafficLight);
-					break;
+					if (!grid[i][j].getContainedLights().get(0).getCurrentColor().equals(Color.Green)) { //In case it is Yellow or Red
+						obstacle = new Obstacle(distance, ObstacleType.TrafficLight);
+						break;
+					}
+					else {
+						obstacle = new Obstacle(0, ObstacleType.Empty);
+						break;
+					}
 				}
 				
 				distance++;
 			}
 		}
 		else {
-			obstacle = new Obstacle(); //Empty obstacle
+			obstacle = new Obstacle(0, ObstacleType.Empty); //Empty obstacle
 		}
 		
 		return obstacle;
@@ -163,13 +169,12 @@ public class Vision {
 						}
 					}
 					else if (obType == ObstacleType.TrafficLight && grid[i][j].getContainedLights().size() != 0) {
-						obstacle = new Obstacle(distance, ObstacleType.TrafficLight);
-						if (grid[i][j].getContainedLights().get(0).getCurrentColor().equals(Color.Red)) {
+						if (!grid[i][j].getContainedLights().get(0).getCurrentColor().equals(Color.Green)) { //In case it is Yellow or Red
 							obstacle = new Obstacle(distance, ObstacleType.TrafficLight);
 							break;
 						}
 						else {
-							obstacle = new Obstacle();
+							obstacle = new Obstacle(0, ObstacleType.Empty);
 						}
 					}
 					distance++;

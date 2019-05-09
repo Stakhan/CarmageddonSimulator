@@ -21,6 +21,7 @@ public class Simulation {
 	
 	
 	//Constructeur
+	
 	public Simulation(ConfigureStructure structConfig) {
 		
 		this.listStates = new ArrayList<SimulationState>();

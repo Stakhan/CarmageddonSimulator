@@ -91,31 +91,31 @@ public class Lane extends Structure {
 		return containingRoad;
 	}
 	public OrientedDirection getOrientedDirection() {
-
+		OrientedDirection orientedDirection = null;
 		Orientation orientation = containingRoad.getOrientation();
-		
+
 		// Compute oriented direction 
 		// Reminder : orientation = Vertical or Horizontal
 		//			: direction = true or false
 		
 			if (orientation == Orientation.Horizontal) {
-				if (this.direction == true) {
-					return OrientedDirection.WE;
+				if (this.direction) {
+					orientedDirection = OrientedDirection.WE;
 				}
 				else {
-					return OrientedDirection.EW;
+					orientedDirection =  OrientedDirection.EW;
 				}			
 			}
-			if (orientation == Orientation.Vertical) {
-				if (this.direction == true) {
-					return OrientedDirection.NS;
+			else if (orientation == Orientation.Vertical) {
+				if (this.direction) {
+					orientedDirection = OrientedDirection.NS;
 				}
 				else {
-					return OrientedDirection.SN;
+					orientedDirection = OrientedDirection.SN;
 				}			
 			}
 		
-		return null; // because Java needs a return statement :(
+		return orientedDirection; // because Java needs a return statement :(
 	}
 	
 	

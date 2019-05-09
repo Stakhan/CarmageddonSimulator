@@ -5,14 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
-
 import enumeration.Color;
 import enumeration.MobileType;
 import enumeration.Orientation;
 import enumeration.OrientedDirection;
 import enumeration.StructureType;
-import immobile.StructureParts;
 import immobile.structures.Road;
 import immobile.structures.SideWalk;
 import immobile.structures.Structure;
@@ -41,7 +38,7 @@ public class Pedestrian extends MobileObject{
 	 */
 	public Pedestrian(MovingParts movingParts,  int length, int height, OrientedDirection pedestrianDir, SideWalk sideWalk) {
 		
-		super(length, height, initializePedestrianPosition(movingParts.getSimulation().getStructureParts().getStructGrid(),
+		super(movingParts, length, height, initializePedestrianPosition(movingParts.getSimulation().getStructureParts().getStructGrid(),
 					sideWalk, length, height, pedestrianDir));
 		computeCoverage();
 		this.waitingTime = 0;

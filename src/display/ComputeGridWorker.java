@@ -14,22 +14,24 @@ public class ComputeGridWorker extends SwingWorker {
 	}
 	@Override
 	protected Object doInBackground() throws Exception {
-        System.out.println("START SIMULATION");
-
-		while (gridPanel.getContinueRunning()) {
-			
-//		while (gridPanel.getDisplayState().getStep() < 10) {
-			  System.out.println("step "+gridPanel.getDisplayState().getStep());
-			  gridPanel.getSimulation().nextState();
-			  gridPanel.setDisplayState(gridPanel.getSimulation().getLastState());
-			  gridPanel.repaint();
-			  try {
-				  TimeUnit.MILLISECONDS.sleep(100);
-			  } catch (InterruptedException e1) {
-				  // TODO Auto-generated catch block
-				  e1.printStackTrace();
-			  }
+		try {
+	        System.out.println("START SIMULATION");
+			while (gridPanel.getContinueRunning()) {	
+				  System.out.println("step "+gridPanel.getDisplayState().getStep());
+				  gridPanel.getSimulation().nextState();
+				  gridPanel.setDisplayState(gridPanel.getSimulation().getLastState());
+				  gridPanel.repaint();
+				  try {
+					  TimeUnit.MILLISECONDS.sleep(100);
+				  } catch (InterruptedException e1) {
+					  // TODO Auto-generated catch block
+					  e1.printStackTrace();
+				  }
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		
 		return null;
 	}
 	

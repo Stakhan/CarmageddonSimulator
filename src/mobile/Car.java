@@ -21,7 +21,6 @@ import model.ConfigureStructure;
 
 public class Car extends MobileObject {
 	
-	private MovingParts movingParts;
 	private Profil profil;
 	private int maxChange;
 	private int velocity;
@@ -51,9 +50,8 @@ public class Car extends MobileObject {
 	public Car(MovingParts movingParts, String model, int length, int height, Profil profil,
 			int velocity, int maxVelocity, Lane lane) {
 	
-		super(length, height, initializeCarPosition(movingParts.getSimulation().getStructureParts().getStructGrid(), lane, length, height));
+		super(movingParts, length, height, initializeCarPosition(movingParts.getSimulation().getStructureParts().getStructGrid(), lane, length, height));
 		
-		this.movingParts = movingParts;
 		
 		this.profil = profil;
 		this.velocity = velocity;
@@ -87,7 +85,7 @@ public class Car extends MobileObject {
 		this.vision = new Vision(this);
 		this.vision.update();
 		
-		this.destination = this.destinationRandom();
+		this.destination = this.randomDestination();
 		this.intersectionPosition = intersectionCalculation();
 		
 		computeCoverage(movingParts);
@@ -159,15 +157,22 @@ public class Car extends MobileObject {
 			
 			int sideSpan = (int) this.height/2 + this.height%2;
 			int span = (int) this.length/2 + this.length%2;
-
+			
+			int columnNb = this.getMovingParts().getSimulation().getColumnNb();
+			int lineNb = this.getMovingParts().getSimulation().getLineNb();
+			
+			
 			if (carOrientation == Orientation.Horizontal) {
 				int xOrigin = this.position[0] - span;
 				int yOrigin = this.position[1] - sideSpan;
 				
 				for(int i=xOrigin; i<xOrigin+this.length; i++) {
 					for(int j=yOrigin; j<yOrigin+this.height; j++) {
-						Integer[] couple = {j,i};
-						this.objectCoverage.add(couple);
+						if (0 <= j && j < lineNb && 0 <= i && i < columnNb) {
+							Integer[] couple = {j,i};
+							this.objectCoverage.add(couple);
+						}
+						
 					}
 				}
 			}
@@ -177,8 +182,11 @@ public class Car extends MobileObject {
 				
 				for(int i=xOrigin; i<xOrigin+this.height; i++) {
 					for(int j=yOrigin; j<yOrigin+this.length; j++) {
-						Integer[] couple = {j,i};
-						this.objectCoverage.add(couple);
+						if (0 <= j && j < lineNb && 0 <= i && i < columnNb) {
+							Integer[] couple = {j,i};
+							this.objectCoverage.add(couple);
+						}
+						
 					}
 				}
 			}
@@ -192,31 +200,11 @@ public class Car extends MobileObject {
 	 */
 	public void nextStep() {
 		this.go();
-		this.computeCoverage(this.movingParts);
-		this.changeVelocity(true);
-		this.vision.update();
-//		System.out.println(this+" position: "+position[0]+","+position[1]);
-//		String vis = "";
-//		for(Integer[] view: vision.getViewSpan()) {
-//			vis+= "|"+view[0]+","+view[1];
-//		}
-//		System.out.println(this+"vision: "+vis);
-		
-		//System.out.println("Car "+this+" looking :"+this.look(10*this.length));
-	}
-	
-	/**
-	 * Changes the velocity of the car depending on the profil of its driver and whether there shall be acceleration or deceleration
-	 */
-	public void changeVelocity(boolean accelerate) {
-		
-		int sign = 1; //Positve or negative (accelerate or decelerate)
-		if (!accelerate) {
-			sign = -1;
+		this.computeCoverage(this.getMovingParts());
 
 		int distanceIntersection = this.vision.getViewSpanDepth() + 1;
 
-		// Span view limitation if the driver wants to turn
+		// Span view limitation if the driver want to turn
 		if (!this.lane.equals(this.destination)) {
 			distanceIntersection = (int) Point2D.distance(intersectionPosition[0], this.intersectionPosition[1], this.position[0], this.position[1]);
 			if (this.vision.getViewSpanDepth() > distanceIntersection) {
@@ -237,16 +225,15 @@ public class Car extends MobileObject {
 			}
 		}
 		else { // Cases : Car, Pedestrian, Red/Orange Traffic Light
-				if (canBrake(obstacle.getDistance())) {
-					this.changeVelocity(this.velocityCalculation(0, obstacle.getDistance()));
-				}
-				else {
-					int distanceMaxBrake = this.velocity - maxBrake;
-					this.velocity -= maxBrake;
-				}
+			if (canBrake(obstacle.getDistance())) {
+				this.changeVelocity(this.velocityCalculation(0, obstacle.getDistance()));
+			}
+			else {
+				int distanceMaxBrake = this.velocity - maxBrake;
+				this.velocity -= maxBrake;
 			}
 		}
-	}
+}
 	
 	/**
 	 * changes the position of the car
@@ -383,13 +370,13 @@ public class Car extends MobileObject {
 	 * which intersect the origin lane
 	 * @return (Lane) the destination lane
 	 */
-	private Lane destinationRandom() {
+	private Lane randomDestination() {
 		List<Lane> laneCandidates = new ArrayList<Lane>();
 		if (this.lane.getRoad().getOrientation().equals(Orientation.Horizontal)) {
-			laneCandidates.addAll(movingParts.getSimulation().getStructureParts().getRoad(1).getListLanes());
+			laneCandidates.addAll(getMovingParts().getSimulation().getStructureParts().getRoad(1).getListLanes());
 		}
 		else if (this.lane.getRoad().getOrientation().equals(Orientation.Vertical)) {
-			laneCandidates.addAll(movingParts.getSimulation().getStructureParts().getRoad(0).getListLanes());
+			laneCandidates.addAll(getMovingParts().getSimulation().getStructureParts().getRoad(0).getListLanes());
 		}
 		int nbLanes = laneCandidates.size();
 		for (int i = 0; i < nbLanes; i++) {
@@ -415,6 +402,7 @@ public class Car extends MobileObject {
 				position[1] = (this.destination.getRoad().position + this.destination.getCarPositionOnRoad());
 			}
 		}
+		System.out.println("intersection at: "+position[0]+","+position[1]);
 		return position;
 	}
 	
@@ -432,13 +420,10 @@ public class Car extends MobileObject {
 	public Lane getLane() {
 		return lane;
 	}
-	public MovingParts getMovingParts() {
-		return movingParts;
-	}
+	
 	public Vision getVision() {
 		return vision;
 	}
-	
 
 	public double getWaitingTime() {
 		return waitingTime;
@@ -457,7 +442,7 @@ public class Car extends MobileObject {
 		// Lane lane = structureParts.getRoad(0).getLane(0);
 		for (int i=0; i<10; i++) {
 			Car car = new Car(movingParts, "voiture", 5, 3, Profil.slow, 10, 17, structureParts.getRoad(0).getLane(0));
-//			System.out.println(car.destinationRandom().getOrientedDirection());
+//			System.out.println(car.randomDestination().getOrientedDirection());
 			System.out.println("position pour "+car.lane.getOrientedDirection()+"/"+car.destination.getOrientedDirection()+" : "+car.intersectionCalculation()[0]+", "+car.intersectionCalculation()[1]);
 			System.out.println("intersection : "+car.intersectionCalculation()[0]+", "+car.intersectionCalculation()[0]);
 		}

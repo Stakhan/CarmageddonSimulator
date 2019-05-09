@@ -7,7 +7,9 @@ import enumeration.MobileType;
 import model.Cell;
 
 public abstract class MobileObject {
-
+	
+	private MovingParts movingParts;
+	
 	protected int crossingDuration; // it represents the number of 
 									// steps where the object takes part in the simulation
 	protected int waitingTime;
@@ -20,7 +22,8 @@ public abstract class MobileObject {
 	
 	protected boolean visible;
 	
-	public MobileObject(int length, int height, int[] position) {
+	public MobileObject(MovingParts movingParts, int length, int height, int[] position) {
+		this.movingParts = movingParts;
 		this.length = length;
 		this.height = height;
 		
@@ -39,11 +42,17 @@ public abstract class MobileObject {
 	 * @param grid where object should be drawn
 	 */
 	public void draw(Cell[][] grid) {
-		if (visible) {
+		if (visible && !inGarage()) {
+			int columnNb = movingParts.getSimulation().getColumnNb();
+			int lineNb = movingParts.getSimulation().getLineNb();
 			for(Integer[] cellCoord : objectCoverage) {
 				int x = cellCoord[0];
 				int y = cellCoord[1];
-				grid[x][y].addMobileObjects(this);
+				
+				if (0 <= x && x < lineNb && 0 <= y && y < columnNb) {
+					grid[x][y].addMobileObjects(this);
+
+				}
 			}
 		}
 	}
@@ -51,7 +60,7 @@ public abstract class MobileObject {
 	
 	/**
 	 * Test if car is in garage position
-	 * @return boolean
+	 * @return 
 	 */
 	public boolean inGarage() {
 		if (this.position[0] == -1 && this.position[1] == -1) {
@@ -74,7 +83,7 @@ public abstract class MobileObject {
 	
 	/**
 	 * Abstract method that gives the type of such objects
-	 * @return type of this MobileObject
+	 * @return 
 	 */
 	public abstract MobileType getType();
 
@@ -91,4 +100,10 @@ public abstract class MobileObject {
 	public int getLength() {
 		return length;
 	}
+
+
+	public MovingParts getMovingParts() {
+		return movingParts;
+	}
+
 }
