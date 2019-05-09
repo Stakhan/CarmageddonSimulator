@@ -6,3 +6,4 @@
 /bin/
 simulation-state1.grid
 /src/simulation-state1.grid
+*.class

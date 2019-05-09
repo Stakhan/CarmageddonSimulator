@@ -113,7 +113,7 @@ public class GridPanel extends JPanel implements KeyListener{
 	@Override
 	public void paintComponent(Graphics g) {
 		//Show grid border
-		boolean border = false;
+		boolean border = true;
 		
 		defineUnits(structConfig);
 

@@ -1,6 +1,7 @@
 package mobile;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import enumeration.Color;
@@ -22,6 +23,12 @@ public class Vision {
 			this.car = car;
 		}
 
+	public Vision(Car car) {
+		this.viewSpanDepth = Math.round(20 + car.getVelocity() / car.getMaxVelocity() * 40); // visibility depends on velocity, between 20 and 35
+		this.viewSpan = new ArrayList<Integer[]>();
+		this.car = car;
+	}
+	
 	/**
 	 * Update the cells coordinates of the view span of the MobileObject
 	 */
@@ -67,6 +74,7 @@ public class Vision {
 						this.viewSpan.add(couple);
 					}
 			}
+			Collections.reverse(this.viewSpan);
 		}
 	
 	public Obstacle look() {
