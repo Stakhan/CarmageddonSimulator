@@ -425,11 +425,9 @@ public class GridPanel extends JPanel implements KeyListener{
 	public Simulation getSimulation() {
 		return simulation;
 	}
-	
 	public SimulationState getDisplayState() {
 		return displayState;
 	}
-	
 	public boolean getContinueRunning() {
 		return this.continueRunning;
 	}
@@ -438,11 +436,13 @@ public class GridPanel extends JPanel implements KeyListener{
 	public void setSimulationState(SimulationState simulationState) {
 		this.displayState = simulationState;
 	}
-	
 	public void setDisplayState(SimulationState displayState) {
 		this.displayState = displayState;
 	}
-
+	public void setContinueRunning(boolean continueRunning) {
+		this.continueRunning = continueRunning;
+	}
+	
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub
@@ -452,7 +452,5 @@ public class GridPanel extends JPanel implements KeyListener{
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-
 	}
-
 }

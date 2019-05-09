@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -72,7 +73,7 @@ public class Window extends JFrame implements ActionListener{
 		//=============================================================================
 		// *** Button ***
 		// Adding a button to compute stats
-		JButton buttonStats = new JButton("Updtate Stats");
+		JButton buttonStats = new JButton("Update Stats");
 		buttonStats.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -84,19 +85,43 @@ public class Window extends JFrame implements ActionListener{
 			    gridPanel.requestFocus();
 			}
 		});
+		//============================================================================
 		//----------------------------------------------------------------------------
 		// Adding a button to compute flows
-		JButton buttonFlows = new JButton("Updtate Flows");
-		buttonFlows.addActionListener(new ActionListener() {
+		JButton buttonFlowPedestrian = new JButton("Update");
+		buttonFlowPedestrian.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				String flowString = flowPedUser.getText();
+				if (flowString.contentEquals("")) {
+					flowString = "0";
+				}
+				double flow = Double.parseDouble(flowString);
+				simulation.getConfiguredFlow().setPedestrianFlow(flow);
+				// Focus on the mainPanel
+				gridPanel.setFocusable(true);
+			    gridPanel.requestFocus();
+			}
+		});
+		
+		JButton buttonFlowCar = new JButton("Update");
+		buttonFlowCar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String flowString = flowCarUser.getText();
+				if (flowString.contentEquals("")) {
+					flowString = "0";
+				}
+				double flow = Double.parseDouble(flowString);
+				simulation.getConfiguredFlow().setCarFlow(flow);
 				
 				// Focus on the mainPanel
 				gridPanel.setFocusable(true);
 			    gridPanel.requestFocus();
 			}
 		});
+		
+		//============================================================================
 		//----------------------------------------------------------------------------
 		// Adding a button to add a random pedestrian
 		JButton buttonPedestrian = new JButton("Add Pedestrian");
@@ -125,6 +150,7 @@ public class Window extends JFrame implements ActionListener{
 			    gridPanel.requestFocus();
 			}
 		});
+		//============================================================================
 		//----------------------------------------------------------------------------
 		// Adding a next button
 		JButton buttonNext = new JButton("Next");
@@ -166,20 +192,45 @@ public class Window extends JFrame implements ActionListener{
 			    gridPanel.requestFocus();
 			}
 		});
+		//------------------------------------------------------------------------------
 		// Adding a start button
 		JButton buttonStart = new JButton("Start");
 		buttonStart.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+				boolean continueRunning = gridPanel.getContinueRunning();
+				ComputeGridWorker computeGridWorker= new ComputeGridWorker(gridPanel);
+			    if(!continueRunning) {
+			    	continueRunning = true;
+			    	gridPanel.setContinueRunning(true);
+			    	//Launching the SwingWorker
+				    computeGridWorker.execute();
+					gridPanel.setFocusable(true);
+				    gridPanel.requestFocus();
+			    }
+			    else {
+			    	gridPanel.setContinueRunning(false);
+					gridPanel.setFocusable(true);
+				    gridPanel.requestFocus();
+			    }
 				// Focus on the mainPanel
-				gridPanel.setFocusable(true);
-			    gridPanel.requestFocus();
+			}
+		});
+		
+		//============================================================================
+		//Adding an exit button
+		JButton buttonExit = new JButton("Exit");
+		buttonExit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				// Focus on the mainPanel
 			}
 		});
 		
 
-
+		//=============================================================================
 		//=============================================================================
 		// *** Pannel Size | Adding Pannel to the main content ***
 		// Main
@@ -195,17 +246,31 @@ public class Window extends JFrame implements ActionListener{
 
 		//---------------------------------------------------------------------------------------------
 		// Flows
-		flowPedLabel.setBounds(simulationLength + 20, (buttonHeight + 20)*2, (int) buttonLength/2, (int) buttonHeight/2);
+		flowPedLabel.setBounds(simulationLength + 20, (buttonHeight + 20)*2, 
+								(int) buttonLength/3, (int) buttonHeight/2);
 		content.add(flowPedLabel);
 		
-		flowPedUser.setBounds(simulationLength + 20 + (int) buttonLength/2 + 10, (buttonHeight + 20)*2, (int) buttonLength/2, (int) buttonHeight/2);
+		flowPedUser.setBounds(simulationLength + 20 + (int) (buttonLength/3) + 5, (buttonHeight + 20)*2, 
+					(int) buttonLength/3, (int) buttonHeight/2);
 		content.add(flowPedUser);
 		
-		flowCarLabel.setBounds(simulationLength + 20, (buttonHeight + 20)*2 + (int) buttonHeight/2 + 10, (int) buttonLength/2, (int) buttonHeight/2);
+		buttonFlowPedestrian.setBounds(simulationLength + 20 + 2 * (int) (buttonLength/3) + 2*5, (buttonHeight + 20)*2, 
+					(int) buttonLength/3, (int) buttonHeight/2);
+		content.add(buttonFlowPedestrian);
+		//----------------------------------
+		flowCarLabel.setBounds(simulationLength + 20, (buttonHeight + 20)*2 + (int) buttonHeight/2 + 10, 
+				(int) buttonLength/3, (int) buttonHeight/2);
 		content.add(flowCarLabel);
 		
-		flowCarUser.setBounds(simulationLength + 20 + (int) buttonLength/2 + 10, (buttonHeight + 20)*2 + (int) buttonHeight/2 + 10, (int) buttonLength/2, (int) buttonHeight/2);
+		flowCarUser.setBounds(simulationLength + 20 + (int) (buttonLength/3) + 5, (buttonHeight + 20)*2 + (int) buttonHeight/2 + 10, 
+				(int) buttonLength/3, (int) buttonHeight/2);
 		content.add(flowCarUser);
+		
+		buttonFlowCar.setBounds(simulationLength + 20 + 2 * (int) (buttonLength/3) + 2*5, (buttonHeight + 20)*2 + (int) buttonHeight/2 + 10, 
+				(int) buttonLength/3, (int) buttonHeight/2);
+		content.add(buttonFlowCar);
+		
+		
 		
 		//----------------------------------------------------------------------------------------------
 		// Button Ped / Car
@@ -219,20 +284,25 @@ public class Window extends JFrame implements ActionListener{
 		
 		//-----------------------------------------------------------------------------------------------
 		// Next | Pause/Start | Previous
-		buttonPrevious.setBounds(simulationLength + 20,
-				(buttonHeight + 20)*4, (int) buttonLength/3, (int) buttonHeight/2);
+		buttonPrevious.setBounds(simulationLength + 20, (buttonHeight + 20)*4, 
+				(int) buttonLength/3, (int) buttonHeight/2);
 		content.add(buttonPrevious);
 		
-		buttonNext.setBounds(simulationLength + 20 + 2 * (int) (buttonLength/3) + 2*5,
-				(buttonHeight + 20)*4, (int) buttonLength/3, (int) buttonHeight/2);
-		content.add(buttonNext);
-		
-		buttonStart.setBounds(simulationLength + 20 + (int) (buttonLength/3) + 5,
-				(buttonHeight + 20)*4, (int) buttonLength/3, (int) buttonHeight/2);
+		buttonStart.setBounds(simulationLength + 20 + (int) (buttonLength/3) + 5, (buttonHeight + 20)*4, 
+				(int) buttonLength/3, (int) buttonHeight/2);
 		content.add(buttonStart);
 		
-		//
+		buttonNext.setBounds(simulationLength + 20 + 2 * (int) (buttonLength/3) + 2*5, (buttonHeight + 20)*4, 
+							(int) buttonLength/3, (int) buttonHeight/2);
+		content.add(buttonNext);
 		
+
+		
+		//--------------------------------------------------------------------------------------------------
+		// Exit
+		buttonExit.setBounds(simulationLength + 20, simulationHeight - (int) buttonHeight/2,
+				buttonLength, (int) buttonHeight/2);
+		content.add(buttonExit);
 		
 		
 		// *** Adding different panels to the main Panel ***

@@ -10,9 +10,12 @@
 >>>>>>> dafbf8fce71a1fe83ac299da35d492f932adfc20
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 /GridPanel$1.class
 /ComputeGridWorker.class
 =======
+=======
+>>>>>>> efee81f7d1e387b8fd9ea5a714aaa69388a2a75a
 /Window$1.class
 /test.class
 /mainTest.class
@@ -25,8 +28,17 @@
 /Window$5.class
 /Window$6.class
 /Window$7.class
+<<<<<<< HEAD
 >>>>>>> 6ea3df7e199f60f28a8e539a0aaea78da2d11e8e
 =======
 /WindowTest.class
 /MyFirstJFrame.class
 >>>>>>> 6a5be576ebc98c9d2a08e562aca340778dde72d7
+=======
+=======
+/GridPanel$1.class
+/ComputeGridWorker.class
+>>>>>>> 51310d0500386d1a76daaa78fc67f3e4c7291480
+/Window$8.class
+/Window$9.class
+>>>>>>> efee81f7d1e387b8fd9ea5a714aaa69388a2a75a

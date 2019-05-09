@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import engine.Simulation;
+import enumeration.OrientedDirection;
 import immobile.lights.TrafficLightSystem;
 import mobile.Car;
 import mobile.Pedestrian;
@@ -85,7 +86,7 @@ public class SimulationState {
 		stats.setAverageCrossingDurationCar(averageCrossingDurationCar);
 		stats.setAverageWaitingTimeCar(averageWaitingTimeCar);
 		
-		System.out.println(stats.toString());
+		//System.out.println(stats.toString());
 		
 		// Updating the attribute stats
 		this.stats = stats;
@@ -96,6 +97,7 @@ public class SimulationState {
 
 
 	/**
+	 * @deprecated
 	 * Gives next simulation state from previous one
 	 * @return SimulationState
 	 */
@@ -114,6 +116,12 @@ public class SimulationState {
 				pedestrian.draw(next.getGrid());
 			}
 		}
+		
+		// Adding the flow
+		
+		
+		//simulation.getConfiguredFlow().configureFlowCar();
+		//simulation.getConfiguredFlow().configureFlowPedestrian();
 		
 		//DEV-NOTE: Should test for collision somehow (next.setStep(-1) could signal termination)
 		

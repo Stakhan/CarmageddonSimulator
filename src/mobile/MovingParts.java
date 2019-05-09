@@ -53,70 +53,110 @@ public class MovingParts {
 	}
 	
 	
-
+	//===============================================================================================================================================
+	// These methods add moving some moving parts
 	public void addRandomPedestrian() {
 		if (Math.random() < 0.5) {
 			if (Math.random() < 0.5) {
-				if (Math.random() < 0.5) {
-					listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.WE, this.simulation.getStructureParts().getRoad(0).getSideWalk(0)));
-				}
-				else {
-					listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.WE, this.simulation.getStructureParts().getRoad(0).getSideWalk(1)));
-				}
+				addRandomPedestrianDirection(OrientedDirection.WE);
 			}
 			else {
-				if (Math.random()< 0.5) {
-					listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.EW, this.simulation.getStructureParts().getRoad(0).getSideWalk(0)));
-				}
-				else {
-					listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.EW, this.simulation.getStructureParts().getRoad(0).getSideWalk(1)));
-				}
+				addRandomPedestrianDirection(OrientedDirection.EW);
 			}
 		}
 		
 		else {
 			if (Math.random() < 0.5) {
-				if (Math.random() < 0.5) {
-					listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.NS, this.simulation.getStructureParts().getRoad(1).getSideWalk(0)));
-				}
-				else {
-					listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.NS, this.simulation.getStructureParts().getRoad(1).getSideWalk(1)));
-				}
+				addRandomPedestrianDirection(OrientedDirection.NS);
 			}
 			else {
-				if (Math.random() < 0.5) {
-					listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.SN, this.simulation.getStructureParts().getRoad(1).getSideWalk(0)));
-				}
-				else {
-					listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.SN, this.simulation.getStructureParts().getRoad(1).getSideWalk(1)));
-				}
+				addRandomPedestrianDirection(OrientedDirection.SN);
 			}
 		}
 	}
 	
+	public void addRandomPedestrianDirection(OrientedDirection direction) {
+		switch (direction) {
+		case NS:
+			if (Math.random() < 0.5) {
+				listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.NS, this.simulation.getStructureParts().getRoad(1).getSideWalk(0)));
+			}
+			else {
+				listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.NS, this.simulation.getStructureParts().getRoad(1).getSideWalk(1)));
+			}
+			break;
+		case SN:
+			if (Math.random() < 0.5) {
+				listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.SN, this.simulation.getStructureParts().getRoad(1).getSideWalk(0)));
+			}
+			else {
+				listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.SN, this.simulation.getStructureParts().getRoad(1).getSideWalk(1)));
+			}
+			break;
+		case WE:
+			if (Math.random() < 0.5) {
+				listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.WE, this.simulation.getStructureParts().getRoad(0).getSideWalk(0)));
+			}
+			else {
+				listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.WE, this.simulation.getStructureParts().getRoad(0).getSideWalk(1)));
+			}
+			break;
+		case EW:
+			if (Math.random()< 0.5) {
+				listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.EW, this.simulation.getStructureParts().getRoad(0).getSideWalk(0)));
+			}
+			else {
+				listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.EW, this.simulation.getStructureParts().getRoad(0).getSideWalk(1)));
+			}
+			break;
+		}
+	}
+	
+	
+	
+	//-----------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	public void addRandomCar() {
 		// Change possible : Initialize with probability a profil, velocity...
 		if (Math.random() < 0.5) {
 			if (Math.random() < 0.5) {
-				listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 2, this.simulation.getStructureParts().getRoad(0).getLane(0)));
+				addRandomCarDirection(OrientedDirection.EW);
 			}
 			else {
-				listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 2, this.simulation.getStructureParts().getRoad(0).getLane(1)));
+				addRandomCarDirection(OrientedDirection.WE);
 			}
 		}
 		else {
 			if (Math.random() < 0.5) {
-				listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 2, this.simulation.getStructureParts().getRoad(1).getLane(0)));
+				addRandomCarDirection(OrientedDirection.NS);
 			}
 			else {
-				listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 2, this.simulation.getStructureParts().getRoad(1).getLane(1)));
+				addRandomCarDirection(OrientedDirection.SN);
 			}
 		}
 	}
 	
+	public void addRandomCarDirection(OrientedDirection direction) {
+		switch (direction) {
+		case NS:
+			listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 20, this.simulation.getStructureParts().getRoad(1).getLane(1)));
+			break;
+		case SN:
+			listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 20, this.simulation.getStructureParts().getRoad(1).getLane(0)));
+			break;
+		case WE:
+			listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 20, this.simulation.getStructureParts().getRoad(0).getLane(1)));
+			break;
+		case EW:
+			listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 20, this.simulation.getStructureParts().getRoad(0).getLane(0)));
+			break;
+		}
+
+	}
+
 	
-	// *** TO DO ***
+	
+	
 	//Getters
 	
 	public List<Car> getListCars() {
