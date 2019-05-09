@@ -52,6 +52,70 @@ public class MovingParts {
 	}
 	
 	
+
+	public void addRandomPedestrian() {
+		if (Math.random() < 0.5) {
+			if (Math.random() < 0.5) {
+				if (Math.random() < 0.5) {
+					listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.WE, this.simulation.getStructureParts().getRoad(0).getSideWalk(0)));
+				}
+				else {
+					listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.WE, this.simulation.getStructureParts().getRoad(0).getSideWalk(1)));
+				}
+			}
+			else {
+				if (Math.random()< 0.5) {
+					listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.EW, this.simulation.getStructureParts().getRoad(0).getSideWalk(0)));
+				}
+				else {
+					listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.EW, this.simulation.getStructureParts().getRoad(0).getSideWalk(1)));
+				}
+			}
+		}
+		
+		else {
+			if (Math.random() < 0.5) {
+				if (Math.random() < 0.5) {
+					listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.NS, this.simulation.getStructureParts().getRoad(1).getSideWalk(0)));
+				}
+				else {
+					listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.NS, this.simulation.getStructureParts().getRoad(1).getSideWalk(1)));
+				}
+			}
+			else {
+				if (Math.random() < 0.5) {
+					listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.SN, this.simulation.getStructureParts().getRoad(1).getSideWalk(0)));
+				}
+				else {
+					listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.SN, this.simulation.getStructureParts().getRoad(1).getSideWalk(1)));
+				}
+			}
+		}
+	}
+	
+	
+	public void addRandomCar() {
+		// Change possible : Initialize with probability a profil, velocity...
+		if (Math.random() < 0.5) {
+			if (Math.random() < 0.5) {
+				listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 2, 20, this.simulation.getStructureParts().getRoad(0).getLane(0)));
+			}
+			else {
+				listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 2, 20, this.simulation.getStructureParts().getRoad(0).getLane(1)));
+			}
+		}
+		else {
+			if (Math.random() < 0.5) {
+				listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 2, 20, this.simulation.getStructureParts().getRoad(1).getLane(0)));
+			}
+			else {
+				listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 2, 20, this.simulation.getStructureParts().getRoad(1).getLane(1)));
+			}
+		}
+	}
+	
+	
+	// *** TO DO ***
 	//Getters
 	
 	public List<Car> getListCars() {

@@ -312,15 +312,15 @@ public class GridPanel extends JPanel implements KeyListener{
 		g2d.drawImage(imageLight, x, y, xSize, ySize, null);
 		g2d.setTransform(backup);
 		
-		// TESTING ONLY: Painting car position
-		int i= 52;
-		int j = 30;
-		g2d.setPaint(Color.blue);
-		g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
-		 i= 52;
-		 j = 10;
-		g2d.setPaint(Color.blue);
-		g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
+		// TESTING ONLY: Painting single cell
+//		int i= 52;
+//		int j = 30;
+//		g2d.setPaint(Color.blue);
+//		g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
+//		 i= 52;
+//		 j = 10;
+//		g2d.setPaint(Color.blue);
+//		g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 		
 		
 
@@ -426,6 +426,31 @@ public class GridPanel extends JPanel implements KeyListener{
 	}
 			
 	
+	// GETTERS
+	public SimulationState getSimulationState() {
+		return displayState;
+	}
+	
+	public Simulation getSimulation() {
+		return simulation;
+	}
+	
+	public SimulationState getDisplayState() {
+		return displayState;
+	}
+	
+	public boolean getContinueRunning() {
+		return this.continueRunning;
+	}
+	
+	// SETTERS
+	public void setSimulationState(SimulationState simulationState) {
+		this.displayState = simulationState;
+	}
+	
+	public void setDisplayState(SimulationState displayState) {
+		this.displayState = displayState;
+	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
@@ -439,19 +464,4 @@ public class GridPanel extends JPanel implements KeyListener{
 
 	}
 
-	//Getters
-	public SimulationState getDisplayState() {
-		return displayState;
-	}
-	public Simulation getSimulation() {
-		return simulation;
-	}
-	public boolean getContinueRunning() {
-		return this.continueRunning;
-	}
-	
-	//Setters
-	public void setDisplayState(SimulationState displayState) {
-		this.displayState = displayState;
-	}
 }

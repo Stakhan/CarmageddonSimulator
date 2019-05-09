@@ -14,6 +14,8 @@ public class ComputeGridWorker extends SwingWorker {
 	}
 	@Override
 	protected Object doInBackground() throws Exception {
+        System.out.println("START SIMULATION");
+
 		while (gridPanel.getContinueRunning()) {
 			
 //		while (gridPanel.getDisplayState().getStep() < 10) {
@@ -33,7 +35,7 @@ public class ComputeGridWorker extends SwingWorker {
 	
 	public void done(){            
         if(SwingUtilities.isEventDispatchThread())
-          System.out.println("Dans l'EDT ! ");
+          System.out.println("STOP SIMULATION");
       }
 
 }

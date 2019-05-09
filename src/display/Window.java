@@ -1,56 +1,248 @@
 package display;
 
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import engine.Simulation;
 import model.ConfigureStructure;
 
-public class Window extends JFrame{
-	/**
-	 * Cette classe crée une fenêtre simple pour l'affichage du panel affichant la simulation
-	 * 
-	 */
-	// on fait heriter notre classe de JFrame (fenetre graphique)
-	// pour pouvoir eventuellement personnaliser son comportement (surcharge)
+public class Window extends JFrame implements ActionListener{
+
 	
 	public Window(ConfigureStructure structConfig, Simulation simulation){
-		this.init(structConfig, simulation); // on separe le constructeur du code d’initialisation des parametres graphiques (bonne pratique)
+		// *** Useful Dimension ***
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int lengthFactor = (int) (screenSize.height)/simulation.getColumnNb();
+		
+		int simulationLength = simulation.getColumnNb()*(lengthFactor);
+		int simulationHeight = simulation.getLineNb()*(lengthFactor);
+		
+		int buttonLength = 300;
+		int buttonHeight = 80;
+		
+		//Dimension windowSize = new Dimension(simulationLength, simulationHeight);
+
+		//System.out.println(simulation.getColumnNb() + "," + simulation.getLineNb());
+		
+		//=====================================================================================================
+		// *** Creation of main window ***
+		this.setTitle("CARMAGEDDON");
+	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    setBounds(0,0,simulationLength + buttonLength + 20*3, simulationHeight + buttonHeight);
+	    
+		//---------------------------------------------------------------
+		// *** Main Panel ***
+		JPanel content = new JPanel(null);
+		content.setBackground(Color.WHITE);
+
+		// *** Grid Panel of the simulation ***
+		GridPanel gridPanel = new GridPanel(structConfig, simulation);
+
+		// *** Text Area ***
+		JTextArea textStats = new JTextArea();
+		String displayStats = simulation.getLastState().getStatistics().toString();
+		textStats.append(displayStats);
+		textStats.setEditable(false);
+		textStats.setOpaque(true);
+		
+		
+		//----------------------------------------------------------------------------
+		JLabel flowPedLabel = new JLabel("Flow Pedestrian : ");
+		JTextField flowPedUser = new JTextField(20);
+		JLabel flowCarLabel = new JLabel("Flow Car : ");
+		JTextField flowCarUser = new JTextField(20);
+		
+		//=============================================================================
+		// *** Button ***
+		// Adding a button to compute stats
+		JButton buttonStats = new JButton("Updtate Stats");
+		buttonStats.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String displayStats = simulation.getLastState().getStatistics().toString();
+				textStats.setText(displayStats);
+				
+				// Focus on the mainPanel
+				gridPanel.setFocusable(true);
+			    gridPanel.requestFocus();
+			}
+		});
+		//----------------------------------------------------------------------------
+		// Adding a button to compute flows
+		JButton buttonFlows = new JButton("Updtate Flows");
+		buttonFlows.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				// Focus on the mainPanel
+				gridPanel.setFocusable(true);
+			    gridPanel.requestFocus();
+			}
+		});
+		//----------------------------------------------------------------------------
+		// Adding a button to add a random pedestrian
+		JButton buttonPedestrian = new JButton("Add Pedestrian");
+		buttonPedestrian.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				simulation.getMovingParts().addRandomPedestrian();
+				
+				// Focus on the mainPanel
+				gridPanel.setFocusable(true);
+			    gridPanel.requestFocus();
+			}
+		});
+		//----------------------------------------------------------------------------
+		// Adding a button to add a random car
+		JButton buttonCar = new JButton("Add Car");
+		buttonCar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				simulation.getMovingParts().addRandomCar();
+				
+				// Focus on the mainPanel
+				gridPanel.setFocusable(true);
+			    gridPanel.requestFocus();
+			}
+		});
+		//----------------------------------------------------------------------------
+		// Adding a next button
+		JButton buttonNext = new JButton("Next");
+		buttonNext.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//System.out.println(this.simulation.getListStates().size()+" et "+this.displayState.);
+				if (gridPanel.getSimulationState().getStep() < gridPanel.getSimulation().getListStates().size()-1) { //test if next step has already been computed
+					gridPanel.setSimulationState(simulation.getState(gridPanel.getSimulationState().getStep()+1));
+				}
+				else { //if not, compute it
+					simulation.nextState();
+					gridPanel.setSimulationState(simulation.getLastState());
+				}
+				repaint();
+				System.out.println("step "+gridPanel.getSimulationState().getStep()+": "+simulation.getLastState().getGrid().toString());
+				
+				// Focus on the mainPanel
+				gridPanel.setFocusable(true);
+			    gridPanel.requestFocus();
+			}
+		});
+		//-------------------------------------------------------------------------------
+		// Adding a previous button
+		JButton buttonPrevious = new JButton("Previous");
+		buttonPrevious.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//System.out.println(this.simulation.getListStates().size()+" et "+this.displayState.);
+				if (gridPanel.getSimulationState().getStep() > 0) { //test if there is a previous state
+					gridPanel.setSimulationState(simulation.getState(gridPanel.getSimulationState().getStep()-1));
+				}
+				repaint();
+				System.out.println("step "+gridPanel.getSimulationState().getStep()+": " +
+									simulation.getState(gridPanel.getSimulationState().getStep()).getGrid().toString());
+				
+				// Focus on the mainPanel
+				gridPanel.setFocusable(true);
+			    gridPanel.requestFocus();
+			}
+		});
+		// Adding a start button
+		JButton buttonStart = new JButton("Start");
+		buttonStart.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				// Focus on the mainPanel
+				gridPanel.setFocusable(true);
+			    gridPanel.requestFocus();
+			}
+		});
+		
+
+
+		//=============================================================================
+		// *** Pannel Size | Adding Pannel to the main content ***
+		// Main
+		gridPanel.setBounds(0, 0, simulationLength, simulationHeight);
+		content.add(gridPanel);
+
+		// Stats
+		textStats.setBounds(simulationLength + 20, 0, buttonLength, buttonHeight);
+		content.add(textStats);
+		
+		buttonStats.setBounds(simulationLength + 20, buttonHeight + 20, buttonLength, buttonHeight);
+		content.add(buttonStats);
+
+		//---------------------------------------------------------------------------------------------
+		// Flows
+		flowPedLabel.setBounds(simulationLength + 20, (buttonHeight + 20)*2, (int) buttonLength/2, (int) buttonHeight/2);
+		content.add(flowPedLabel);
+		
+		flowPedUser.setBounds(simulationLength + 20 + (int) buttonLength/2 + 10, (buttonHeight + 20)*2, (int) buttonLength/2, (int) buttonHeight/2);
+		content.add(flowPedUser);
+		
+		flowCarLabel.setBounds(simulationLength + 20, (buttonHeight + 20)*2 + (int) buttonHeight/2 + 10, (int) buttonLength/2, (int) buttonHeight/2);
+		content.add(flowCarLabel);
+		
+		flowCarUser.setBounds(simulationLength + 20 + (int) buttonLength/2 + 10, (buttonHeight + 20)*2 + (int) buttonHeight/2 + 10, (int) buttonLength/2, (int) buttonHeight/2);
+		content.add(flowCarUser);
+		
+		//----------------------------------------------------------------------------------------------
+		// Button Ped / Car
+		buttonPedestrian.setBounds(simulationLength + 20,
+				(buttonHeight + 20)*3, (int) buttonLength/2, (int) buttonHeight/2);
+		content.add(buttonPedestrian);
+		
+		buttonCar.setBounds(simulationLength + 20 + 10 + (int) buttonLength/2,
+				(buttonHeight + 20)*3, (int) buttonLength/2, (int) buttonHeight/2);
+		content.add(buttonCar);
+		
+		//-----------------------------------------------------------------------------------------------
+		// Next | Pause/Start | Previous
+		buttonPrevious.setBounds(simulationLength + 20,
+				(buttonHeight + 20)*4, (int) buttonLength/3, (int) buttonHeight/2);
+		content.add(buttonPrevious);
+		
+		buttonNext.setBounds(simulationLength + 20 + 2 * (int) (buttonLength/3) + 2*5,
+				(buttonHeight + 20)*4, (int) buttonLength/3, (int) buttonHeight/2);
+		content.add(buttonNext);
+		
+		buttonStart.setBounds(simulationLength + 20 + (int) (buttonLength/3) + 5,
+				(buttonHeight + 20)*4, (int) buttonLength/3, (int) buttonHeight/2);
+		content.add(buttonStart);
+		
+		//
+		
+		
+		
+		// *** Adding different panels to the main Panel ***
+		
+	    this.getContentPane().add(content);
+	    
+	    // *** Display ***
+
+		this.setVisible(true);
+		
 	}
+
 	
-	private void init(ConfigureStructure structConfig, Simulation simulation){
-		
-		GridPanel mainPanel = new GridPanel(structConfig, simulation); // on instancie un nouveal objet MyPanel
-		JTextArea textPane = new JTextArea();
-		textPane.append("test");
-		
-		this.setLayout(new BorderLayout());
-	    //Au centre
-	    this.getContentPane().add(mainPanel, BorderLayout.CENTER);
-
-	    this.getContentPane().add(textPane, BorderLayout.EAST);
-		
-
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds(screenSize.width/2,0,screenSize.width/2, screenSize.height);
-        
-		this.setTitle("Etat de la simulation"); // titre de la fenetre
-		//this.setSize(structConfig.hDisplaySize, structConfig.vDisplaySize); // taille de la fenetre. On utilise plutot setPreferredSize si le composant parent
-		//this.setResizable(true); //On empêche/autorise le redimensionnement
-
-		
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // comportement lors d’un clic sur la croix rouge
-		this.setVisible(true); // on la rend visible
-		
+	// BUTTON
+	@Override
+	public void actionPerformed(ActionEvent e) {
 	}
 	
 	

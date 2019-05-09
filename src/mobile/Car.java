@@ -377,4 +377,14 @@ public class Car extends MobileObject {
 	public Vision getVision() {
 		return vision;
 	}
+	
+	public double getWaitingTime() {
+		return waitingTime;
+	}
+	
+	public double getCrossingDuration() {
+		return crossingDuration;
+	}
+	
+
 }
