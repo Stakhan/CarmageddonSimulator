@@ -79,7 +79,8 @@ public class Lane extends Structure {
 		return StructureType.Lane;
 	}
 
-
+	
+	
 	// Getters
 	public boolean getDirection() {
 		return direction;

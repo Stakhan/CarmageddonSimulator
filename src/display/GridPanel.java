@@ -28,6 +28,7 @@ import enumeration.Profil;
 import enumeration.StructureType;
 
 import enumeration.ObstacleType;
+import enumeration.Orientation;
 import enumeration.OrientedDirection;
 import enumeration.ObstacleType;
 import immobile.lights.TrafficLight;
@@ -234,15 +235,27 @@ public class GridPanel extends JPanel implements KeyListener{
 			}
 		}
 		
+		
+		
+		//System.out.println("TRAFFIC LIGHT : " + simulation.getStructureParts().getStructGrid()[43][53].getContainedLights().size());
+		
+		
 		//TESTING ONLY: Painting view span over
+		g2d.setPaint(Color.green);
+		g2d.fillRect(42*wUnit, 52*hUnit, wUnit, hUnit);
 		g2d.setPaint(Color.yellow);
 		for (Car car : this.simulation.getMovingParts().getListCars()) {
-			for (Integer[] coord : car.getVision().getViewSpan()){
-				g2d.fillRect(coord[1]*wUnit, coord[0]*hUnit, wUnit, hUnit);
+			if (!car.inGarage()) {
+				List<Integer[]> viewList = car.getVision().getViewList();
+				for (Integer[] coord : viewList) {
+					
+					g2d.fillRect((coord[0]-1)*wUnit, (coord[1]-1)*hUnit, wUnit, hUnit);
+				}
 			}
 		}
 		
-
+		
+		
 		//Display traffic lights
 		
 		//get current color for road 0
@@ -389,13 +402,23 @@ public class GridPanel extends JPanel implements KeyListener{
 		}
 		if ((key == KeyEvent.VK_C)) {
 			if(this.simulation.getStructureParts().getRoad(0).getLane(1).testAvailability(5, this.displayState)) { //Test if room available for poping
-				this.simulation.getMovingParts().getListCars().add(new Car(this.simulation.getMovingParts(), "voiture", 5, 3, Profil.respectful, 0, 2, 10, this.simulation.getStructureParts().getRoad(0).getLane(1)));
+				this.simulation.getMovingParts().getListCars().add(new Car(this.simulation.getMovingParts(), "voiture", 5, 3, Profil.respectful, 0, 5, 10, this.simulation.getStructureParts().getRoad(0).getLane(1)));
 				this.simulation.getMovingParts().getLastCar().nextStep();
 				this.simulation.getMovingParts().getLastCar().draw(this.displayState.getGrid());
 				repaint();
-			}
-			
+			}	
 		}
+		
+		if ((key == KeyEvent.VK_X)) {
+			if(this.simulation.getStructureParts().getRoad(0).getLane(1).testAvailability(5, this.displayState)) { //Test if room available for poping
+				this.simulation.getMovingParts().getListCars().add(new Car(this.simulation.getMovingParts(), "voiture", 5, 3, Profil.respectful, 0, 1, 10, this.simulation.getStructureParts().getRoad(1).getLane(1)));
+				this.simulation.getMovingParts().getLastCar().nextStep();
+				this.simulation.getMovingParts().getLastCar().draw(this.displayState.getGrid());
+				repaint();
+			}	
+		}
+		
+		
 		if ((key == KeyEvent.VK_P)) {
 			this.simulation.getMovingParts().getListPedestrians().add(new Pedestrian(this.simulation.getMovingParts(), 1, 1, OrientedDirection.WE, this.simulation.getStructureParts().getRoad(0).getSideWalk(0)));
 
@@ -403,7 +426,7 @@ public class GridPanel extends JPanel implements KeyListener{
 		if ((key == KeyEvent.VK_L)) {
 			for (Car car : this.simulation.getMovingParts().getListCars()) {
 				if(!car.inGarage()) {
-					System.out.println("Car "+this.simulation.getMovingParts().getListCars().indexOf(car)+" looking :"+car.getVision().look().toString());
+					//System.out.println("Car "+this.simulation.getMovingParts().getListCars().indexOf(car)+" looking :"+car.getVision().look().toString());
 				}
 			}
 		}

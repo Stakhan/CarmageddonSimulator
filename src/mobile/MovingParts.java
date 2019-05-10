@@ -31,7 +31,7 @@ public class MovingParts {
 	public void generate() {
 		//TESTING ONLY : one car for each direction of each lane
 //		listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 2, 20, this.simulation.getStructureParts().getRoad(0).getLane(0)));
-//		listCars.add(new Car(this, "voiture", 5, 3, Profil.crazy, 0, 2, 10, this.simulation.getStructureParts().getRoad(0).getLane(1)));
+		listCars.add(new Car(this, "voiture", 5, 3, Profil.crazy, 0, 1, 10, this.simulation.getStructureParts().getRoad(0).getLane(1)));
 //		listCars.add(new Car(this, "voiture", 5, 3, Profil.crazy, 0, 2, 10, this.simulation.getStructureParts().getRoad(1).getLane(0)));
 //		listCars.add(new Car(this, "voiture", 5, 3, Profil.crazy, 0, 2, 10, this.simulation.getStructureParts().getRoad(1).getLane(1)));
 		
@@ -138,16 +138,16 @@ public class MovingParts {
 	public void addRandomCarDirection(OrientedDirection direction) {
 		switch (direction) {
 		case NS:
-			listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 2, 20, this.simulation.getStructureParts().getRoad(1).getLane(1)));
+			listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 5, 20, this.simulation.getStructureParts().getRoad(1).getLane(1)));
 			break;
 		case SN:
-			listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 2, 20, this.simulation.getStructureParts().getRoad(1).getLane(0)));
+			listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 5, 20, this.simulation.getStructureParts().getRoad(1).getLane(0)));
 			break;
 		case WE:
-			listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 2, 20, this.simulation.getStructureParts().getRoad(0).getLane(1)));
+			listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 5, 20, this.simulation.getStructureParts().getRoad(0).getLane(1)));
 			break;
 		case EW:
-			listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 2, 20, this.simulation.getStructureParts().getRoad(0).getLane(0)));
+			listCars.add(new Car(this, "voiture", 5, 3, Profil.respectful, 0, 5, 20, this.simulation.getStructureParts().getRoad(0).getLane(0)));
 			break;
 		}
 

@@ -3,20 +3,20 @@ package mobile;
 import enumeration.ObstacleType;
 
 public class Obstacle {
-	private int distance;
+	private Integer[] position;
 	private ObstacleType type;
 	
-	public Obstacle(int distance, ObstacleType type) {
-		this.distance = distance;
+	public Obstacle(Integer[] position, ObstacleType type) {
+		this.position = position;
 		this.type = type;
 	}
 	public Obstacle() {
-		this.distance = 0;
+		this.position = null;
 		this.type = null;
 	}
 	
 	@Override
 	public String toString() {
-		return this.type+" at "+this.distance;
+		return this.type + " at " + this.position[0] + "," +this.position[1];
 	}
 }

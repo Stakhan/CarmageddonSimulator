@@ -282,9 +282,9 @@ public void go() {
 			// if the pedestrian is on a crossing section, we update the crossingDuration
 			Cell[][] grid = this.movingParts.getSimulation().getStructureParts().getStructGrid(); // get the grid of the simulation, to know the position of the different sidewalk
 			
-			if (grid[position[0]][position[1]].contains(StructureType.Lane)) {
-				crossingDuration += 1;
-			}
+			//if (grid[position[0] - 1][position[1] - 1].contains(StructureType.Lane)) {
+			//	crossingDuration += 1;
+			//}
 			
 		}
 	}
@@ -530,7 +530,7 @@ public void go() {
 	}
 
 	public void nextStep() {
-		System.out.println(this+":"+this.path);
+		//System.out.println(this+":"+this.path);
 		this.computeCoverage();
 		
 		if(isAtCrossingSection() && hasChangedDirection == false) {				
