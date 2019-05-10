@@ -79,7 +79,8 @@ public class Lane extends Structure {
 		return StructureType.Lane;
 	}
 
-
+	
+	
 	// Getters
 	public boolean getDirection() {
 		return direction;
@@ -87,6 +88,13 @@ public class Lane extends Structure {
 	public Road getRoad() {
 		return containingRoad;
 	}
+	
+	public int getIndex() {
+		return this.containingRoad.getIndexOfLane(this);
+	}
+	
+	
+	
 	public OrientedDirection getOrientedDirection() {
 
 		Orientation orientation = containingRoad.getOrientation();

@@ -23,6 +23,7 @@ public class Main {
 		simulation1.setConfiguredFlow(new ConfigureFlow(simulation1));
 		
 		
+		
 
 		//Writting simulation state to file
 		//simulation1.getState(0).writeToFile("simulation-state1.grid");

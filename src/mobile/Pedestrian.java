@@ -32,7 +32,7 @@ public class Pedestrian extends MobileObject{
 	
 	
 	/**
-	 * Second constructor, with all details
+	 * Main constructor. It initialize probabilistic parameters to 0, and set the velocity of a pedestrian to 1.
 	 * @param movingParts
 	 * @param length
 	 * @param height
@@ -59,14 +59,22 @@ public class Pedestrian extends MobileObject{
 	}
 
 
-
+	/**
+	 * Initialize the position of a pedestrian. Depending of his size and direction, it sets the pedestrian in the middle of the sidewalk.
+	 * The position is determined with the direction of a pedestrian, so an initialized pedestrian is forced to travel.
+	 * @param structGrid
+	 * @param sideWalk
+	 * @param length
+	 * @param height
+	 * @param pedestrianDirection
+	 * @return
+	 */
 	static public int[] initializePedestrianPosition(Cell[][] structGrid, SideWalk sideWalk, int length, int height, OrientedDirection pedestrianDirection) {
 			
 			Cell[][] grid = structGrid;
 		
 			Road road = sideWalk.getRoad();
-			
-			
+
 			int roadPosition = road.getPosition();
 			int pedestrianPositionOnRoad = (int) road.getSideWalkSize()/2;
 			
@@ -113,7 +121,7 @@ public class Pedestrian extends MobileObject{
 					break;
 				}
 			}
-			
+			System.out.println("initializePedPosition:"+y+","+x+" et "+grid[x][y].getX()+","+grid[x][y].getY());
 			int[] position = {y, x};
 			return position;
 		}
@@ -125,8 +133,8 @@ public class Pedestrian extends MobileObject{
 	
 	
 	/**
-	 * Compute the coverage of a pedestrian
-	 * Only for square pedestrian
+	 * Compute the coverage of a pedestrian.
+	 * Only for square pedestrian.
 	 */
 	public void computeCoverage(){
 	
@@ -142,13 +150,19 @@ public class Pedestrian extends MobileObject{
 				objectCoverage.add(pos);
 			}
 		}
-		
 		Integer[] pos = {this.position[0],this.position[1]};
-		objectCoverage.add(pos);
-		
+		objectCoverage.add(pos);	
 	}
 	
 	
+	/**
+	 * Pick a random direction depending on his direction. A pedestrian can't go back.
+	 * @param probWE
+	 * @param probEW
+	 * @param probNS
+	 * @param probSN
+	 * @return
+	 */
 	public OrientedDirection pickRandDirection(boolean probWE, boolean probEW, boolean probNS, boolean probSN) {
 		
 		//Producing a list of possible directions
@@ -180,6 +194,11 @@ public class Pedestrian extends MobileObject{
 		
 	}
 	
+	
+	/**
+	 * Add a random direction to the path.
+	 * It test previous direction, so a pedestrian can't go back.
+	 */
 	public void nextDirection() {
 		
 		boolean probWE = true;
@@ -212,7 +231,7 @@ public class Pedestrian extends MobileObject{
 			if (this.path.size() > 1) {
 				//Preventing pedestrian to go back on direction he has already been into
 				for(int i=0;i < this.path.size()-1;i++) {
-					switch(previous) {
+					switch(this.path.get(i)) {
 					case WE:
 						probEW = false;
 						break;
@@ -233,8 +252,10 @@ public class Pedestrian extends MobileObject{
 		}
 	}
 	
-
-public void go() {
+	/**
+	 * Methods that moves a pedestrian. It changes his position, and put him in the garage if he is outside of the simulation.
+	 */
+	public void go() {
 
 		if (!this.inGarage()) { //Test if a pedestrian is in garage position
 			int distance = (int) (this.velocity/1); //int sup
@@ -282,9 +303,9 @@ public void go() {
 			// if the pedestrian is on a crossing section, we update the crossingDuration
 			Cell[][] grid = this.movingParts.getSimulation().getStructureParts().getStructGrid(); // get the grid of the simulation, to know the position of the different sidewalk
 			
-			if (grid[position[0]][position[1]].contains(StructureType.Lane)) {
-				crossingDuration += 1;
-			}
+			//if (grid[position[0] - 1][position[1] - 1].contains(StructureType.Lane)) {
+			//	crossingDuration += 1;
+			//}
 			
 		}
 	}
@@ -294,7 +315,7 @@ public void go() {
 
 
 	/**
-	 * Deviate methods, it moves the position of the pedestrian to another case, only on a sidewalk
+	 * Deviate methods, it moves the position of the pedestrian to another case, only on a sidewalk.
 	 * @param proba : the probability to deviate
 	 */
 	public void deviate(double proba) {
@@ -350,7 +371,7 @@ public void go() {
 	
 	
 	/**
-	 * Getter, return the orientation of the pedestrian
+	 * Getter, return the orientation of the pedestrian.
 	 * @return Orientation
 	 */
 	public Orientation getOrientation() {
@@ -364,8 +385,8 @@ public void go() {
 	
 	
 	/**
-	 * This method compute the local position of a pedestrian, to know if he is at a crossing section
-	 * @return boolean : true if he is at a crossing section
+	 * This method tells if a pedestrian is at a crossing section.
+	 * @return boolean : true if he is at a crossing section.
 	 */
 	public boolean isAtCrossingSection() {
 
@@ -376,14 +397,16 @@ public void go() {
 			}
 			return false;
 		}
-		return false;
-				
+		return false;		
 	}
+	
+	
+	
 	
 	
 	/**
 	 * This methods is used to know if the next movement of the pedestrian will be on a pedestrian crossing, or if he stays on the side walk.
-	 * @return boolean : true the pedestrian will cross the road
+	 * @return boolean : true the pedestrian will cross the road.
 	 */
 	public boolean pedestrianCrossing() {
 		Cell[][] grid = this.movingParts.getSimulation().getStructureParts().getStructGrid();
@@ -422,7 +445,7 @@ public void go() {
 	/**
 	 * This methods is used to know if the pedestrian needs to stop and wait at a crossing section.
 	 * In that case, the crossing duration is taking into account.
-	 * @return boolean : true the pedestrian needs to stop
+	 * @return boolean : true the pedestrian needs to stop.
 	 */
 	public boolean stop() {
 		Cell[][] grid = this.movingParts.getSimulation().getStructureParts().getStructGrid();
@@ -451,7 +474,7 @@ public void go() {
 
 	/**
 	 * Each node gets an index from 1 to 4, starting from top left and going clockwise. Gives the node index on which the pedestrian lies. 
-	 * @return node index (zero if not on a node)
+	 * @return node index (zero if not on a node).
 	 */
 	public int whatNode() {
 		
@@ -487,6 +510,10 @@ public void go() {
 		return 0; //In case pedestrian isn't on a node
 	}
 	
+	
+	/**
+	 * Methods to change the sidewalk of a pedestrian.
+	 */
 	public void turn() {
 		
 		OrientedDirection nextDirection = this.path.get(this.path.size()-1);
@@ -529,8 +556,11 @@ public void go() {
 		this.pedestrianDirection = this.path.get(this.path.size()-1); //Change Pedestrian's direction
 	}
 
+	/**
+	 * Compute the next state of a pedestrian. It takes into account his decision to turn, wait, go and deviate.
+	 */
 	public void nextStep() {
-		System.out.println(this+":"+this.path);
+		//System.out.println(this+":"+this.path);
 		this.computeCoverage();
 		
 		if(isAtCrossingSection() && hasChangedDirection == false) {				
@@ -547,8 +577,6 @@ public void go() {
 		if (!isAtCrossingSection()) {
 			this.deviate(0.5);
 		}
-		
-
 	}
 	
 	// GETTERS
