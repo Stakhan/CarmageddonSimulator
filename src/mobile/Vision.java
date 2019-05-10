@@ -43,22 +43,22 @@ public class Vision {
 		
 		switch (direction) {
 		case NS:
-			if (position[1] + view + (int) car.getLength()/2 + 1> car.getLane().getRoad().getLength()) {
-				newView = car.getLane().getRoad().getLength() - position[1]  - (int) car.getLength()/2;
+			if (position[0] + view + (int) car.getLength()/2 + 1> car.getLane().getRoad().getLength()) {
+				newView = car.getLane().getRoad().getLength() - position[0]  - (int) car.getLength()/2;
 			}
 			break;
 		case SN:
-			if (position[1] - view - (int) car.getLength()/2 - 1 < 0) {
-				newView = position[1] - (int) car.getLength()/2 - 1;
+			if (position[0] - view - (int) car.getLength()/2 - 1 < 0) {
+				newView = position[0] - (int) car.getLength()/2 - 1;
 			}
 			break;
 		case WE:
-			if (position[0] + view + (int) car.getLength()/2 + 1> car.getLane().getRoad().getLength()) {
-				newView = car.getLane().getRoad().getLength() - position[0] - (int) car.getLength()/2;
+			if (position[1] + view + (int) car.getLength()/2 + 1> car.getLane().getRoad().getLength()) {
+				newView = car.getLane().getRoad().getLength() - position[1] - (int) car.getLength()/2;
 			}
 			break;
 		case EW:
-			if (position[0] - view - (int) car.getLength()/2 - 1 < 0) {
+			if (position[1] - view - (int) car.getLength()/2 - 1 < 0) {
 				newView = position[0] - (int) car.getLength()/2 - 1;
 			}
 			break;
@@ -86,29 +86,31 @@ public class Vision {
 			int[] position = car.getPosition();
 			OrientedDirection direction = car.getLane().getOrientedDirection();
 			
+			updateView(this.viewSpanDepth);
+			
 			switch (direction) {
 			case NS:
 				for (int i = 0; i < viewSpanDepth; i++) {
-					Integer[] coord = {position[0], position[1] + i + (int) car.getLength()/2 + 1};
+					Integer[] coord = {position[0] +  + i + (int) car.getLength()/2 + 1, position[1]};
 					viewList.add(coord);
 				}
 				break;
 			case SN:
 				for (int i = 0; i < viewSpanDepth; i++) {
-					Integer[] coord = {position[0], position[1] - i - (int) car.getLength()/2 - 1};
+					Integer[] coord = {position[0] - i - (int) car.getLength()/2 - 1, position[1]};
 					viewList.add(coord);
 				}
 				break;
 			case WE:
 				for (int i = 0; i < viewSpanDepth; i++) {
-					Integer[] coord = {position[0] + i + (int) car.getLength()/2 + 1, position[1]};
+					Integer[] coord = {position[0], position[1]  + i + (int) car.getLength()/2 + 1};
 					//System.out.println("coord : " + coord[0] +"," + coord[1]);
 					viewList.add(coord);
 				}
 				break;
 			case EW:
 				for (int i = 0; i < viewSpanDepth; i++) {
-					Integer[] coord = {position[0] - i - (int) car.getLength()/2 - 1, position[1]};
+					Integer[] coord = {position[0], position[1] - i - (int) car.getLength()/2 - 1};
 					viewList.add(coord);
 				}
 				break;	
