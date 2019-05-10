@@ -223,7 +223,61 @@ public class Window extends JFrame implements ActionListener{
 			}
 		});
 		
-
+		
+		
+		//=============================================================================
+		// 			*** TRAFFIC LIGHT ***
+		//=============================================================================
+		JLabel timeGreenTxt = new JLabel("Time Green : ");
+		JTextField timeGreen = new JTextField(20);
+		
+		JLabel timeRedTxt = new JLabel("Time Red : ");
+		JTextField timeRed = new JTextField(20);
+		
+		//Adding an update timeGreen button
+		JButton buttonGreen = new JButton("Update");
+		buttonGreen.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String timeGreenUser = timeGreen.getText();
+				if (timeGreenUser.equals("")) {
+					timeGreenUser = "12";
+				}
+				int timeG = Integer.parseInt(timeGreenUser);
+				if (timeG < 3) {
+					timeG = 3;
+				}
+				
+				//Setting the timingGreen
+				simulation.getStructureParts().getTrafficLightSystem().setTimingMainRoad(timeG);
+				// Focus on the mainPanel
+				gridPanel.setFocusable(true);
+			    gridPanel.requestFocus();
+			}
+		});
+		
+		//Adding an update timeGreen button
+		JButton buttonRed = new JButton("Update");
+		buttonRed.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String timeRedUser = timeGreen.getText();
+				if (timeRedUser.equals("")) {
+					timeRedUser = "12";
+				}
+				int timeR = Integer.parseInt(timeRedUser);
+				if (timeR < 3) {
+					timeR = 3;
+				}
+				//Setting the timingGreen
+				simulation.getStructureParts().getTrafficLightSystem().setTimingSecondRoad(timeR);;
+				// Focus on the mainPanel
+				gridPanel.setFocusable(true);
+			    gridPanel.requestFocus();
+			}
+		});
+		
+		
 		//=============================================================================
 		//=============================================================================
 		// *** Pannel Size | Adding Pannel to the main content ***
@@ -278,24 +332,57 @@ public class Window extends JFrame implements ActionListener{
 		
 		//-----------------------------------------------------------------------------------------------
 		// Next | Pause/Start | Previous
-		buttonPrevious.setBounds(simulationLength + 20, (buttonHeight + 20)*4, 
-				(int) buttonLength/3, (int) buttonHeight/2);
+		buttonPrevious.setBounds(simulationLength + 20, (buttonHeight + 20)*6, 
+				(int) buttonLength/3, (int) buttonHeight);
 		content.add(buttonPrevious);
 		
-		buttonStart.setBounds(simulationLength + 20 + (int) (buttonLength/3) + 5, (buttonHeight + 20)*4, 
-				(int) buttonLength/3, (int) buttonHeight/2);
+		buttonStart.setBounds(simulationLength + 20 + (int) (buttonLength/3) + 5, (buttonHeight + 20)*6, 
+				(int) buttonLength/3, (int) buttonHeight);
 		content.add(buttonStart);
 		
-		buttonNext.setBounds(simulationLength + 20 + 2 * (int) (buttonLength/3) + 2*5, (buttonHeight + 20)*4, 
-							(int) buttonLength/3, (int) buttonHeight/2);
+		buttonNext.setBounds(simulationLength + 20 + 2 * (int) (buttonLength/3) + 2*5, (buttonHeight + 20)*6, 
+							(int) buttonLength/3, (int) buttonHeight);
 		content.add(buttonNext);
 		
-
+		//==================================================================================================
+		// *** SETTING THE BUTTON TRAFFIC LIGHT ***
+		//==================================================================================================
+		timeGreenTxt.setBounds(simulationLength + 20, (buttonHeight + 20)*4, 
+				(int) buttonLength/3, (int) buttonHeight/2);
+		content.add(timeGreenTxt);
+		
+		timeGreen.setBounds(simulationLength + 20 + (int) (buttonLength/3) + 5, (buttonHeight + 20)*4, 
+				(int) buttonLength/3, (int) buttonHeight/2);
+		content.add(timeGreen);
+		
+		buttonGreen.setBounds(simulationLength + 20 + 2 * (int) (buttonLength/3) + 2*5, (buttonHeight + 20)*4, 
+							(int) buttonLength/3, (int) buttonHeight/2);
+		content.add(buttonGreen);
+		
+		//--------------------------------------
+		
+		timeRedTxt.setBounds(simulationLength + 20, (buttonHeight + 20)*4 + (int) (buttonHeight + 20)/2, 
+				(int) buttonLength/3, (int) buttonHeight/2);
+		content.add(timeRedTxt);
+		
+		timeRed.setBounds(simulationLength + 20 + (int) (buttonLength/3) + 5, (buttonHeight + 20)*4 + (int) (buttonHeight + 20)/2, 
+				(int) buttonLength/3, (int) buttonHeight/2);
+		content.add(timeRed);
+		
+		buttonRed.setBounds(simulationLength + 20 + 2 * (int) (buttonLength/3) + 2*5, (buttonHeight + 20)*4 + (int) (buttonHeight + 20)/2, 
+							(int) buttonLength/3, (int) buttonHeight/2);
+		content.add(buttonRed);
+		
+		
+		
+		
+		
+		
 		
 		//--------------------------------------------------------------------------------------------------
 		// Exit
-		buttonExit.setBounds(simulationLength + 20, simulationHeight - (int) buttonHeight/2,
-				buttonLength, (int) buttonHeight/2);
+		buttonExit.setBounds(simulationLength + 20, simulationHeight - (int) 3*buttonHeight,
+				buttonLength, (int) buttonHeight);
 		content.add(buttonExit);
 		
 		

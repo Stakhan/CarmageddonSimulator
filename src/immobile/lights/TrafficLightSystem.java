@@ -108,9 +108,26 @@ public class TrafficLightSystem {
 	/*
 	 * Getters
 	 */
+	public int getTimingMainRoad() {
+		return timingMainRoad;
+	}
+
+	public void setTimingMainRoad(int timingMainRoad) {
+		this.timingMainRoad = timingMainRoad;
+	}
+
+	public int getTimingSecondRoad() {
+		return timingSecondRoad;
+	}
+
+	public void setTimingSecondRoad(int timingSecondRoad) {
+		this.timingSecondRoad = timingSecondRoad;
+	}
+	
 	public List<TrafficLight> getListLights() {
 		return listLights;
 	}
+
 	public List<TrafficLight> getListLightsDeepCopy() {
 		
 		List<TrafficLight> newList = new ArrayList<TrafficLight>();
@@ -129,6 +146,11 @@ public class TrafficLightSystem {
 	}
 }
 	
+
+
+
+
+
 //	public static void main(String args[]){
 //		List<Road> listRoads = new ArrayList<Road>();
 //		listRoads.add(new Road(10, 2, 0, Orientation.Horizontal, 1, false));
