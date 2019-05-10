@@ -241,18 +241,17 @@ public class GridPanel extends JPanel implements KeyListener{
 		
 		
 		//TESTING ONLY: Painting view span over
-//		g2d.setPaint(Color.green);
-//		g2d.fillRect(42*wUnit, 52*hUnit, wUnit, hUnit);
-//		g2d.setPaint(Color.yellow);
-//		for (Car car : this.simulation.getMovingParts().getListCars()) {
-//			if (!car.inGarage()) {
-//				List<Integer[]> viewList = car.getVision().getViewList();
-//				for (Integer[] coord : viewList) {
-//					
-//					g2d.fillRect((coord[0]-1)*wUnit, (coord[1]-1)*hUnit, wUnit, hUnit);
-//				}
-//			}
-//		}
+
+		g2d.setPaint(Color.yellow);
+		for (Car car : this.simulation.getMovingParts().getListCars()) {
+			if (!car.inGarage()) {
+				List<Integer[]> viewList = car.getVision().getViewList();
+				for (Integer[] coord : viewList) {
+					
+					g2d.fillRect((coord[1])*wUnit, (coord[0])*hUnit, wUnit, hUnit);
+				}
+			}
+		}
 		
 		
 		
@@ -326,14 +325,14 @@ public class GridPanel extends JPanel implements KeyListener{
 		g2d.setTransform(backup);
 		
 		// TESTING ONLY: Painting car position
-		int i= 52;
-		int j = 30;
-		g2d.setPaint(Color.blue);
-		g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
-		 i= 52;
-		 j = 10;
-		g2d.setPaint(Color.blue);
-		g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
+//		int i= 52;
+//		int j = 30;
+//		g2d.setPaint(Color.blue);
+//		g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
+//		 i= 52;
+//		 j = 10;
+//		g2d.setPaint(Color.blue);
+//		g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 		
 		
 

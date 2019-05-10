@@ -65,11 +65,16 @@ public class Car extends MobileObject {
         	j = (int) length/2;
         	break;
         case NS:
-        	
+        	i = (int) length/2;
+        	j = road.getLength() - roadPosition - carPositionOnRoad ;
 			break;
         case SN:
-			break;
+        	i = road.getLength() - (int) length/2 - 1;
+        	j = road.getLength() - roadPosition - carPositionOnRoad ;
+        	break;
         case EW:
+        	i = roadPosition + carPositionOnRoad;
+        	j = road.getLength() - (int) length/2 - 1;
 			break;
 		}
 		int[] position = {i,j};
@@ -193,8 +198,8 @@ public class Car extends MobileObject {
 			if (!this.inGarage()) { //Test if car is in garage position
 				switch (carDirection) {
 				case NS: 
-					if (position[1] + distance <= this.lane.getRoad().getLength()) { //test if car is still inside of the simulation after movement
-						position[1] = position[1] + distance; 
+					if (position[0] + distance <= this.lane.getRoad().getLength()) { //test if car is still inside of the simulation after movement
+						position[0] = position[0] + distance; 
 						this.visible = true;
 					}
 					else { //In case it leaves the simulation
@@ -203,15 +208,6 @@ public class Car extends MobileObject {
 
 					break;
 				case SN:
-					if (position[1] - distance >= 0) {
-					position[1] = position[1] - distance;
-					this.visible = true;
-					}
-					else { //In case it leaves the simulation
-						this.park();
-					}
-		    		break;
-				case EW:
 					if (position[0] - distance >= 0) {
 					position[0] = position[0] - distance;
 					this.visible = true;
@@ -220,9 +216,18 @@ public class Car extends MobileObject {
 						this.park();
 					}
 		    		break;
+				case EW:
+					if (position[1] - distance >= 0) {
+					position[1] = position[1] - distance;
+					this.visible = true;
+					}
+					else { //In case it leaves the simulation
+						this.park();
+					}
+		    		break;
 				case WE:
-					if (position[0] + distance <= this.lane.getRoad().getLength()) {
-					position[0] = position[0] + distance;
+					if (position[1] + distance <= this.lane.getRoad().getLength()) {
+					position[1] = position[1] + distance;
 					this.visible = true;
 					}
 					else { //In case it leaves the simulation
@@ -247,5 +252,9 @@ public class Car extends MobileObject {
 	
 	public MovingParts getMovingParts() {
 		return movingParts;
+	}
+
+	public Vision getVision() {
+		return this.vision;
 	}
 }

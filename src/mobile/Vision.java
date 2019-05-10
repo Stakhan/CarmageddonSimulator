@@ -44,7 +44,7 @@ public class Vision {
 		switch (direction) {
 		case NS:
 			if (position[1] + view + (int) car.getLength()/2 + 1> car.getLane().getRoad().getLength()) {
-				newView = car.getLane().getRoad().getLength() - position[1];
+				newView = car.getLane().getRoad().getLength() - position[0];
 			}
 			break;
 		case SN:
