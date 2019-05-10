@@ -160,8 +160,10 @@ public class Car extends MobileObject {
 			}
 			else { // Cases : Car, Pedestrian, Red/Orange Traffic Light
 				Integer[] obstaclePosition = obstacle.getPosition();
-				if(obstacle.getType().equals(ObstacleType.Car) && ((Car) obstacle.getObject()).getVelocity() < this.velocity && obstacle.getDistance() < this.velocity + 2) { //Make sure we aren't going to crash into next car
-					this.changeVelocity(false);
+				if(obstacle.getType().equals(ObstacleType.Car)) { //Make sure we aren't going to crash into next car
+					if(((Car) obstacle.getObject()).getVelocity() < this.velocity && obstacle.getDistance() < this.velocity) {
+						this.velocity = obstacle.getDistance()-6;
+					}
 				}
 				else if(obstacle.getType().equals(ObstacleType.TrafficLight)) {
 					if(this.velocity == 0 && obstacle.getDistance() > 2) {
@@ -169,6 +171,9 @@ public class Car extends MobileObject {
 					}
 					else if (obstacle.getDistance() <=2){
 						this.velocity = 0;
+					}
+					else if (this.velocity > obstacle.getDistance()){
+						this.velocity = obstacle.getDistance() - 2;
 					}
 				}
 			}
