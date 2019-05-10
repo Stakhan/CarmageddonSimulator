@@ -44,7 +44,7 @@ public class Vision {
 		switch (direction) {
 		case NS:
 			if (position[1] + view + (int) car.getLength()/2 + 1> car.getLane().getRoad().getLength()) {
-				newView = car.getLane().getRoad().getLength() - position[0];
+				newView = car.getLane().getRoad().getLength() - position[1]  - (int) car.getLength()/2;
 			}
 			break;
 		case SN:
@@ -65,7 +65,7 @@ public class Vision {
 		}
 		
 		if (newView < 0) {
-			newView = position[0] - (int) car.getLength()/2;
+			newView = 0;
 		}
 		
 		this.viewSpanDepth = newView;
@@ -80,6 +80,7 @@ public class Vision {
 	public List<Integer[]> getViewList(){
 		List<Integer[]> viewList = new ArrayList<>();
 		if (!car.inGarage()) {
+
 			Cell[][] grid = this.car.getMovingParts().getSimulation().getStructureParts().getStructGrid();
 			
 			int[] position = car.getPosition();
@@ -143,6 +144,7 @@ public class Vision {
 					break;
 				}
 			
+<<<<<<< HEAD
 			}
 			// Test if the case contains a redLight or OrangeLight : it is an obstacle
 			
@@ -151,6 +153,16 @@ public class Vision {
 				break;
 				
 			}
+=======
+			}
+			// Test if the case contains a redLight or OrangeLight : it is an obstacle
+			
+			if (grid[coord[0]][coord[1]].getContainedLights().get(0).getCurrentColor() == Color.Red) {
+				System.out.println("FEUX ROUGE !!!!!!");
+				break;
+				
+			}
+>>>>>>> 53560ecd81ab5de23e78221c7c3fddb0d6c2cd15
 			
 		}
 	}
@@ -168,21 +180,16 @@ public class Vision {
 			
 			Cell[][] grid = null;
 			
-			if (this.car.getMovingParts().getSimulation().getListStates().size() > 1) { //We need two states to get a previous state
-				//Fetching previous state
-				SimulationState previousState = this.car.getMovingParts().getSimulation().getLastState();
-				//Fetching grid of previous step
-				grid = previousState.getGrid();
-			}
-			else { //In case it is the first state
-				grid = this.car.getMovingParts().getSimulation().getStructureParts().getStructGrid();
-			}
+			grid = this.car.getMovingParts().getSimulation().getStructureParts().getStructGrid();
 			
+			updateView(this.viewSpanDepth);
+			
+			System.out.println(toString());
 			for (Integer[] coord : getViewList()) {
-				System.out.println("test 2 ");
 				int i = coord[0];
 				int j = coord[1];
 				if (grid[i][j].getContainedMobileObjects().size() != 0) {
+					System.out.println("prout");
 					if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Car) {
 						coordObstacle[0] = i;
 						coordObstacle[1] = j;
@@ -193,15 +200,20 @@ public class Vision {
 					else if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Pedestrian) {
 						coordObstacle[0] = i;
 						coordObstacle[1] = j;
+
+						System.out.println("test 2 : PEDESTRIAN");
+
 						obstacle = new Obstacle(coordObstacle, ObstacleType.Pedestrian);
 						break;
 					}
 				}
+
 				else if (grid[i][j].getContainedLights().size() != 0) {
 					if (!grid[i][j].getContainedLights().get(0).getCurrentColor().equals(Color.Green)) { //In case it is Yellow or Red
 						coordObstacle[0] = i;
 						coordObstacle[1] = j;
 						obstacle = new Obstacle(coordObstacle, ObstacleType.TrafficLight);
+						System.out.println("test 2 : TRAFFIC LIGHT");
 						break;
 					}
 					else {
@@ -209,20 +221,22 @@ public class Vision {
 						obstacle = new Obstacle(coordObstacle, ObstacleType.Empty);
 						break;
 					}
+
 				}
 			}
 		}
 		else {
-			System.out.println("test");
+
+			System.out.println("test EMPTY 2");
 			obstacle = new Obstacle(coordObstacle, ObstacleType.Empty); //Empty obstacle
 		}
-		System.out.println("test return ");
+
 		return obstacle;
 		
 	}
 
 	
-	
+
 	// GETTERS
 	
 	public int getViewSpanDepth() {

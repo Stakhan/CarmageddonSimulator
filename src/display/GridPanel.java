@@ -142,7 +142,7 @@ public class GridPanel extends JPanel implements KeyListener{
 		
 		//Go over all cells of the grid
 		for(int i=0; i<structConfig.columnNb; i++) {
-			for(int j=0; j<structConfig.lineNb; j++) {
+			for(int j=0; j<structConfig.lineNb; j++) {	
 				
 				if(grid[i][j].getcontainedRoads().size() != 0) { //Test if cell contains road
 					
@@ -213,13 +213,10 @@ public class GridPanel extends JPanel implements KeyListener{
 								g2d.setPaint(Color.black);
 								g2d.drawRect(j*wUnit, i*hUnit, wUnit, hUnit);
 							}
-							
 						}
-						
-
 					}
-					
 				}
+				
 				else if (grid[i][j].getcontainedRoads().size() == 0) { //In case it doesn't contain a road
 					//Paint cell in green
 					g2d.setPaint(Color.green); 
@@ -229,19 +226,16 @@ public class GridPanel extends JPanel implements KeyListener{
 						g2d.setPaint(Color.black);
 						g2d.drawRect(j*wUnit, i*hUnit, wUnit, hUnit);
 					}
-					
-
 				}
 			}
 		}
 		
 		
 		
-		//System.out.println("TRAFFIC LIGHT : " + simulation.getStructureParts().getStructGrid()[43][53].getContainedLights().size());
-		
-		
-		//TESTING ONLY: Painting view span over
 
+		System.out.println("TRAFFIC LIGHT : " + simulation.getStructureParts().getStructGrid()[58][53].getContainedLights().size());
+	
+		//TESTING ONLY: Painting view span over
 		g2d.setPaint(Color.yellow);
 		for (Car car : this.simulation.getMovingParts().getListCars()) {
 			if (!car.inGarage()) {

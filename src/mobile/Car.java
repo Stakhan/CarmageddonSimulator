@@ -77,8 +77,10 @@ public class Car extends MobileObject {
         	j = road.getLength() - (int) length/2 - 1;
 			break;
 		}
+
 		int[] position = {i,j};
 		System.out.println("car position:"+position[0]+","+position[1]);
+
 
 		return position;
 	}
@@ -137,6 +139,7 @@ public class Car extends MobileObject {
 	
 	// Methods related to the movement of the car
 	
+
 		/**
 		 * Compilation of all actions of a car in one step. Calls other methods of this class.
 		 */
@@ -151,6 +154,7 @@ public class Car extends MobileObject {
 			//List<Integer[]> test = this.vision.getViewList();
 			//System.out.println("viewSpanList : " + this.vision.getViewList());
 			//this.vision.toString();
+
 		}
 		
 		/**
@@ -238,6 +242,7 @@ public class Car extends MobileObject {
 			}
 		}
 	
+
 	
 	//Getters
 	
