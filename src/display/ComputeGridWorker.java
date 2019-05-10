@@ -21,7 +21,7 @@ public class ComputeGridWorker extends SwingWorker {
 				  gridPanel.setDisplayState(gridPanel.getSimulation().getLastState());
 				  gridPanel.repaint();
 				  try {
-					  TimeUnit.MILLISECONDS.sleep(100);
+					  TimeUnit.MILLISECONDS.sleep(200);
 				  } catch (InterruptedException e1) {
 					  // TODO Auto-generated catch block
 					  e1.printStackTrace();

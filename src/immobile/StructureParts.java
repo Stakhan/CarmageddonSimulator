@@ -161,7 +161,7 @@ public class StructureParts {
 					
 					// adding traffic light on the lane before the crossing section
 					for (int i = 0; i < laneSize; i++) {
-						structGrid[y + i][x].addLight(trafficLightSystem.getListLights().get(1));
+						structGrid[y + i][x].addLight(trafficLightSystem.getListLights().get(0));
 						System.out.println("trafic light car added at : " + (int) (y + i) + "," + x);
 					}
 					break;
@@ -174,7 +174,7 @@ public class StructureParts {
 					
 					// adding traffic light on the lane before the crossing section
 					for (int i = 0; i < laneSize; i++) {
-						structGrid[y + i][x].addLight(trafficLightSystem.getListLights().get(1));
+						structGrid[y + i][x].addLight(trafficLightSystem.getListLights().get(0));
 						System.out.println("trafic light car added at : " + (int) (y + i) + "," + x);
 					}
 					break;

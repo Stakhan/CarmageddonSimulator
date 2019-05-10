@@ -145,6 +145,7 @@ public class Car extends MobileObject {
 		 * Compilation of all actions of a car in one step. Calls other methods of this class.
 		 */
 		public void nextStep() {
+			this.crossingDuration += 1;
 			this.go();
 			this.computeCoverage(this.movingParts);
 			this.changeVelocity(true);
@@ -159,11 +160,16 @@ public class Car extends MobileObject {
 			}
 			else { // Cases : Car, Pedestrian, Red/Orange Traffic Light
 				Integer[] obstaclePosition = obstacle.getPosition();
-				if(obstacle.getType().equals(ObstacleType.Car) && ((Car) obstacle.getObject()).getVelocity() < this.velocity && obstacle.getDistance() < this.velocity) { //Make sure we aren't going to crash into next car
+				if(obstacle.getType().equals(ObstacleType.Car) && ((Car) obstacle.getObject()).getVelocity() < this.velocity && obstacle.getDistance() < this.velocity + 2) { //Make sure we aren't going to crash into next car
 					this.changeVelocity(false);
 				}
 				else if(obstacle.getType().equals(ObstacleType.TrafficLight)) {
-					this.changeVelocity(false);
+					if(this.velocity == 0 && obstacle.getDistance() > 2) {
+						this.velocity += 1;
+					}
+					else if (obstacle.getDistance() <=2){
+						this.velocity = 0;
+					}
 				}
 			}
 		
