@@ -80,6 +80,8 @@ public class Vision {
 	public List<Integer[]> getViewList(){
 		List<Integer[]> viewList = new ArrayList<>();
 		if (!car.inGarage()) {
+
+			Cell[][] grid = this.car.getMovingParts().getSimulation().getStructureParts().getStructGrid();
 			
 			int[] position = car.getPosition();
 			OrientedDirection direction = car.getLane().getOrientedDirection();
@@ -142,6 +144,7 @@ public class Vision {
 					break;
 				}
 			
+<<<<<<< HEAD
 			}
 			// Test if the case contains a redLight or OrangeLight : it is an obstacle
 			
@@ -150,6 +153,16 @@ public class Vision {
 				break;
 				
 			}
+=======
+			}
+			// Test if the case contains a redLight or OrangeLight : it is an obstacle
+			
+			if (grid[coord[0]][coord[1]].getContainedLights().get(0).getCurrentColor() == Color.Red) {
+				System.out.println("FEUX ROUGE !!!!!!");
+				break;
+				
+			}
+>>>>>>> 53560ecd81ab5de23e78221c7c3fddb0d6c2cd15
 			
 		}
 	}
@@ -162,6 +175,9 @@ public class Vision {
 		Obstacle obstacle = new Obstacle(coordObstacle, ObstacleType.Empty);
 		
 		if(!this.car.inGarage()) {
+			
+			System.out.println("test");
+			
 			Cell[][] grid = null;
 			
 			grid = this.car.getMovingParts().getSimulation().getStructureParts().getStructGrid();
@@ -170,9 +186,8 @@ public class Vision {
 			
 			System.out.println(toString());
 			for (Integer[] coord : getViewList()) {
-				int i = coord[0] - 1;
-				int j = coord[1] - 1;
-
+				int i = coord[0];
+				int j = coord[1];
 				if (grid[i][j].getContainedMobileObjects().size() != 0) {
 					System.out.println("prout");
 					if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Car) {
@@ -185,39 +200,43 @@ public class Vision {
 					else if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Pedestrian) {
 						coordObstacle[0] = i;
 						coordObstacle[1] = j;
+
 						System.out.println("test 2 : PEDESTRIAN");
+
 						obstacle = new Obstacle(coordObstacle, ObstacleType.Pedestrian);
 						break;
 					}
 				}
-				if (grid[i][j].getContainedLights().size() != 0) {
+
+				else if (grid[i][j].getContainedLights().size() != 0) {
+					if (!grid[i][j].getContainedLights().get(0).getCurrentColor().equals(Color.Green)) { //In case it is Yellow or Red
 						coordObstacle[0] = i;
 						coordObstacle[1] = j;
-						System.out.println("test 2 : TRAFFIC LIGHT");
 						obstacle = new Obstacle(coordObstacle, ObstacleType.TrafficLight);
+						System.out.println("test 2 : TRAFFIC LIGHT");
 						break;
+					}
+					else {
+						System.out.println("test 2 : EMPTY ");
+						obstacle = new Obstacle(coordObstacle, ObstacleType.Empty);
+						break;
+					}
+
 				}
 			}
 		}
 		else {
+
 			System.out.println("test EMPTY 2");
 			obstacle = new Obstacle(coordObstacle, ObstacleType.Empty); //Empty obstacle
 		}
+
 		return obstacle;
 		
 	}
 
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	// GETTERS
 	
 	public int getViewSpanDepth() {

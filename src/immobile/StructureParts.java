@@ -131,17 +131,17 @@ public class StructureParts {
 				int laneSize = road.getLaneSize();
 				switch (direction) {
 				case NS:
-					int y = (int) road.getLength()/2 - 						//Here is the center of the map, the center of the crossing section
-								laneSize - road.getSideWalkSize() - 1;		//Adapting to the top of the crossing section
-					int x = (int) road.getLength()/2 + 1 -					//Middle
-								laneSize;									//Adapting
+					int x = (int) road.getLength()/2 -						//Here is the center of the map, the center of the crossing section
+								laneSize + 1;								//Adapting to the top of the crossing section
+					int y = (int) road.getLength()/2 - 						//Middle
+								laneSize - road.getSideWalkSize() - 1;		//Adapting (-1 bc before the sidewalk)
 					// adding traffic light on the lane before the crossing section
 					for (int i = 0; i < laneSize; i++) {
 						structGrid[y][x + i].addLight(trafficLightSystem.getListLights().get(1));
-						System.out.println("trafic light car added at : " + y + "," + (int) (x + i));
+						System.out.println("trafic light car added at : " + (int) (y) + "," + (int) (x+i));
 					}
 					break;
-				/*
+				
 				case SN:
 					x = (int) road.getLength()/2 + 1;		//Adapting to the top of the crossing section
 					y = (int) road.getLength()/2 + 
@@ -167,9 +167,10 @@ public class StructureParts {
 					break;
 					
 				case EW:
-					x = (int) road.getLength()/2 + 1 -						//Middle
-					laneSize - road.getSideWalkSize() - 1;									//Adapting
-					y = (int) road.getLength()/2;		//Adapting to the top of the crossing section
+					x = (int) road.getLength()/2 +						//Middle
+					laneSize + road.getSideWalkSize() + 1;				//Adapting
+					y = (int) road.getLength()/2 -
+							laneSize;									//Adapting to the top of the crossing section
 					
 					// adding traffic light on the lane before the crossing section
 					for (int i = 0; i < laneSize; i++) {
@@ -177,13 +178,14 @@ public class StructureParts {
 						System.out.println("trafic light car added at : " + (int) (y + i) + "," + x);
 					}
 					break;
-				*/
+				
 					
 				}
 				
 				
 				
 			}
+			// *** ELIE'S VERSION ***
 			/*
 			if(road.getOrientation() == Orientation.Vertical) {
 				for (Lane lane : road.getListLanes()) { 
@@ -232,7 +234,58 @@ public class StructureParts {
 		//Adding traffic lights for pedestrian
 		
 		Road road = this.listRoads.get(1);
+		//left-top corner
+		int xOrigin = road.getPosition() + 1;
+		int yOrigin = listRoads.get(1).getPosition();
+		int walkSize = road.getSideWalkSize();
+		
+		for (int x = 0; x < walkSize; x++) {
+			for (int y =0; y < walkSize; y++) {
+				structGrid[yOrigin + y][xOrigin + x].addLight(trafficLightSystem.getListLights().get(2));
+				structGrid[yOrigin + y][xOrigin + x].addLight(trafficLightSystem.getListLights().get(3));
+				System.out.println("traffic ped  " + yOrigin + "," + xOrigin);
+			}
+		}
+		
 		//right-top corner
+		xOrigin = road.getPosition() + walkSize + 2*road.getLaneSize() + 1;
+		
+		for (int x = 0; x < walkSize; x++) {
+			for (int y =0; y < walkSize; y++) {
+				structGrid[yOrigin + y][xOrigin + x].addLight(trafficLightSystem.getListLights().get(2));
+				structGrid[yOrigin + y][xOrigin + x].addLight(trafficLightSystem.getListLights().get(3));
+				System.out.println("traffic ped  " + yOrigin + "," + xOrigin);
+			}
+		}
+		
+		//left-bottom corner
+		xOrigin = road.getPosition() + 1;
+		yOrigin = listRoads.get(1).getPosition() + walkSize + 2*road.getLaneSize();
+		
+		for (int x = 0; x < walkSize; x++) {
+			for (int y =0; y < walkSize; y++) {
+				structGrid[yOrigin + y][xOrigin + x].addLight(trafficLightSystem.getListLights().get(2));
+				structGrid[yOrigin + y][xOrigin + x].addLight(trafficLightSystem.getListLights().get(3));
+				System.out.println("traffic ped  " + yOrigin + "," + xOrigin);
+			}
+		}
+		
+		
+		//right-bottom corner
+		xOrigin = road.getPosition() + walkSize + 2*road.getLaneSize() + 1;
+		yOrigin = listRoads.get(1).getPosition() + walkSize + 2*road.getLaneSize();
+		
+		for (int x = 0; x < walkSize; x++) {
+			for (int y =0; y < walkSize; y++) {
+				structGrid[yOrigin + y][xOrigin + x].addLight(trafficLightSystem.getListLights().get(2));
+				structGrid[yOrigin + y][xOrigin + x].addLight(trafficLightSystem.getListLights().get(3));
+				System.out.println("traffic ped  " + yOrigin + "," + xOrigin);
+			}
+		}
+		
+		
+		
+		/*
 		int jOrigin = road.getPosition() + road.getSideWalkSize() + road.getLaneSize()*road.getListLanes().size() + 1;
 		int iOrigin = listRoads.get(1).getPosition() ;
 		System.out.println("traffic pedestrian : " + iOrigin + "," + jOrigin );
@@ -244,6 +297,7 @@ public class StructureParts {
 				System.out.println("traffic ped  " + i + "," + j);
 			}
 		}
+		*/
 		/*
 		//left-top corner
 		jOrigin = road.getPosition() - road.getSideWalkSize() + road.getLaneSize() - 1;

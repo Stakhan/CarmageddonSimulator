@@ -187,13 +187,14 @@ public class Car extends MobileObject {
 		this.changeVelocity(true);
 		this.vision.setViewSpanDepth(this.velocity * 3); // To have a deeper vision : *3
 		this.vision.updateView(this.velocity * 3);
-		this.vision.look();
+
+		//this.vision.look();
 		System.out.println("CROSSING SECTION : " + isAtCrossingSection());
+
 		System.out.println("viewSpanDepth : " + this.vision.getViewSpanDepth());
 		//List<Integer[]> test = this.vision.getViewList();
 		//System.out.println("viewSpanList : " + this.vision.getViewList());
 		//this.vision.toString();
-		
 		System.out.println("car position : " + position[0] + "," + position[1]);
 	}
 	
@@ -285,6 +286,7 @@ public class Car extends MobileObject {
 	
 	
 	
+
 	public boolean isAtCrossingSection() {
 
 		if(!inGarage()) {
@@ -298,31 +300,12 @@ public class Car extends MobileObject {
 				
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	@Override
 	public MobileType getType() {
 		return MobileType.Car;
 	}
-	
-	
-	
+
 	
 	//Getters
 	

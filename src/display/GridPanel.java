@@ -172,7 +172,7 @@ public class GridPanel extends JPanel implements KeyListener{
 						
 						if(grid[i][j].getContainedLights().size() != 0) {
 							g2d.setPaint(Color.orange); 
-							//g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
+							g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 						}
 						else if(grid[i][j].contains(StructureType.SideWalk) && grid[i][j].contains(StructureType.Lane)) { //Test if it contains a Lane and a SideWalk (in that case it should be considered a Lane)
 							//Paint cell in pink
@@ -232,12 +232,14 @@ public class GridPanel extends JPanel implements KeyListener{
 		
 		
 		
+
 		System.out.println("TRAFFIC LIGHT : " + simulation.getStructureParts().getStructGrid()[58][53].getContainedLights().size());
-		
-		
+	
 		//TESTING ONLY: Painting view span over
 		g2d.setPaint(Color.green);
+
 		g2d.fillRect((48)*wUnit, (41)*hUnit, wUnit, hUnit);
+
 		g2d.setPaint(Color.yellow);
 		for (Car car : this.simulation.getMovingParts().getListCars()) {
 			if (!car.inGarage()) {
