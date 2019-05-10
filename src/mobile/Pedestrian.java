@@ -553,13 +553,6 @@ public void go() {
 	
 	// GETTERS
 	
-	public double getWaitingTime() {
-		return waitingTime;
-	}
-	
-	public double getCrossingDuration() {
-		return crossingDuration;
-	}
 	
 	
 	@Override

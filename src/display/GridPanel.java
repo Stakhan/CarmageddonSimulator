@@ -151,7 +151,7 @@ public class GridPanel extends JPanel implements KeyListener{
 						if(grid[i][j].contains(MobileType.Car)) { //Test if it contains a Car
 								
 							int[] position = grid[i][j].getContainedMobileObjects().get(0).getPosition(); //Get central position of car
-							if(position[0] == j+1 && position[1] == i+1) { //Check if cell is center of car
+							if(position[0] == i && position[1] == j) { //Check if cell is center of car
 								g2d.setPaint(Color.pink); //Paint in pink in that case
 							}
 							else {
@@ -241,18 +241,18 @@ public class GridPanel extends JPanel implements KeyListener{
 		
 		
 		//TESTING ONLY: Painting view span over
-		g2d.setPaint(Color.green);
-		g2d.fillRect(42*wUnit, 52*hUnit, wUnit, hUnit);
-		g2d.setPaint(Color.yellow);
-		for (Car car : this.simulation.getMovingParts().getListCars()) {
-			if (!car.inGarage()) {
-				List<Integer[]> viewList = car.getVision().getViewList();
-				for (Integer[] coord : viewList) {
-					
-					g2d.fillRect((coord[0]-1)*wUnit, (coord[1]-1)*hUnit, wUnit, hUnit);
-				}
-			}
-		}
+//		g2d.setPaint(Color.green);
+//		g2d.fillRect(42*wUnit, 52*hUnit, wUnit, hUnit);
+//		g2d.setPaint(Color.yellow);
+//		for (Car car : this.simulation.getMovingParts().getListCars()) {
+//			if (!car.inGarage()) {
+//				List<Integer[]> viewList = car.getVision().getViewList();
+//				for (Integer[] coord : viewList) {
+//					
+//					g2d.fillRect((coord[0]-1)*wUnit, (coord[1]-1)*hUnit, wUnit, hUnit);
+//				}
+//			}
+//		}
 		
 		
 		
@@ -401,22 +401,22 @@ public class GridPanel extends JPanel implements KeyListener{
 			}
 		}
 		if ((key == KeyEvent.VK_C)) {
-			if(this.simulation.getStructureParts().getRoad(0).getLane(1).testAvailability(5, this.displayState)) { //Test if room available for poping
-				this.simulation.getMovingParts().getListCars().add(new Car(this.simulation.getMovingParts(), "voiture", 5, 3, Profil.respectful, 0, 5, 10, this.simulation.getStructureParts().getRoad(0).getLane(1)));
-				this.simulation.getMovingParts().getLastCar().nextStep();
-				this.simulation.getMovingParts().getLastCar().draw(this.displayState.getGrid());
-				repaint();
-			}	
+//			if(this.simulation.getStructureParts().getRoad(0).getLane(1).testAvailability(5, this.displayState)) { //Test if room available for poping
+//				this.simulation.getMovingParts().getListCars().add(new Car(this.simulation.getMovingParts(), "voiture", 5, 3, Profil.respectful, 0, 5, 10, this.simulation.getStructureParts().getRoad(0).getLane(1)));
+//				this.simulation.getMovingParts().getLastCar().nextStep();
+//				this.simulation.getMovingParts().getLastCar().draw(this.displayState.getGrid());
+//				repaint();
+//			}	
 		}
 		
-		if ((key == KeyEvent.VK_X)) {
-			if(this.simulation.getStructureParts().getRoad(0).getLane(1).testAvailability(5, this.displayState)) { //Test if room available for poping
-				this.simulation.getMovingParts().getListCars().add(new Car(this.simulation.getMovingParts(), "voiture", 5, 3, Profil.respectful, 0, 1, 10, this.simulation.getStructureParts().getRoad(1).getLane(1)));
-				this.simulation.getMovingParts().getLastCar().nextStep();
-				this.simulation.getMovingParts().getLastCar().draw(this.displayState.getGrid());
-				repaint();
-			}	
-		}
+//		if ((key == KeyEvent.VK_X)) {
+//			if(this.simulation.getStructureParts().getRoad(0).getLane(1).testAvailability(5, this.displayState)) { //Test if room available for poping
+//				this.simulation.getMovingParts().getListCars().add(new Car(this.simulation.getMovingParts(), "voiture", 5, 3, Profil.respectful, 0, 1, 10, this.simulation.getStructureParts().getRoad(1).getLane(1)));
+//				this.simulation.getMovingParts().getLastCar().nextStep();
+//				this.simulation.getMovingParts().getLastCar().draw(this.displayState.getGrid());
+//				repaint();
+//			}	
+//		}
 		
 		
 		if ((key == KeyEvent.VK_P)) {

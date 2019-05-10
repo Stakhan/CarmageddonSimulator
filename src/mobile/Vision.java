@@ -28,10 +28,10 @@ public class Vision {
 			this.viewSpanDepth = viewSpanDepth;
 			this.car = car;
 		}
-	
-	
+
+
 	/**
-	 * This methods is used to recalculate a view. In fact, the view decrease when a car is near a simulation's border.
+	 * This methods is used to recalculate a view. In fact, the view decreases when a car is near a simulation's border.
 	 * Useful to avoid index out of range when the view is used to add cells etc.
 	 * @param view
 	 */

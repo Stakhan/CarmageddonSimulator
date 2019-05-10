@@ -55,12 +55,12 @@ public class SimulationState {
 		List<Double> listPedestriansCD = new ArrayList<>();
 		List<Pedestrian> listPedestrians = simulation.getMovingParts().getListPedestrians();
 		for (int i = 0; i < listPedestrians.size(); i++) {
-			listPedestriansCD.add((Double) listPedestrians.get(i).getCrossingDuration()); // cast in Double
+			listPedestriansCD.add(new Double(listPedestrians.get(i).getCrossingDuration())); // cast in Double
 		}
 		// * WaitingTime * 
 		List<Double> listPedestriansWT = new ArrayList<>();
 		for (int i = 0; i < listPedestrians.size(); i++) {
-			listPedestriansWT.add((Double) listPedestrians.get(i).getWaitingTime()); // cast in Double
+			listPedestriansWT.add(new Double(listPedestrians.get(i).getWaitingTime())); // cast in Double
 		}
 		
 		// CARS
@@ -68,12 +68,12 @@ public class SimulationState {
 		List<Double> listCarsCD = new ArrayList<>();
 		List<Car> listCars = simulation.getMovingParts().getListCars();
 		for (int i = 0; i < listCars.size(); i++) {
-			listCarsCD.add((Double) listCars.get(i).getCrossingDuration()); // cast in Double
+			listCarsCD.add(new Double(listCars.get(i).getCrossingDuration())); // cast in Double
 		}
 		// * WaitingTime * 
 		List<Double> listCarsWT = new ArrayList<>();
 		for (int i = 0; i < listCars.size(); i++) {
-			listCarsWT.add((Double) listCars.get(i).getWaitingTime()); // cast in Double
+			listCarsWT.add(new Double(listCars.get(i).getWaitingTime())); // cast in Double
 		}
 		Double averageCrossingDurationPedestrian = stats.average(listPedestriansCD);
 		Double averageWaitingTimePedestrian = stats.average(listPedestriansWT);
