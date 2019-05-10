@@ -1,6 +1,7 @@
 package mobile;
 
 import enumeration.MobileType;
+import enumeration.ObstacleType;
 import enumeration.Orientation;
 import enumeration.OrientedDirection;
 import enumeration.Profil;
@@ -144,13 +145,40 @@ public class Car extends MobileObject {
 		 * Compilation of all actions of a car in one step. Calls other methods of this class.
 		 */
 		public void nextStep() {
+			this.crossingDuration += 1;
 			this.go();
 			this.computeCoverage(this.movingParts);
 			this.changeVelocity(true);
 			this.vision.setViewSpanDepth(this.velocity * 3); // To have a deeper vision : *3
 			this.vision.updateView(this.velocity * 3);
-			//this.vision.look();
-			System.out.println("viewSpanDepth : " + this.vision.getViewSpanDepth());
+			this.vision.look();
+			
+			Obstacle obstacle = this.vision.look();			
+			if (obstacle.getType().equals(ObstacleType.Empty) && this.velocity < this.maxVelocity) { // No obstacle
+
+					this.changeVelocity(true);
+			}
+			else { // Cases : Car, Pedestrian, Red/Orange Traffic Light
+				Integer[] obstaclePosition = obstacle.getPosition();
+				if(obstacle.getType().equals(ObstacleType.Car)) { //Make sure we aren't going to crash into next car
+					if(((Car) obstacle.getObject()).getVelocity() < this.velocity && obstacle.getDistance() < this.velocity) {
+						this.velocity = obstacle.getDistance()-6;
+					}
+				}
+				else if(obstacle.getType().equals(ObstacleType.TrafficLight)) {
+					if(this.velocity == 0 && obstacle.getDistance() > 2) {
+						this.velocity += 1;
+					}
+					else if (obstacle.getDistance() <=2){
+						this.velocity = 0;
+					}
+					else if (this.velocity > obstacle.getDistance()){
+						this.velocity = obstacle.getDistance() - 2;
+					}
+				}
+			}
+		
+			//System.out.println("viewSpanDepth : " + this.vision.getViewSpanDepth());
 			//List<Integer[]> test = this.vision.getViewList();
 			//System.out.println("viewSpanList : " + this.vision.getViewList());
 			//this.vision.toString();
@@ -261,5 +289,9 @@ public class Car extends MobileObject {
 
 	public Vision getVision() {
 		return this.vision;
+	}
+	
+	public int getVelocity() {
+		return velocity;
 	}
 }
