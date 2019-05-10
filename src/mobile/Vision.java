@@ -185,6 +185,7 @@ public class Vision {
 			updateView(this.viewSpanDepth);
 			
 			System.out.println(toString());
+			int distance = 0;
 			for (Integer[] coord : getViewList()) {
 				int i = coord[0];
 				int j = coord[1];
@@ -193,7 +194,7 @@ public class Vision {
 					if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Car) {
 						coordObstacle[0] = i;
 						coordObstacle[1] = j;
-						obstacle = new Obstacle(coordObstacle, ObstacleType.Car);
+						obstacle = new Obstacle(coordObstacle, grid[i][j].getContainedMobileObjects(0), ObstacleType.Car, distance);
 						System.out.println("test 2 : CAR ");
 						break;
 					}
@@ -203,7 +204,7 @@ public class Vision {
 
 						System.out.println("test 2 : PEDESTRIAN");
 
-						obstacle = new Obstacle(coordObstacle, ObstacleType.Pedestrian);
+						obstacle = new Obstacle(coordObstacle, grid[i][j].getContainedMobileObjects(0),ObstacleType.Pedestrian, distance);
 						break;
 					}
 				}
@@ -212,7 +213,7 @@ public class Vision {
 					if (!grid[i][j].getContainedLights().get(0).getCurrentColor().equals(Color.Green)) { //In case it is Yellow or Red
 						coordObstacle[0] = i;
 						coordObstacle[1] = j;
-						obstacle = new Obstacle(coordObstacle, ObstacleType.TrafficLight);
+						obstacle = new Obstacle(coordObstacle, grid[i][j].getContainedLights().get(0), ObstacleType.TrafficLight, distance);
 						System.out.println("test 2 : TRAFFIC LIGHT");
 						break;
 					}
@@ -223,7 +224,9 @@ public class Vision {
 					}
 
 				}
+				distance++;
 			}
+			
 		}
 		else {
 
