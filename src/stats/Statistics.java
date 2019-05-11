@@ -46,6 +46,7 @@ public class Statistics {
 			av += list.get(i);
 		}
 		av /= list.size();
+		av = Math.floor(av * 1000) / 1000;
 		return av;
 	}
 	

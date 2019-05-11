@@ -153,11 +153,6 @@ public class Car extends MobileObject {
 			this.vision.updateView(this.velocity * 3);
 			this.vision.look();
 			
-			
-			if (this.maxVelocity == 0) {
-				this.waitingTime += 1;
-			}
-			
 			Obstacle obstacle = this.vision.look();			
 			if (obstacle.getType().equals(ObstacleType.Empty) && this.velocity < this.maxVelocity) { // No obstacle
 
@@ -168,6 +163,7 @@ public class Car extends MobileObject {
 				if(obstacle.getType().equals(ObstacleType.Car)) { //Make sure we aren't going to crash into next car
 					if(((Car) obstacle.getObject()).getVelocity() < this.velocity && obstacle.getDistance() < this.velocity) {
 						this.velocity = obstacle.getDistance();
+						this.waitingTime += 1;
 					}
 				}
 				else if(obstacle.getType().equals(ObstacleType.TrafficLight)) {
@@ -176,6 +172,7 @@ public class Car extends MobileObject {
 					}
 					else if (obstacle.getDistance() <=2){
 						this.velocity = 0;
+						this.waitingTime += 1;
 					}
 					else if (this.velocity > obstacle.getDistance()){
 						this.velocity = obstacle.getDistance() - 2;
