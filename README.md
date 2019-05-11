@@ -21,28 +21,30 @@ If you haven't installed git yet, open a shell and run:
 ```
 sudo apt-get install git
 ```
-Then retrieve the code using:
+Then retrieve the code:
 ```
 git clone https://github.com/Stakhan/CarmageddonSimulator
 ```
-You now have a local copy of the code and can modify it and run it using your favorite IDE (Eclipse, IntelliJ, Netbeans, ...)
+You now have a local copy of the code that you can modify and run using your favorite IDE (Eclipse, IntelliJ, Netbeans, ...).
+
+To simply run the program, see section **Compiling sources** and **Launching the app!** below.
 
 ## Compiling sources
-Once you have a local copy of the code, you can compile it. For this purpose we will use Another Neat Tool (ANT). Install it using:
+Once you have a local copy of the code, you can compile it. For this purpose we will use Another Neat Tool (ANT). Install it:
 ```
 sudo apt-get install ant
 ```
-Make sure you're in the CarmageddonSimulator:
+Make sure you're in the CarmageddonSimulator directory:
 ```
 pwd
 ```
-If yes, compile using:
+If yes, compile:
 ```
 ant -f build.xml
 ```
 You should now have a .jar file in the CarmageddonSimulator directory.
 
-You can remove the directory created during build (which are of no use once the .jar has been generated) by running:
+You can remove the directories created during build (which are of no use once the .jar has been generated) by running:
 ```
 ant -f build.xml clean
 ```
