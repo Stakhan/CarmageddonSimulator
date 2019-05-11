@@ -1,40 +1,70 @@
 # Carmageddon Simulator
 
-Carmageddon Simulator is an information technology project developped by first year engineering student of the École nationale des sciences géographiques. 
-This simulation project provides the possibility to an urban planner to simulate the behaviour of cars and pedestrians at an intersection. 
+Carmageddon Simulator is an information technology project developped by first year engineering students of the École Nationale des Sciences Géographiques. 
+This project simulates the behaviour of cars and pedestrians at an intersection and provides statistical data aimed at urban planners. 
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. **Those instructions assume you are on a debian-like linux system.**
 
 ### Prerequisites
 
-Carmageddon Simulator is developped in Java language without need of any other language or platform. It was tested with the versions 8, 11 and 12 of Java.
+Carmageddon Simulator is developped in Java. So you need a version of the JDK if you aim at modifying the code.
+There is no need for other languages or platforms. It was tested with versions 8, 11 and 12 of the JDK.
+
+To download the Java Development Kit (JDK) visit:
+http://jdk.java.net/12/ or https://www.oracle.com/technetwork/java/javase/downloads/index.html
+
+
+### Getting source code
+If you haven't installed git yet, open a shell and run:
+```
+sudo apt-get install git
+```
+Then retrieve the code:
+```
+git clone https://github.com/Stakhan/CarmageddonSimulator
+```
+You now have a local copy of the code that you can modify and run using your favorite IDE (Eclipse, IntelliJ, Netbeans, ...).
+
+To simply run the program, see section **Compiling sources** and **Launching the app!** below.
+
+## Compiling sources
+Once you have a local copy of the code, you can compile it. For this purpose we will use Another Neat Tool (ANT). Install it:
+```
+sudo apt-get install ant
+```
+Make sure you're in the CarmageddonSimulator:
+```
+pwd
+```
+If not:
+```
+cd CarmageddonSimulator
+```
+Compile:
+```
+ant -f build.xml
+```
+You should now have a .jar file in the CarmageddonSimulator directory.
+
+You can remove the directories created during build (which are of no use once the .jar has been generated) by running:
+```
+ant -f build.xml clean
+```
+
+## Launching the app !
+
+Once you've produced a .jar file, it's time to run it:
 
 ```
-http://openjdk.java.net/
-https://www.oracle.com/technetwork/java/index.html
+java -jar CarmageddonSimulator.jar
 ```
 
-### Installing
+A first window appear, choose your size preferences there. Then, you get the main window where you can watch the simulation and adjust the different live parameters and events.
 
-Launch the .jar file.
+Use <kbd>SPACE</kbd> to play and pause the simulation and <kbd>&rarr;</kbd> to advance in the simulation step by step.
 
-```
-until finished
-```
-
-## Running the tests
-
-Choose your size preference in the first window. Then, you can adjust the different live parameters and events.
-
-```
-Change flow
-```
-
-```
-Compute Stats
-```
 
 ## Authors
 
