@@ -43,23 +43,23 @@ public class Vision {
 		
 		switch (direction) {
 		case NS:
-			if (position[0] + view + (int) car.getLength()/2 + 1> car.getLane().getRoad().getLength()) {
-				newView = car.getLane().getRoad().getLength() - position[0]  - (int) car.getLength()/2;
+			if (position[0] + view + (int) car.getLength()/2 + 1 > car.getLane().getRoad().getLength()) {
+				newView = car.getLane().getRoad().getLength() - position[0]  - (int) car.getLength()/2 - 1;
 			}
 			break;
 		case SN:
 			if (position[0] - view - (int) car.getLength()/2 - 1 < 0) {
-				newView = position[0] - (int) car.getLength()/2 - 1;
+				newView = position[0] - (int) car.getLength()/2;
 			}
 			break;
 		case WE:
 			if (position[1] + view + (int) car.getLength()/2 + 1> car.getLane().getRoad().getLength()) {
-				newView = car.getLane().getRoad().getLength() - position[1] - (int) car.getLength()/2;
+				newView = car.getLane().getRoad().getLength() - position[1] - (int) car.getLength()/2 - 1;
 			}
 			break;
 		case EW:
 			if (position[1] - view - (int) car.getLength()/2 - 1 < 0) {
-				newView = position[0] - (int) car.getLength()/2 - 1;
+				newView = position[1] - (int) car.getLength()/2;
 			}
 			break;
 		}
@@ -67,7 +67,7 @@ public class Vision {
 		if (newView < 0) {
 			newView = 0;
 		}
-		
+		//System.out.println("view Length : " + newView);
 		this.viewSpanDepth = newView;
 	}
 	
@@ -91,7 +91,7 @@ public class Vision {
 			switch (direction) {
 			case NS:
 				for (int i = 0; i < viewSpanDepth; i++) {
-					Integer[] coord = {position[0] +  + i + (int) car.getLength()/2 + 1, position[1]};
+					Integer[] coord = {position[0] + i + (int) car.getLength()/2 + 1, position[1]};
 					viewList.add(coord);
 				}
 				break;
@@ -119,58 +119,7 @@ public class Vision {
 		return viewList;	
 	}
 	
-	
-	/**
-	 * 
-	 * @return
-	 */
-	/*
-	public void look() {
-		Cell[][] grid = this.car.getMovingParts().getSimulation().getStructureParts().getStructGrid();
 		
-		List<Integer[]> viewList = getViewList();
-		for (Integer[] coord : viewList) {
-
-			System.out.println("coord : " + coord[0] + "," + coord[1]);
-			if (grid[coord[0]][coord[1]].getContainedMobileObjects().size() != 0) {
-				
-				System.out.println("test");
-				
-				MobileType mobileType = grid[coord[0]][coord[1]].getContainedMobileObjects().get(0).getType();
-				switch (mobileType) {
-				case Pedestrian:
-					System.out.println("PIETONS !!!!!!");
-					break;
-				case Car:
-					System.out.println("VOITURE !!!!!!");
-					break;
-				}
-			
-<<<<<<< HEAD
-			}
-			// Test if the case contains a redLight or OrangeLight : it is an obstacle
-			
-			if (grid[coord[0]][coord[1]].getContainedLights().get(0).getCurrentColor() == Color.Red) {
-				System.out.println("FEUX ROUGE !!!!!!");
-				break;
-				
-			}
-=======
-			}
-			// Test if the case contains a redLight or OrangeLight : it is an obstacle
-			
-			if (grid[coord[0]][coord[1]].getContainedLights().get(0).getCurrentColor() == Color.Red) {
-				System.out.println("FEUX ROUGE !!!!!!");
-				break;
-				
-			}
->>>>>>> 53560ecd81ab5de23e78221c7c3fddb0d6c2cd15
-			
-		}
-	}
-	*/
-
-	
 	public Obstacle look() {
 		
 		Integer[] coordObstacle = {-1, -1};
@@ -178,33 +127,41 @@ public class Vision {
 		
 		if(!this.car.inGarage()) {
 			
-			System.out.println("test");
+			//System.out.println("test");
 			
 			Cell[][] grid = null;
 			
-			grid = this.car.getMovingParts().getSimulation().getStructureParts().getStructGrid();
+			if (this.car.getMovingParts().getSimulation().getListStates().size() > 1) { //We need two states to get a previous state
+				//Fetching previous state
+				SimulationState previousState = this.car.getMovingParts().getSimulation().getLastState();
+				//Fetching grid of previous step
+				grid = previousState.getGrid();
+			}
+			else { //In case it is the first state
+				grid = this.car.getMovingParts().getSimulation().getStructureParts().getStructGrid();
+			}
+
 			
 			updateView(this.viewSpanDepth);
 			
-			System.out.println(toString());
+			//System.out.println(toString());
 			int distance = 0;
 			for (Integer[] coord : getViewList()) {
 				int i = coord[0];
 				int j = coord[1];
 				if (grid[i][j].getContainedMobileObjects().size() != 0) {
-					System.out.println("prout");
 					if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Car) {
 						coordObstacle[0] = i;
 						coordObstacle[1] = j;
 						obstacle = new Obstacle(coordObstacle, grid[i][j].getContainedMobileObjects(0), ObstacleType.Car, distance);
-						System.out.println("test 2 : CAR ");
+						//System.out.println("test 2 : CAR ");
 						break;
 					}
 					else if (grid[i][j].getContainedMobileObjects(0).getType() == MobileType.Pedestrian) {
 						coordObstacle[0] = i;
 						coordObstacle[1] = j;
 
-						System.out.println("test 2 : PEDESTRIAN");
+						//System.out.println("test 2 : PEDESTRIAN");
 
 						obstacle = new Obstacle(coordObstacle, grid[i][j].getContainedMobileObjects(0),ObstacleType.Pedestrian, distance);
 						break;
@@ -216,11 +173,11 @@ public class Vision {
 						coordObstacle[0] = i;
 						coordObstacle[1] = j;
 						obstacle = new Obstacle(coordObstacle, grid[i][j].getContainedLights().get(0), ObstacleType.TrafficLight, distance);
-						System.out.println("test 2 : TRAFFIC LIGHT");
+						//System.out.println("test 2 : TRAFFIC LIGHT");
 						break;
 					}
 					else {
-						System.out.println("test 2 : EMPTY ");
+						//System.out.println("test 2 : EMPTY ");
 						obstacle = new Obstacle(coordObstacle, ObstacleType.Empty);
 						break;
 					}
@@ -232,7 +189,7 @@ public class Vision {
 		}
 		else {
 
-			System.out.println("test EMPTY 2");
+			//System.out.println("test EMPTY 2");
 			obstacle = new Obstacle(coordObstacle, ObstacleType.Empty); //Empty obstacle
 		}
 

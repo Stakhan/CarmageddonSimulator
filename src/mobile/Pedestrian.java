@@ -121,7 +121,7 @@ public class Pedestrian extends MobileObject{
 					break;
 				}
 			}
-			System.out.println("initializePedPosition:"+y+","+x+" et "+grid[x][y].getX()+","+grid[x][y].getY());
+			//System.out.println("initializePedPosition:"+y+","+x+" et "+grid[x][y].getX()+","+grid[x][y].getY());
 			int[] position = {y, x};
 			return position;
 		}

@@ -233,7 +233,7 @@ public class GridPanel extends JPanel implements KeyListener{
 		
 		
 
-		System.out.println("TRAFFIC LIGHT : " + simulation.getStructureParts().getStructGrid()[58][53].getContainedLights().size());
+		//System.out.println("TRAFFIC LIGHT : " + simulation.getStructureParts().getStructGrid()[58][53].getContainedLights().size());
 	
 		//TESTING ONLY: Painting view span over
 		g2d.setPaint(Color.yellow);

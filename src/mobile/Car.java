@@ -80,7 +80,7 @@ public class Car extends MobileObject {
 		}
 
 		int[] position = {i,j};
-		System.out.println("car position:"+position[0]+","+position[1]);
+		//System.out.println("car position:"+position[0]+","+position[1]);
 
 
 		return position;
@@ -162,7 +162,7 @@ public class Car extends MobileObject {
 				Integer[] obstaclePosition = obstacle.getPosition();
 				if(obstacle.getType().equals(ObstacleType.Car)) { //Make sure we aren't going to crash into next car
 					if(((Car) obstacle.getObject()).getVelocity() < this.velocity && obstacle.getDistance() < this.velocity) {
-						this.velocity = obstacle.getDistance()-6;
+						this.velocity = obstacle.getDistance();
 					}
 				}
 				else if(obstacle.getType().equals(ObstacleType.TrafficLight)) {

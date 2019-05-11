@@ -41,9 +41,13 @@ public abstract class MobileObject {
 	public void draw(Cell[][] grid) {
 		if (visible) {
 			for(Integer[] cellCoord : objectCoverage) {
-				int x = cellCoord[0];
-				int y = cellCoord[1];
-				grid[x][y].addMobileObjects(this);
+				int i = cellCoord[0];
+				int j = cellCoord[1];
+				int ni = grid.length;
+				int nj = grid[0].length;
+				if ((0<=i)&&(i<ni)&&(0<=j)&&(j<nj)) {
+					grid[i][j].addMobileObjects(this);
+				}
 			}
 		}
 	}

@@ -138,7 +138,7 @@ public class StructureParts {
 					// adding traffic light on the lane before the crossing section
 					for (int i = 0; i < laneSize; i++) {
 						structGrid[y][x + i].addLight(trafficLightSystem.getListLights().get(1));
-						System.out.println("trafic light car added at : " + (int) (y) + "," + (int) (x+i));
+						//System.out.println("trafic light car added at : " + (int) (y) + "," + (int) (x+i));
 					}
 					break;
 				
@@ -149,7 +149,7 @@ public class StructureParts {
 					// adding traffic light on the lane before the crossing section
 					for (int i = 0; i < laneSize; i++) {
 						structGrid[y][x + i].addLight(trafficLightSystem.getListLights().get(1));
-						System.out.println("trafic light car added at : " + y + "," + (int) (x + i));
+						//System.out.println("trafic light car added at : " + y + "," + (int) (x + i));
 					}
 					break;
 					
@@ -162,7 +162,7 @@ public class StructureParts {
 					// adding traffic light on the lane before the crossing section
 					for (int i = 0; i < laneSize; i++) {
 						structGrid[y + i][x].addLight(trafficLightSystem.getListLights().get(0));
-						System.out.println("trafic light car added at : " + (int) (y + i) + "," + x);
+						//System.out.println("trafic light car added at : " + (int) (y + i) + "," + x);
 					}
 					break;
 					
@@ -175,7 +175,7 @@ public class StructureParts {
 					// adding traffic light on the lane before the crossing section
 					for (int i = 0; i < laneSize; i++) {
 						structGrid[y + i][x].addLight(trafficLightSystem.getListLights().get(0));
-						System.out.println("trafic light car added at : " + (int) (y + i) + "," + x);
+						//System.out.println("trafic light car added at : " + (int) (y + i) + "," + x);
 					}
 					break;
 				
@@ -243,7 +243,7 @@ public class StructureParts {
 			for (int y =0; y < walkSize; y++) {
 				structGrid[yOrigin + y][xOrigin + x].addLight(trafficLightSystem.getListLights().get(2));
 				structGrid[yOrigin + y][xOrigin + x].addLight(trafficLightSystem.getListLights().get(3));
-				System.out.println("traffic ped  " + yOrigin + "," + xOrigin);
+				//System.out.println("traffic ped  " + yOrigin + "," + xOrigin);
 			}
 		}
 		
@@ -254,7 +254,7 @@ public class StructureParts {
 			for (int y =0; y < walkSize; y++) {
 				structGrid[yOrigin + y][xOrigin + x].addLight(trafficLightSystem.getListLights().get(2));
 				structGrid[yOrigin + y][xOrigin + x].addLight(trafficLightSystem.getListLights().get(3));
-				System.out.println("traffic ped  " + yOrigin + "," + xOrigin);
+				//System.out.println("traffic ped  " + yOrigin + "," + xOrigin);
 			}
 		}
 		
@@ -266,7 +266,7 @@ public class StructureParts {
 			for (int y =0; y < walkSize; y++) {
 				structGrid[yOrigin + y][xOrigin + x].addLight(trafficLightSystem.getListLights().get(2));
 				structGrid[yOrigin + y][xOrigin + x].addLight(trafficLightSystem.getListLights().get(3));
-				System.out.println("traffic ped  " + yOrigin + "," + xOrigin);
+				//System.out.println("traffic ped  " + yOrigin + "," + xOrigin);
 			}
 		}
 		
@@ -279,7 +279,7 @@ public class StructureParts {
 			for (int y =0; y < walkSize; y++) {
 				structGrid[yOrigin + y][xOrigin + x].addLight(trafficLightSystem.getListLights().get(2));
 				structGrid[yOrigin + y][xOrigin + x].addLight(trafficLightSystem.getListLights().get(3));
-				System.out.println("traffic ped  " + yOrigin + "," + xOrigin);
+				//System.out.println("traffic ped  " + yOrigin + "," + xOrigin);
 			}
 		}
 		
