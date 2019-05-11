@@ -1,6 +1,6 @@
 package immobile.lights;
 
-import enumeration.Color;
+import enumeration.TrafficColor;
 import immobile.structures.Road;
 
 /**
@@ -12,7 +12,7 @@ public class TrafficLightCar extends TrafficLight{
 	private int timeYellow;
 	*/
 
-	public TrafficLightCar(Road road, Color currentColor) { // deprecated: , int timeGreen, int timeRed, int timeYellow
+	public TrafficLightCar(Road road, TrafficColor currentColor) { // deprecated: , int timeGreen, int timeRed, int timeYellow
 		super(road, currentColor); // deprecated: , timeGreen, timeRed
 		/*
 		 * deprecated

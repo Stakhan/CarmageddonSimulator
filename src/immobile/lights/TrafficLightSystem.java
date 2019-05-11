@@ -3,7 +3,7 @@ package immobile.lights;
 import java.util.ArrayList;
 import java.util.List;
 
-import enumeration.Color;
+import enumeration.TrafficColor;
 import enumeration.Orientation;
 import immobile.structures.Road;
 import immobile.structures.Structure;
@@ -35,17 +35,18 @@ public class TrafficLightSystem {
 	 * @param timingMainRoad
 	 * @param timingSecondRoad
 	*/
-	public TrafficLightSystem(List<Road> listRoads, int timingMainRoad, int timingSecondRoad) {
+	public TrafficLightSystem(List<Road> listRoads, int timingMainRoad, int timingSecondRoad, StructureParts structureParts) {
 		this.timingMainRoad = timingMainRoad;
 		this.timingSecondRoad = timingSecondRoad;
 		
 		List<TrafficLight> listLights = new ArrayList<TrafficLight>();
-		listLights.add(new TrafficLightCar(listRoads.get(0), Color.Green));
-		listLights.add(new TrafficLightCar(listRoads.get(1), Color.Red));
-		listLights.add(new TrafficLightPedestrian(listRoads.get(0), Color.Green));
-		listLights.add(new TrafficLightPedestrian(listRoads.get(1), Color.Red));
+		listLights.add(new TrafficLightCar(listRoads.get(0), TrafficColor.Green));
+		listLights.add(new TrafficLightCar(listRoads.get(1), TrafficColor.Red));
+		listLights.add(new TrafficLightPedestrian(listRoads.get(0), TrafficColor.Green));
+		listLights.add(new TrafficLightPedestrian(listRoads.get(1), TrafficColor.Red));
 		
 		this.listLights = listLights;
+		this.structureParts = structureParts;
 	}
 	
 	/**
@@ -73,27 +74,34 @@ public class TrafficLightSystem {
 	 */
 	public void nextStep(int step) {
 		int stepModulo = step % (timingMainRoad + timeYellow + timingSecondRoad + timeYellow);
+		int mainRoadCrossingLength = this.structureParts.getRoad(0).getRoadSize() - 2*this.structureParts.getRoad(0).getSideWalkSize();
+		int secondRoadCrossingLength = this.structureParts.getRoad(1).getRoadSize() - 2*this.structureParts.getRoad(1).getSideWalkSize();
 		if (stepModulo == 0) {
 			// Beginning of the cycle : initial situation
-			listLights.get(0).setCurrentColor(Color.Green);
-			listLights.get(1).setCurrentColor(Color.Red);
-			listLights.get(2).setCurrentColor(Color.Green);
+			listLights.get(0).setCurrentColor(TrafficColor.Green);
+			listLights.get(1).setCurrentColor(TrafficColor.Red);
+			listLights.get(2).setCurrentColor(TrafficColor.Green);
+		}
+		else if (stepModulo == (timingMainRoad + timeYellow - mainRoadCrossingLength)) {
+			listLights.get(2).setCurrentColor(TrafficColor.Red);
 		}
 		else if (stepModulo == timingMainRoad) {
 			// End of the main road green light
-			listLights.get(0).setCurrentColor(Color.Yellow);
-			listLights.get(2).setCurrentColor(Color.Red);
+			listLights.get(0).setCurrentColor(TrafficColor.Yellow);
 		}
 		else if (stepModulo == (timingMainRoad + timeYellow)) {
 			// Beginning of the second road green light
-			listLights.get(0).setCurrentColor(Color.Red);
-			listLights.get(1).setCurrentColor(Color.Green);
-			listLights.get(3).setCurrentColor(Color.Green);
+			listLights.get(0).setCurrentColor(TrafficColor.Red);
+			listLights.get(1).setCurrentColor(TrafficColor.Green);
+			listLights.get(3).setCurrentColor(TrafficColor.Green);
+		}
+		else if (stepModulo == (timingMainRoad + 2 * timeYellow + timingSecondRoad) - secondRoadCrossingLength) {
+			listLights.get(3).setCurrentColor(TrafficColor.Red);
+			//System.out.println("feu pieton vertical");
 		}
 		else if (stepModulo == (timingMainRoad + timeYellow + timingSecondRoad)) {
 			// End of the second road green light
-			listLights.get(1).setCurrentColor(Color.Yellow);
-			listLights.get(3).setCurrentColor(Color.Red);
+			listLights.get(1).setCurrentColor(TrafficColor.Yellow);
 		}
 	}
 

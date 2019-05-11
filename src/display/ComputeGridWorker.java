@@ -16,12 +16,12 @@ public class ComputeGridWorker extends SwingWorker {
 	protected Object doInBackground() throws Exception {
 		while (gridPanel.getContinueRunning()) {
 			try {
-				  System.out.println("step "+gridPanel.getDisplayState().getStep());
+				  System.out.println("*** Step : "+gridPanel.getDisplayState().getStep() + " 	***");
 				  gridPanel.getSimulation().nextState();
 				  gridPanel.setDisplayState(gridPanel.getSimulation().getLastState());
 				  gridPanel.repaint();
 				  try {
-					  TimeUnit.MILLISECONDS.sleep(200);
+					  TimeUnit.MILLISECONDS.sleep(100);
 				  } catch (InterruptedException e1) {
 					  // TODO Auto-generated catch block
 					  e1.printStackTrace();
@@ -35,7 +35,7 @@ public class ComputeGridWorker extends SwingWorker {
 	
 	public void done(){            
         if(SwingUtilities.isEventDispatchThread())
-          	System.out.println("Dans l'EDT ! ");
+          	System.out.println("*** SIMULATION PAUSED ***\n*** CLICK ON START TO CONTINUE ***");
       }
 
 }

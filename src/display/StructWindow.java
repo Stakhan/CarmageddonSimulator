@@ -17,6 +17,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import engine.Simulation;
+import model.ConfigureFlow;
 import model.ConfigureStructure;
 
 public class StructWindow extends JFrame implements ActionListener{
@@ -56,18 +57,19 @@ public class StructWindow extends JFrame implements ActionListener{
 		
 		//---------------------------------------------------------------
 		// *** Text Area ***
-		JLabel textStart = new JLabel("Simulation Size : ");
+		JLabel textStart = new JLabel("Simulation Size (cells) : ");
 		
 		JTextField textSize = new JTextField(20);
 
 		//----------------------------------------------------------------
-		JLabel textPixel = new JLabel("Display Size : ");
+		JLabel textPixel = new JLabel("Display Size (pixels) : ");
 		
 		JTextField textPixelSize = new JTextField(20);
 		
 		//----------------------------------------------------------------
 		// *** Button Start***
 		JButton buttonStart = new JButton("Start");
+		//buttonStart.setBackground(Color.red);
 		buttonStart.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -87,12 +89,7 @@ public class StructWindow extends JFrame implements ActionListener{
 				ConfigureStructure structConfig = new ConfigureStructure(size, sizePix, true);
 				Simulation simulation1 = new Simulation(structConfig);
 				simulation1.init();
-
-				//Writting simulation state to file
-				//simulation1.getState(0).writeToFile("simulation-state1.grid");
-				
-				
-				//Affichage avec Java2d
+				simulation1.setConfiguredFlow(new ConfigureFlow(simulation1));
 				new Window(structConfig, simulation1);
 				dispose();  // close the JFrame
 			}
@@ -105,20 +102,20 @@ public class StructWindow extends JFrame implements ActionListener{
 		imagePanel.setBounds(50, 50, imageLength, imageHeight);
 		//content.add(imagePanel);
 		
-		textStart.setBounds(50, 50, buttonLength, buttonHeight);
+		textStart.setBounds(50, 50, 2*buttonLength, buttonHeight);
 		content.add(textStart);
 		
-		textSize.setBounds(buttonLength + 60, 50, buttonLength, buttonHeight);
+		textSize.setBounds(2*buttonLength + 60, 50, buttonLength, buttonHeight);
 		content.add(textSize);
 		
-		textPixel.setBounds(50, buttonHeight + 60, buttonLength, buttonHeight);
+		textPixel.setBounds(50, buttonHeight + 60, 2*buttonLength, buttonHeight);
 		content.add(textPixel);
 		
-		textPixelSize.setBounds(buttonLength + 60, buttonHeight + 60, buttonLength, buttonHeight);
+		textPixelSize.setBounds(2*buttonLength + 60, buttonHeight + 60, buttonLength, buttonHeight);
 		content.add(textPixelSize);
 		
 		
-		buttonStart.setBounds((buttonLength + 60)*2, 50, buttonLength, buttonHeight*2 + 10);
+		buttonStart.setBounds((2*buttonLength + 60)*2, 50, buttonLength, buttonHeight*2 + 10);
 		content.add(buttonStart);
 		
 		

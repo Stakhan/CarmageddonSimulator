@@ -23,7 +23,7 @@ public class StructureParts {
 		listRoads.add(new Road(this, structConfig.columnNb, structConfig.laneSize, structConfig.sideWalkSize, Orientation.Horizontal, 1, structConfig.bidirectional));
 		listRoads.add(new Road(this, structConfig.columnNb, structConfig.laneSize, structConfig.sideWalkSize, Orientation.Vertical, 1, structConfig.bidirectional));
 		
-		this.trafficLightSystem = new TrafficLightSystem(listRoads, 15, 12);
+		this.trafficLightSystem = new TrafficLightSystem(listRoads, 15, 12, this);
 		
 		this.structGrid = new Cell[structConfig.lineNb][structConfig.columnNb];
 		
@@ -269,7 +269,6 @@ public class StructureParts {
 				//System.out.println("traffic ped  " + yOrigin + "," + xOrigin);
 			}
 		}
-		
 		
 		//right-bottom corner
 		xOrigin = road.getPosition() + walkSize + 2*road.getLaneSize() + 1;

@@ -1,6 +1,6 @@
 package immobile.lights;
 
-import enumeration.Color;
+import enumeration.TrafficColor;
 import immobile.structures.Road;
 import model.Cell;
 
@@ -15,7 +15,7 @@ public abstract class TrafficLight {
 	/**
 	* Yellow light duration
 	*/
-	protected Color currentColor;
+	protected TrafficColor currentColor;
 
 	/*
 	 * deprecated
@@ -23,7 +23,7 @@ public abstract class TrafficLight {
 	protected int timeRed;
 	 */
 
-	public TrafficLight(Road road, Color currentColor) { // deprecated: , int timeGreen, int timeRed
+	public TrafficLight(Road road, TrafficColor currentColor) { // deprecated: , int timeGreen, int timeRed
 		super();
 		this.road = road;
 		this.currentColor = currentColor;
@@ -34,7 +34,7 @@ public abstract class TrafficLight {
 		 */
 	}
 
-	public void setCurrentColor(Color currentColor) {
+	public void setCurrentColor(TrafficColor currentColor) {
 		this.currentColor = currentColor;
 	}
 	/* 
@@ -57,7 +57,7 @@ public abstract class TrafficLight {
 	
 	//Getters
 	
-	public Color getCurrentColor() {
+	public TrafficColor getCurrentColor() {
 		return currentColor;
 	}
 	

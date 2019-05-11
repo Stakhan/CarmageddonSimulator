@@ -3,6 +3,7 @@ package display;
 import java.awt.BasicStroke;
 
 import java.awt.Color;
+import enumeration.TrafficColor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
@@ -152,7 +153,7 @@ public class GridPanel extends JPanel implements KeyListener{
 								
 							int[] position = grid[i][j].getContainedMobileObjects().get(0).getPosition(); //Get central position of car
 							if(position[0] == i && position[1] == j) { //Check if cell is center of car
-								g2d.setPaint(Color.pink); //Paint in pink in that case
+								//g2d.setPaint(Color.pink); //Paint in pink in that case
 							}
 							else {
 								g2d.setPaint(Color.red); //Rest of car should be painted in red
@@ -226,7 +227,7 @@ public class GridPanel extends JPanel implements KeyListener{
 						g2d.setPaint(Color.black);
 						g2d.drawRect(j*wUnit, i*hUnit, wUnit, hUnit);
 					}
-				}
+				}			
 			}
 		}
 		
@@ -242,25 +243,26 @@ public class GridPanel extends JPanel implements KeyListener{
 				List<Integer[]> viewList = car.getVision().getViewList();
 				for (Integer[] coord : viewList) {
 					
-					g2d.fillRect((coord[1])*wUnit, (coord[0])*hUnit, wUnit, hUnit);
+					//g2d.fillRect((coord[1])*wUnit, (coord[0])*hUnit, wUnit, hUnit);
 				}
 			}
 		}
 		
 		
 		
+		
 		//Display traffic lights
 		
 		//get current color for road 0
-		enumeration.Color current = this.displayState.getTrafficLightSystem().getListLights().get(0).getCurrentColor(); 
+		enumeration.TrafficColor current = this.displayState.getTrafficLightSystem().getListLights().get(0).getCurrentColor(); 
 		BufferedImage imageLight = this.greenLight;
-		if (current == enumeration.Color.Green) {
+		if (current == enumeration.TrafficColor.Green) {
 			imageLight = this.greenLight;
 		}
-		else if (current == enumeration.Color.Yellow) {
+		else if (current == enumeration.TrafficColor.Yellow) {
 			imageLight = this.yellowLight;
 		}
-		else if (current == enumeration.Color.Red) {
+		else if (current == enumeration.TrafficColor.Red) {
 			imageLight = this.redLight;
 		}
 		
@@ -288,13 +290,13 @@ public class GridPanel extends JPanel implements KeyListener{
 			
 		//get current color for road 1
 		current = this.displayState.getTrafficLightSystem().getListLights().get(1).getCurrentColor(); 
-		if (current == enumeration.Color.Green) {
+		if (current == enumeration.TrafficColor.Green) {
 			imageLight = this.greenLight;
 		}
-		else if (current == enumeration.Color.Yellow) {
+		else if (current == enumeration.TrafficColor.Yellow) {
 			imageLight = this.yellowLight;
 		}
-		else if (current == enumeration.Color.Red) {
+		else if (current == enumeration.TrafficColor.Red) {
 			imageLight = this.redLight;
 		}
 		

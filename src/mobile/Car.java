@@ -153,6 +153,11 @@ public class Car extends MobileObject {
 			this.vision.updateView(this.velocity * 3);
 			this.vision.look();
 			
+			
+			if (this.maxVelocity == 0) {
+				this.waitingTime += 1;
+			}
+			
 			Obstacle obstacle = this.vision.look();			
 			if (obstacle.getType().equals(ObstacleType.Empty) && this.velocity < this.maxVelocity) { // No obstacle
 

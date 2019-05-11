@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import enumeration.Color;
+import enumeration.TrafficColor;
 import enumeration.MobileType;
 import enumeration.ObstacleType;
 import enumeration.Orientation;
@@ -169,7 +169,7 @@ public class Vision {
 				}
 
 				else if (grid[i][j].getContainedLights().size() != 0) {
-					if (!grid[i][j].getContainedLights().get(0).getCurrentColor().equals(Color.Green)) { //In case it is Yellow or Red
+					if (!grid[i][j].getContainedLights().get(0).getCurrentColor().equals(TrafficColor.Green)) { //In case it is Yellow or Red
 						coordObstacle[0] = i;
 						coordObstacle[1] = j;
 						obstacle = new Obstacle(coordObstacle, grid[i][j].getContainedLights().get(0), ObstacleType.TrafficLight, distance);

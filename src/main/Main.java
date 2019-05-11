@@ -13,7 +13,7 @@ public class Main {
 		
 		// *** HOW TO USE ***
 		// Display the Simulation :
-		
+		/*
 		ConfigureStructure structConfig = new ConfigureStructure(100, 700, true);
 		
 		Simulation simulation1 = new Simulation(structConfig);
@@ -27,9 +27,11 @@ public class Main {
 		
 	
 		new Window(structConfig, simulation1);
-	
+		 */
+		
+		
 		// Here is the final version, with a starting interface
-		//new StructWindow();
+		new StructWindow();
 
 		
 	}

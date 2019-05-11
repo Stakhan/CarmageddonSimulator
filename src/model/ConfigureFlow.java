@@ -8,12 +8,9 @@ public class ConfigureFlow {
 
 	private double carFlow;
 	private double pedestrianFlow;
-	private int redTime;
-	private int greenTime;
-	private int orangeTime;
 	private Simulation simulation;
 	
-	/**
+	/** 
 	 * Detailed constructor
 	 * @param simulation
 	 * @param carFlow
@@ -22,25 +19,23 @@ public class ConfigureFlow {
 	 * @param greenTime
 	 * @param orangeTime
 	 */
-	public ConfigureFlow(Simulation simulation, double carFlow, double pedestrianFlow, int redTime, int greenTime, int orangeTime) {
+	@Deprecated
+	public ConfigureFlow(Simulation simulation, double carFlow, double pedestrianFlow) {
 		this.simulation = simulation;
 		
 		this.carFlow = carFlow;
 		this.pedestrianFlow = pedestrianFlow;
-		this.redTime = redTime;
-		this.greenTime = greenTime;
-		this.orangeTime = orangeTime;
 	}
 	
 	
 	/**
-	 * Second constructor, with default value
+	 * Main constructor, with default value.
 	 * @param simulation
 	 */
 	public ConfigureFlow(Simulation simulation) {
 		this.simulation = simulation;
 		
-		this.carFlow = 0.01;
+		this.carFlow = 0.07;
 		this.pedestrianFlow = 0.1;
 	}
 	
@@ -68,7 +63,7 @@ public class ConfigureFlow {
 		}
 	}
 	public void configureFlowCar() {
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < 2; i++) {
 			if (Math.random() < carFlow) {
 				this.simulation.getMovingParts().addRandomCar();
 			}
@@ -76,9 +71,9 @@ public class ConfigureFlow {
 	}
 	
 	public void configureFlowCar(OrientedDirection direction) {
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < 2; i++) {
 			if (Math.random() < carFlow) {
-				this.simulation.getMovingParts().addRandomPedestrianDirection(direction);
+				this.simulation.getMovingParts().addRandomCarDirection(direction);
 			}
 		}
 	}
@@ -99,30 +94,6 @@ public class ConfigureFlow {
 
 	public void setPedestrianFlow(double pedestrianFlow) {
 		this.pedestrianFlow = pedestrianFlow;
-	}
-
-	public int getRedTime() {
-		return redTime;
-	}
-
-	public void setRedTime(int redTime) {
-		this.redTime = redTime;
-	}
-
-	public int getGreenTime() {
-		return greenTime;
-	}
-
-	public void setGreenTime(int greenTime) {
-		this.greenTime = greenTime;
-	}
-
-	public int getOrangeTime() {
-		return orangeTime;
-	}
-
-	public void setOrangeTime(int orangeTime) {
-		this.orangeTime = orangeTime;
 	}
 
 	public Simulation getSimulation() {

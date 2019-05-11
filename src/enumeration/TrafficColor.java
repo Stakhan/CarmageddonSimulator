@@ -3,7 +3,7 @@ package enumeration;
 /**
 * Enumerated colors of Traffic Lights. 
 */
-public enum Color {
+public enum TrafficColor {
 	Red,
 	Yellow,
 	Green

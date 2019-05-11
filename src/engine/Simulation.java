@@ -94,6 +94,21 @@ public class Simulation {
 	}
 	
 
+	
+	/**
+	 * Refresh the list of simulation, and delete all previous simulationState except the n last ones.
+	 * @param n
+	 */
+	public void clearSimulationState(int n) {
+		if( n < this.listStates.size()) {
+			for (int k = 0; k < this.listStates.size() - n; k++){
+				this.listStates.remove(k);
+			}
+		}
+	}
+	
+	
+	
 	//Getters
 	
 	public StructureParts getStructureParts() {

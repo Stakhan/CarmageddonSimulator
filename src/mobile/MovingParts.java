@@ -155,6 +155,21 @@ public class MovingParts {
 
 	
 	
+	public void clearGarage() {
+		for (int k = 0; k < this.listCars.size(); k++) {
+			if (this.listCars.get(k).inGarage()) {
+				this.listCars.remove(k);
+			}
+		}
+		for (int k = 0; k < this.listPedestrians.size(); k++) {
+			if (this.listPedestrians.get(k).inGarage()) {
+				this.listPedestrians.remove(k);
+			}
+		}
+	}
+	
+	
+	
 	
 	//Getters
 	

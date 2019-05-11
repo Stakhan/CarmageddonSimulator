@@ -226,12 +226,12 @@ public class Window extends JFrame implements ActionListener{
 		
 		
 		//=============================================================================
-		// 			*** TRAFFIC LIGHT ***
+		// 						*** TRAFFIC LIGHT ***
 		//=============================================================================
-		JLabel timeGreenTxt = new JLabel("Time Green : ");
+		JLabel timeGreenTxt = new JLabel("Time Green H: ");
 		JTextField timeGreen = new JTextField(20);
 		
-		JLabel timeRedTxt = new JLabel("Time Red : ");
+		JLabel timeRedTxt = new JLabel("Time Green V : ");
 		JTextField timeRed = new JTextField(20);
 		
 		//Adding an update timeGreen button
@@ -243,9 +243,10 @@ public class Window extends JFrame implements ActionListener{
 				if (timeGreenUser.equals("")) {
 					timeGreenUser = "12";
 				}
+				int mainRoadCrossingLength = simulation.getStructureParts().getRoad(0).getRoadSize() - 2*simulation.getStructureParts().getRoad(0).getSideWalkSize();
 				int timeG = Integer.parseInt(timeGreenUser);
-				if (timeG < 3) {
-					timeG = 3;
+				if (timeG < mainRoadCrossingLength) {
+					timeG = mainRoadCrossingLength;
 				}
 				
 				//Setting the timingGreen
@@ -266,8 +267,9 @@ public class Window extends JFrame implements ActionListener{
 					timeRedUser = "12";
 				}
 				int timeR = Integer.parseInt(timeRedUser);
-				if (timeR < 3) {
-					timeR = 3;
+				int secondRoadCrossingLength = simulation.getStructureParts().getRoad(1).getRoadSize() - 2*simulation.getStructureParts().getRoad(1).getSideWalkSize();
+				if (timeR < secondRoadCrossingLength) {
+					timeR = secondRoadCrossingLength;
 				}
 				//Setting the timingGreen
 				simulation.getStructureParts().getTrafficLightSystem().setTimingSecondRoad(timeR);;
@@ -277,9 +279,38 @@ public class Window extends JFrame implements ActionListener{
 			}
 		});
 		
+		//=============================================================================
+		// 						*** REFRESH ***
+		//=============================================================================
+		JLabel refreshTxt = new JLabel("Clear History :");
+		JTextField refreshUser = new JTextField(20);
 		
-		//=============================================================================
-		//=============================================================================
+		//Adding the refresh update button
+		JButton buttonRefresh = new JButton("Refresh");
+		buttonRefresh.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String refreshString = timeGreen.getText();
+				if (refreshString.equals("")) {						//default value
+					refreshString = "1";
+				}
+				int refresh = Integer.parseInt(refreshString);
+				simulation.clearSimulationState(refresh);
+				simulation.getMovingParts().clearGarage();
+				// Focus on the mainPanel
+				gridPanel.setFocusable(true);
+			    gridPanel.requestFocus();
+			}
+		});
+		
+		
+		
+		
+		//=====================================================================================================================================
+		//=====================================================================================================================================
+		//***************************** POSITION OF THE DIFFERENT BUTTON / AREA ***************************************************************
+		//=====================================================================================================================================
+		//=====================================================================================================================================
 		// *** Pannel Size | Adding Pannel to the main content ***
 		// Main
 		gridPanel.setBounds(0, 0, simulationLength, simulationHeight);
@@ -373,15 +404,27 @@ public class Window extends JFrame implements ActionListener{
 							(int) buttonLength/3, (int) buttonHeight/2);
 		content.add(buttonRed);
 		
+		//==================================================================================================
+		// *** SETTING THE REFRESH BUTTONS ***
+		//==================================================================================================
 		
+		refreshTxt.setBounds(simulationLength + 20, (buttonHeight + 20)*8, 
+				(int) buttonLength/3, (int) buttonHeight/2);
+		content.add(refreshTxt);
 		
+		refreshUser.setBounds(simulationLength + 20 + (int) (buttonLength/3) + 5, (buttonHeight + 20)*8, 
+				(int) buttonLength/3, (int) buttonHeight/2);
+		content.add(refreshUser);
 		
+		buttonRefresh.setBounds(simulationLength + 20 + 2 * (int) (buttonLength/3) + 2*5, (buttonHeight + 20)*8, 
+							(int) buttonLength/3, (int) buttonHeight/2);
+		content.add(buttonRefresh);
 		
 		
 		
 		//--------------------------------------------------------------------------------------------------
 		// Exit
-		buttonExit.setBounds(simulationLength + 20, simulationHeight - (int) 3*buttonHeight,
+		buttonExit.setBounds(simulationLength + 20, simulationHeight - (int) buttonHeight,
 				buttonLength, (int) buttonHeight);
 		content.add(buttonExit);
 		

@@ -7,7 +7,7 @@ import java.util.Random;
 
 import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
-import enumeration.Color;
+import enumeration.TrafficColor;
 import enumeration.MobileType;
 import enumeration.Orientation;
 import enumeration.OrientedDirection;
@@ -301,12 +301,12 @@ public class Pedestrian extends MobileObject{
 			}
 			
 			// if the pedestrian is on a crossing section, we update the crossingDuration
-			Cell[][] grid = this.movingParts.getSimulation().getStructureParts().getStructGrid(); // get the grid of the simulation, to know the position of the different sidewalk
+			//Cell[][] grid = this.movingParts.getSimulation().getStructureParts().getStructGrid(); // get the grid of the simulation, to know the position of the different sidewalk
 			
 			//if (grid[position[0] - 1][position[1] - 1].contains(StructureType.Lane)) {
 			//	crossingDuration += 1;
 			//}
-			
+		crossingDuration += 1;
 		}
 	}
 	
@@ -455,13 +455,13 @@ public class Pedestrian extends MobileObject{
 				Orientation orientation = getOrientation();
 				switch (orientation) {
 				case Vertical:
-					if (grid[position[0]][position[1]].getContainedLights().get(0).getCurrentColor() == Color.Red) {
+					if (grid[position[0]][position[1]].getContainedLights().get(0).getCurrentColor() == TrafficColor.Red) {
 						waitingTime += 1;
 						return true;
 					}
 					break;
 				case Horizontal:
-					if (grid[position[0]][position[1]].getContainedLights().get(1).getCurrentColor() == Color.Red) {
+					if (grid[position[0]][position[1]].getContainedLights().get(1).getCurrentColor() == TrafficColor.Red) {
 						waitingTime += 1;
 						return true;
 					}
