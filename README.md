@@ -16,12 +16,12 @@ http://openjdk.java.net/
 https://www.oracle.com/technetwork/java/index.html
 ```
 
-### Installing
+### Launching the app
 
 Launch the .jar file.
 
 ```
-until finished
+java -jar CarmageddonSimulator.jar
 ```
 
 ## Running the tests
