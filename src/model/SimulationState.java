@@ -169,8 +169,7 @@ public class SimulationState {
 		}
 
 	}
-
-
+	
 	//Getters
 	 
 	public Cell getGridValue(int i, int j) {
@@ -192,6 +191,5 @@ public class SimulationState {
 	public Statistics getStatistics() {
 		return stats;
 	}
-	
 	
 }

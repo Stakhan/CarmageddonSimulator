@@ -6,9 +6,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import engine.Simulation;
+import stats.Statistics;
 
 public class ComputeGridWorker extends SwingWorker {
 	private GridPanel gridPanel;
+	private Window window;
+
 	public ComputeGridWorker(GridPanel gridPanel) {
 		this.gridPanel = gridPanel;
 	}
@@ -16,10 +19,12 @@ public class ComputeGridWorker extends SwingWorker {
 	protected Object doInBackground() throws Exception {
 		while (gridPanel.getContinueRunning()) {
 			try {
-				  System.out.println("*** Step : "+gridPanel.getDisplayState().getStep() + " 	***");
+				  System.out.println("*** Step : " + gridPanel.getDisplayState().getStep() + " 	***");
 				  gridPanel.getSimulation().nextState();
 				  gridPanel.setDisplayState(gridPanel.getSimulation().getLastState());
 				  gridPanel.repaint();
+  
+				  
 				  try {
 					  TimeUnit.MILLISECONDS.sleep(100);
 				  } catch (InterruptedException e1) {
@@ -37,5 +42,5 @@ public class ComputeGridWorker extends SwingWorker {
         if(SwingUtilities.isEventDispatchThread())
           	System.out.println("*** SIMULATION PAUSED ***\n*** CLICK ON START TO CONTINUE ***");
       }
-
+	
 }

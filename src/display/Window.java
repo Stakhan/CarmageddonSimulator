@@ -17,9 +17,12 @@ import javax.swing.JTextField;
 
 import engine.Simulation;
 import model.ConfigureStructure;
+import stats.Statistics;
 
 public class Window extends JFrame implements ActionListener{
 
+	private Statistics stats;
+	
 	
 	public Window(ConfigureStructure structConfig, Simulation simulation){
 		// *** Useful Dimension ***
@@ -31,6 +34,7 @@ public class Window extends JFrame implements ActionListener{
 		
 		int buttonLength = 300;
 		int buttonHeight = 80;
+		
 		
 		//Dimension windowSize = new Dimension(simulationLength, simulationHeight);
 
@@ -202,6 +206,8 @@ public class Window extends JFrame implements ActionListener{
 				    computeGridWorker.execute();
 					gridPanel.setFocusable(true);
 				    gridPanel.requestFocus();
+				    
+				    
 			    }
 			    else {
 			    	gridPanel.setContinueRunning(false);

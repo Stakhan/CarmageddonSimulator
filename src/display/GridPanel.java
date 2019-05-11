@@ -41,6 +41,7 @@ import mobile.Pedestrian;
 import model.Cell;
 import model.ConfigureStructure;
 import model.SimulationState;
+import stats.Statistics;
 
 public class GridPanel extends JPanel implements KeyListener{
 

@@ -46,7 +46,7 @@ public class Statistics {
 			av += list.get(i);
 		}
 		av /= list.size();
-		av = Math.floor(av * 1000) / 1000;
+		
 		return av;
 	}
 	
@@ -68,7 +68,12 @@ public class Statistics {
 	}
 
 
-
+	
+	public double trunc(double d) {
+		return Math.floor(d * 1000) / 1000;
+	}
+	
+	
 	
 	// SETTERS
 	
@@ -117,8 +122,8 @@ public class Statistics {
 	
 	@Override
 	public String toString() {
-		return	"* Statistics *\nAverage Pedestrians : \n CrossingDuration " + averageCrossingDurationPedestrian + " WaitingTime " + averageWaitingTimePedestrian +
-				"\nAverage Cars : \n CrossingDuration " + averageCrossingDurationCar + " WaitingTime " + averageWaitingTimeCar;
+		return	"* Statistics *\nAverage Pedestrians : \n CrossingDuration " + trunc(averageCrossingDurationPedestrian) + " WaitingTime " + trunc(averageWaitingTimePedestrian) +
+				"\nAverage Cars : \n CrossingDuration " + trunc(averageCrossingDurationCar) + " WaitingTime " + trunc(averageWaitingTimeCar);
 		
 	}
 	

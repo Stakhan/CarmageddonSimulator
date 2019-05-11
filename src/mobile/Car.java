@@ -155,29 +155,23 @@ public class Car extends MobileObject {
 			
 			Obstacle obstacle = this.vision.look();			
 			if (obstacle.getType().equals(ObstacleType.Empty) && this.velocity < this.maxVelocity) { // No obstacle
-
 					this.changeVelocity(true);
 			}
 			else { // Cases : Car, Pedestrian, Red/Orange Traffic Light
-				Integer[] obstaclePosition = obstacle.getPosition();
 				if(obstacle.getType().equals(ObstacleType.Car)) { //Make sure we aren't going to crash into next car
-					if(((Car) obstacle.getObject()).getVelocity() < this.velocity && obstacle.getDistance() < this.velocity) {
-						this.velocity = obstacle.getDistance();
-						this.waitingTime += 1;
+					if(((Car) obstacle.getObject()).getVelocity() <= this.velocity && obstacle.getDistance() <= this.velocity) {
+						this.velocity = obstacle.getDistance() - 1;
 					}
 				}
 				else if(obstacle.getType().equals(ObstacleType.TrafficLight)) {
-					if(this.velocity == 0 && obstacle.getDistance() > 2) {
-						this.velocity += 1;
-					}
-					else if (obstacle.getDistance() <=2){
-						this.velocity = 0;
-						this.waitingTime += 1;
-					}
-					else if (this.velocity > obstacle.getDistance()){
-						this.velocity = obstacle.getDistance() - 2;
+					if(obstacle.getDistance() <= this.velocity) {
+						this.velocity = obstacle.getDistance() - 1;				// -1 because vision starts at 0
 					}
 				}
+				if (this.velocity < 0) {
+					this.velocity = 0;
+					this.waitingTime += 1;
+				} 
 			}
 		
 			//System.out.println("viewSpanDepth : " + this.vision.getViewSpanDepth());
@@ -296,4 +290,9 @@ public class Car extends MobileObject {
 	public int getVelocity() {
 		return velocity;
 	}
+	
+	public void setWaitingTime(int n) {
+		this.waitingTime = n;
+	}
+	
 }
