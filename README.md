@@ -34,11 +34,15 @@ Once you have a local copy of the code, you can compile it. For this purpose we 
 ```
 sudo apt-get install ant
 ```
-Make sure you're in the CarmageddonSimulator directory:
+Make sure you're in the CarmageddonSimulator:
 ```
 pwd
 ```
-If yes, compile:
+If not:
+```
+cd CarmageddonSimulator
+```
+Compile:
 ```
 ant -f build.xml
 ```
