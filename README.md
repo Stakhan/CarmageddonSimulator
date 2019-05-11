@@ -5,16 +5,31 @@ This simulation project provides the possibility to an urban planner to simulate
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. Those instructions assume you are on a debian-like linux system.
 
 ### Prerequisites
 
-Carmageddon Simulator is developped in Java language without need of any other language or platform. It was tested with the versions 8, 11 and 12 of Java.
+Carmageddon Simulator is developped in Java. So you need a version of the JDK if you aim at modifying the code.
+There is no need for other languages or platforms. It was tested with versions 8, 11 and 12 of the JDK.
+To download the Java Development Kit (JDK):
+http://jdk.java.net/12/ or https://www.oracle.com/technetwork/java/javase/downloads/index.html
+
+
+### Retrieving the sources
+If you haven't installed git yet, open a shell and run:
+```
+sudo apt-get install git
+```
+Then retrieve the code using:
+```
+git clone https://github.com/Stakhan/CarmageddonSimulator
+```
 
 ```
-http://openjdk.java.net/
-https://www.oracle.com/technetwork/java/index.html
-```
+
+
+## Compiling the sources
+
 
 ### Launching the app
 
@@ -24,9 +39,7 @@ Launch the .jar file.
 java -jar CarmageddonSimulator.jar
 ```
 
-## Running the tests
-
-Choose your size preference in the first window. Then, you can adjust the different live parameters and events.
+A first window appear, choose your size preferences there. Then, you get the main window where you can watch the main window  can adjust the different live parameters and events.
 
 ```
 Change flow
