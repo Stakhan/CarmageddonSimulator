@@ -26,7 +26,7 @@ public class ComputeGridWorker extends SwingWorker {
   
 				  
 				  try {
-					  TimeUnit.MILLISECONDS.sleep(100);
+					  TimeUnit.MILLISECONDS.sleep(150);
 				  } catch (InterruptedException e1) {
 					  // TODO Auto-generated catch block
 					  e1.printStackTrace();
