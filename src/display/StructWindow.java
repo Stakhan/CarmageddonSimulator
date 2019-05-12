@@ -92,6 +92,7 @@ public class StructWindow extends JFrame implements ActionListener{
 				simulation1.setConfiguredFlow(new ConfigureFlow(simulation1));
 				new Window(structConfig, simulation1);
 				dispose();  // close the JFrame
+				System.out.println("\n***	START OF CARMAGEDDON			***");
 			}
 		});
 
@@ -127,6 +128,10 @@ public class StructWindow extends JFrame implements ActionListener{
 
 		this.setVisible(true);
 		
+		
+		
+		System.out.println("\n***************************************************\n***	WELCOME ON CARMAGEDDON			***\n***************************************************\n");	
+	
 	}
 
 	

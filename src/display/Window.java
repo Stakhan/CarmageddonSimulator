@@ -69,7 +69,13 @@ public class Window extends JFrame implements ActionListener{
 		JTextField flowCarUser = new JTextField(20);
 		
 		//=============================================================================
-		// *** Button ***
+		//								*** Button ***
+		
+		
+		
+		//=============================================================================
+		//								*** STATS ***
+		//=============================================================================
 		// Adding a button to compute stats
 		JButton buttonStats = new JButton("Update Stats");
 		buttonStats.addActionListener(new ActionListener() {
@@ -83,6 +89,16 @@ public class Window extends JFrame implements ActionListener{
 			    gridPanel.requestFocus();
 			}
 		});
+		
+		//----------------------------------------------------------------------------
+		// GRAPHS
+		
+		
+		
+		
+		
+		//============================================================================
+		//							***	FLOWS ***
 		//============================================================================
 		//----------------------------------------------------------------------------
 		// Adding a button to compute flows
@@ -129,6 +145,7 @@ public class Window extends JFrame implements ActionListener{
 
 				simulation.getMovingParts().addRandomPedestrian();
 				
+				System.out.println("***	PEDESTRIAN ADDED			***");
 				// Focus on the mainPanel
 				gridPanel.setFocusable(true);
 			    gridPanel.requestFocus();
@@ -143,11 +160,15 @@ public class Window extends JFrame implements ActionListener{
 
 				simulation.getMovingParts().addRandomCar();
 				
+				System.out.println("***	CAR ADDED				***");
 				// Focus on the mainPanel
 				gridPanel.setFocusable(true);
 			    gridPanel.requestFocus();
 			}
 		});
+		
+		//============================================================================
+		//						*** ADDING RANDOM ***
 		//============================================================================
 		//----------------------------------------------------------------------------
 		// Adding a next button
@@ -225,8 +246,9 @@ public class Window extends JFrame implements ActionListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
+				System.out.println("***	END OF CARMAGEDDON			***");
 				// Focus on the mainPanel
-			}
+			}		
 		});
 		
 		
@@ -257,6 +279,7 @@ public class Window extends JFrame implements ActionListener{
 				
 				//Setting the timingGreen
 				simulation.getStructureParts().getTrafficLightSystem().setTimingMainRoad(timeG);
+				System.out.println("***	TIME GREEN HORIZONTAL CHANGED		***");
 				// Focus on the mainPanel
 				gridPanel.setFocusable(true);
 			    gridPanel.requestFocus();
@@ -278,7 +301,8 @@ public class Window extends JFrame implements ActionListener{
 					timeR = secondRoadCrossingLength;
 				}
 				//Setting the timingGreen
-				simulation.getStructureParts().getTrafficLightSystem().setTimingSecondRoad(timeR);;
+				simulation.getStructureParts().getTrafficLightSystem().setTimingSecondRoad(timeR);
+				System.out.println("***	TIME GREEN VERTICAL CHANGED		***");
 				// Focus on the mainPanel
 				gridPanel.setFocusable(true);
 			    gridPanel.requestFocus();
@@ -303,6 +327,8 @@ public class Window extends JFrame implements ActionListener{
 				int refresh = Integer.parseInt(refreshString);
 				simulation.clearSimulationState(refresh);
 				simulation.getMovingParts().clearGarage();
+				
+				System.out.println("***	REFRESH DONE				***");
 				// Focus on the mainPanel
 				gridPanel.setFocusable(true);
 			    gridPanel.requestFocus();

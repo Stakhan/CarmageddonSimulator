@@ -19,7 +19,7 @@ public class ComputeGridWorker extends SwingWorker {
 	protected Object doInBackground() throws Exception {
 		while (gridPanel.getContinueRunning()) {
 			try {
-				  System.out.println("*** Step : " + gridPanel.getDisplayState().getStep() + " 	***");
+				  System.out.println("*** Step : " + gridPanel.getDisplayState().getStep() + " 					***");
 				  gridPanel.getSimulation().nextState();
 				  gridPanel.setDisplayState(gridPanel.getSimulation().getLastState());
 				  gridPanel.repaint();
@@ -40,7 +40,7 @@ public class ComputeGridWorker extends SwingWorker {
 	
 	public void done(){            
         if(SwingUtilities.isEventDispatchThread())
-          	System.out.println("*** SIMULATION PAUSED ***\n*** CLICK ON START TO CONTINUE ***");
+          	System.out.println("***	SIMULATION PAUSED			***\n*** 	CLICK ON START TO CONTINUE		***");
       }
 	
 }

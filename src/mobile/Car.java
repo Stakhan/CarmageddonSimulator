@@ -80,7 +80,7 @@ public class Car extends MobileObject {
 		}
 
 		int[] position = {i,j};
-		System.out.println("car position:"+position[0]+","+position[1]);
+		//System.out.println("car position:"+position[0]+","+position[1]);
 
 
 		return position;
