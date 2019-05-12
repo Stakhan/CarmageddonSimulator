@@ -31,9 +31,9 @@ public class MovingParts {
 	public void generate() {
 		//TESTING ONLY : one car for each direction of each lane
 		listCars.add(new Car(this, 5, 3, Profil.respectful, 0, 5, 20, this.simulation.getStructureParts().getRoad(0).getLane(0)));
-		listCars.add(new Car(this, 5, 3, Profil.crazy, 0, 5, 10, this.simulation.getStructureParts().getRoad(0).getLane(1)));
-		listCars.add(new Car(this, 5, 3, Profil.crazy, 0, 5, 10, this.simulation.getStructureParts().getRoad(1).getLane(0)));
-		listCars.add(new Car(this, 5, 3, Profil.crazy, 0, 5, 10, this.simulation.getStructureParts().getRoad(1).getLane(1)));
+		//listCars.add(new Car(this, 5, 3, Profil.crazy, 0, 5, 10, this.simulation.getStructureParts().getRoad(0).getLane(1)));
+		//listCars.add(new Car(this, 5, 3, Profil.crazy, 0, 5, 10, this.simulation.getStructureParts().getRoad(1).getLane(0)));
+		//listCars.add(new Car(this, 5, 3, Profil.crazy, 0, 5, 10, this.simulation.getStructureParts().getRoad(1).getLane(1)));
 		
 		//TESTING ONLY: adding a pedestrian on the Road
 
@@ -119,18 +119,26 @@ public class MovingParts {
 		// Change possible : Initialize with probability a profil, velocity...
 		if (Math.random() < 0.5) {
 			if (Math.random() < 0.5) {
-				addRandomCarDirection(OrientedDirection.EW);
+				if (simulation.getStructureParts().getRoad(0).getLane(0).testAvailability(5, simulation.getLastState())) {
+					addRandomCarDirection(OrientedDirection.EW);
+				}
 			}
 			else {
-				addRandomCarDirection(OrientedDirection.WE);
+				if (simulation.getStructureParts().getRoad(0).getLane(1).testAvailability(5, simulation.getLastState())) {
+					addRandomCarDirection(OrientedDirection.WE);
+				}
 			}
 		}
 		else {
 			if (Math.random() < 0.5) {
-				addRandomCarDirection(OrientedDirection.NS);
+				if (simulation.getStructureParts().getRoad(1).getLane(1).testAvailability(5, simulation.getLastState())) {
+					addRandomCarDirection(OrientedDirection.NS);
+				}
 			}
 			else {
-				addRandomCarDirection(OrientedDirection.SN);
+				if (simulation.getStructureParts().getRoad(1).getLane(0).testAvailability(5, simulation.getLastState())) {
+					addRandomCarDirection(OrientedDirection.SN);
+				}
 			}
 		}
 	}

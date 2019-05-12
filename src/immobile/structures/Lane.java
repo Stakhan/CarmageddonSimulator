@@ -33,38 +33,35 @@ public class Lane extends Structure {
 	public boolean testAvailability(int length, SimulationState state) {
 		
 		int[] coord = Car.initializeCarPosition(state.getGrid(), this, length, 3);
-		int roadPosition = containingRoad.getPosition();
-		int carPositionOnRoad = containingRoad.getSideWalkSize() + containingRoad.getLaneSize()*(containingRoad.getIndexOfLane(this)+1) - ((int) containingRoad.getLaneSize()/2);
 		
 		int x = coord[0];
 		int y = coord[1];
 		switch (this.getOrientedDirection()) {
         case WE:
-        	for (int k=x; k<x+(int)length/2; k++) {
-        		System.out.println(k+","+y+": "+state.getGrid()[y][k].contains(MobileType.Car));
-        		if (state.getGrid()[y][k].contains(MobileType.Car) || state.getGrid()[y][k].contains(MobileType.Pedestrian)){
+        	for (int k=y; k<y+(int)length; k++) {
+        		//System.out.println(x+","+k+": "+state.getGrid()[x][k].contains(MobileType.Car));
+        		if (state.getGrid()[x][k].contains(MobileType.Car) || state.getGrid()[x][k].contains(MobileType.Pedestrian)){
         			return false;
         		}
         	}
         	break;
         case NS:
-        	for (int k=y; k<y+(int)length/2; k++) {
-        		if (state.getGrid()[k][x].contains(MobileType.Car) || state.getGrid()[k][x].contains(MobileType.Pedestrian)){
+        	for (int k=x; k<x+(int)length; k++) {
+        		if (state.getGrid()[k][y].contains(MobileType.Car) || state.getGrid()[k][y].contains(MobileType.Pedestrian)){
         			return false;
         		}
         	}
 			break;
         case SN:
-        	for (int k=y; k>y-(int)length/2; k--) {
-        		if (state.getGrid()[k][x].contains(MobileType.Car) || state.getGrid()[k][x].contains(MobileType.Pedestrian)){
+        	for (int k=x; k>x-(int)length; k--) {
+        		if (state.getGrid()[k][y].contains(MobileType.Car) || state.getGrid()[k][y].contains(MobileType.Pedestrian)){
         			return false;
         		}
         	}
 			break;
         case EW:
-        	for (int k=x; k>x-(int)length/2; k--) {
-        		if (state.getGrid()[y][k].contains(MobileType.Car) || state.getGrid()[y][k].contains(MobileType.Pedestrian)){
-        			System.out.println("yik");
+        	for (int k=y; k>y-(int)length; k--) {
+        		if (state.getGrid()[x][k].contains(MobileType.Car) || state.getGrid()[x][k].contains(MobileType.Pedestrian)){
         			return false;
         		}
         	}

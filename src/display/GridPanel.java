@@ -397,12 +397,12 @@ public class GridPanel extends JPanel implements KeyListener{
 			}
 		}
 		if ((key == KeyEvent.VK_C)) {
-//			if(this.simulation.getStructureParts().getRoad(0).getLane(1).testAvailability(5, this.displayState)) { //Test if room available for poping
-//				this.simulation.getMovingParts().getListCars().add(new Car(this.simulation.getMovingParts(), "voiture", 5, 3, Profil.respectful, 0, 5, 10, this.simulation.getStructureParts().getRoad(0).getLane(1)));
-//				this.simulation.getMovingParts().getLastCar().nextStep();
-//				this.simulation.getMovingParts().getLastCar().draw(this.displayState.getGrid());
-//				repaint();
-//			}	
+			if(this.simulation.getStructureParts().getRoad(0).getLane(1).testAvailability(5, this.displayState)) { //Test if room available for poping
+				this.simulation.getMovingParts().getListCars().add(new Car(this.simulation.getMovingParts(), 5, 3, Profil.respectful, 0, 5, 10, this.simulation.getStructureParts().getRoad(0).getLane(1)));
+				this.simulation.getMovingParts().getLastCar().nextStep();
+				this.simulation.getMovingParts().getLastCar().draw(this.displayState.getGrid());
+				repaint();
+			}	
 		}
 		
 //		if ((key == KeyEvent.VK_X)) {
