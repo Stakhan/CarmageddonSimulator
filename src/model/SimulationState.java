@@ -25,7 +25,6 @@ public class SimulationState {
 	private int step;
 	private Cell[][] grid;
 	private TrafficLightSystem trafficLightSystem;
-	private Statistics stats;
 	
 	/**
 	 * Constructor
@@ -41,56 +40,6 @@ public class SimulationState {
 		this.step = step;
 		this.grid = this.simulation.getStructureParts().cloneStructGrid();
 		this.trafficLightSystem = this.simulation.getStructureParts().getTrafficLightSystem().clone();
-		
-		// Adding the statistics in the attribute stats
-		computeStats();
-	}
-	
-	
-	public void computeStats() {
-		// Computing the statistics
-		Statistics stats = new Statistics(this);
-		// PEDESTRIANS
-		// * CrossingDuration *
-		List<Double> listPedestriansCD = new ArrayList<>();
-		List<Pedestrian> listPedestrians = simulation.getMovingParts().getListPedestrians();
-		for (int i = 0; i < listPedestrians.size(); i++) {
-			listPedestriansCD.add(new Double(listPedestrians.get(i).getCrossingDuration())); // cast in Double
-		}
-		// * WaitingTime * 
-		List<Double> listPedestriansWT = new ArrayList<>();
-		for (int i = 0; i < listPedestrians.size(); i++) {
-			listPedestriansWT.add(new Double(listPedestrians.get(i).getWaitingTime())); // cast in Double
-		}
-		
-		// CARS
-		// * CrossingDuration *
-		List<Double> listCarsCD = new ArrayList<>();
-		List<Car> listCars = simulation.getMovingParts().getListCars();
-		for (int i = 0; i < listCars.size(); i++) {
-			listCarsCD.add(new Double(listCars.get(i).getCrossingDuration())); // cast in Double
-		}
-		// * WaitingTime * 
-		List<Double> listCarsWT = new ArrayList<>();
-		for (int i = 0; i < listCars.size(); i++) {
-			listCarsWT.add(new Double(listCars.get(i).getWaitingTime())); // cast in Double
-		}
-		Double averageCrossingDurationPedestrian = stats.average(listPedestriansCD);
-		Double averageWaitingTimePedestrian = stats.average(listPedestriansWT);
-		Double averageCrossingDurationCar = stats.average(listCarsCD);
-		Double averageWaitingTimeCar = stats.average(listCarsWT);
-		
-		// Setting the stats
-		stats.setAverageCrossingDurationPedestrian(averageCrossingDurationPedestrian);
-		stats.setAverageWaitingTimePedestrian(averageWaitingTimePedestrian);
-		stats.setAverageCrossingDurationCar(averageCrossingDurationCar);
-		stats.setAverageWaitingTimeCar(averageWaitingTimeCar);
-		
-		//System.out.println(stats.toString());
-		
-		// Updating the attribute stats
-		this.stats = stats;
-		
 	}
 	
 	
@@ -187,9 +136,4 @@ public class SimulationState {
 	public TrafficLightSystem getTrafficLightSystem() {
 		return trafficLightSystem;
 	}
-	
-	public Statistics getStatistics() {
-		return stats;
-	}
-	
 }

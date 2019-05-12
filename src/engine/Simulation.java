@@ -12,6 +12,7 @@ import mobile.Pedestrian;
 import model.ConfigureFlow;
 import model.ConfigureStructure;
 import model.SimulationState;
+import stats.Statistics;
 
 public class Simulation {
 	
@@ -21,6 +22,8 @@ public class Simulation {
 	private StructureParts structureParts;
 	private MovingParts movingParts;
 	private ConfigureFlow configuredFlow;
+	
+	private Statistics stats;
 	
 	
 	//Constructeur
@@ -33,6 +36,8 @@ public class Simulation {
 		
 		this.structureParts = new StructureParts(structConfig);
 		this.movingParts = new MovingParts(this, this.structureParts);
+		
+		this.stats = new Statistics(this);
 	}
 	
 
@@ -91,9 +96,60 @@ public class Simulation {
 
 		 
 		listStates.add(next); //compute next state and add it to the list of states
+		computeStats();
 	}
 	
 
+	public void computeStats() {
+		// Computing the statistics
+		// PEDESTRIANS
+		// * CrossingDuration *
+		List<Double> listPedestriansCD = new ArrayList<>();
+		List<Pedestrian> listPedestrians = this.getMovingParts().getListPedestrians();
+		for (int i = 0; i < listPedestrians.size(); i++) {
+			listPedestriansCD.add(new Double(listPedestrians.get(i).getCrossingDuration())); // cast in Double
+		}
+		// * WaitingTime * 
+		List<Double> listPedestriansWT = new ArrayList<>();
+		for (int i = 0; i < listPedestrians.size(); i++) {
+			listPedestriansWT.add(new Double(listPedestrians.get(i).getWaitingTime())); // cast in Double
+		}
+		
+		// CARS
+		// * CrossingDuration *
+		List<Double> listCarsCD = new ArrayList<>();
+		List<Car> listCars = this.getMovingParts().getListCars();
+		for (int i = 0; i < listCars.size(); i++) {
+			listCarsCD.add(new Double(listCars.get(i).getCrossingDuration())); // cast in Double
+		}
+		// * WaitingTime * 
+		List<Double> listCarsWT = new ArrayList<>();
+		for (int i = 0; i < listCars.size(); i++) {
+			listCarsWT.add(new Double(listCars.get(i).getWaitingTime())); // cast in Double
+		}
+		Double averageCrossingDurationPedestrian = stats.average(listPedestriansCD);
+
+		Double averageWaitingTimePedestrian = stats.average(listPedestriansWT);
+		Double averageCrossingDurationCar = stats.average(listCarsCD);
+		Double averageWaitingTimeCar = stats.average(listCarsWT);
+		
+		// Setting the stats
+		stats.setAverageCrossingDurationPedestrian(averageCrossingDurationPedestrian);
+		stats.setAverageWaitingTimePedestrian(averageWaitingTimePedestrian);
+		stats.setAverageCrossingDurationCar(averageCrossingDurationCar);
+		stats.setAverageWaitingTimeCar(averageWaitingTimeCar);
+		
+		//List of all previous stats updated
+		stats.getListWaitingTimeCar().add(averageWaitingTimeCar);
+		stats.getListWaitingTimePedestrian().add(averageWaitingTimePedestrian);
+		stats.getListCrossingDurationCar().add(averageCrossingDurationCar);
+		stats.getListCrossingDurationPedestrian().add(averageCrossingDurationPedestrian);
+		// Updating the attribute stats
+		
+	}
+	
+	
+	
 	
 	/**
 	 * Refresh the list of simulation, and delete all previous simulationState except the n last ones.
@@ -148,6 +204,10 @@ public class Simulation {
 		return configuredFlow;
 	}
 	
+	
+	public Statistics getStatistics() {
+		return this.stats;
+	}
 	
 	// SETTERS
 	public void setConfiguredFlow(ConfigureFlow configuredFlow) {

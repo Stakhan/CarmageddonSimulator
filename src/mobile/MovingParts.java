@@ -30,7 +30,7 @@ public class MovingParts {
 	 */
 	public void generate() {
 		//TESTING ONLY : one car for each direction of each lane
-		listCars.add(new Car(this, 5, 3, Profil.respectful, 0, 5, 20, this.simulation.getStructureParts().getRoad(0).getLane(0)));
+		//listCars.add(new Car(this, 5, 3, Profil.respectful, 0, 5, 20, this.simulation.getStructureParts().getRoad(0).getLane(0)));
 		//listCars.add(new Car(this, 5, 3, Profil.crazy, 0, 5, 10, this.simulation.getStructureParts().getRoad(0).getLane(1)));
 		//listCars.add(new Car(this, 5, 3, Profil.crazy, 0, 5, 10, this.simulation.getStructureParts().getRoad(1).getLane(0)));
 		//listCars.add(new Car(this, 5, 3, Profil.crazy, 0, 5, 10, this.simulation.getStructureParts().getRoad(1).getLane(1)));
@@ -38,7 +38,7 @@ public class MovingParts {
 		//TESTING ONLY: adding a pedestrian on the Road
 
 		//On left sidewalk of each road
-		listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.WE, this.simulation.getStructureParts().getRoad(0).getSideWalk(0)));
+		//listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.WE, this.simulation.getStructureParts().getRoad(0).getSideWalk(0)));
 //		listPedestrians.add(new Pedestrian(this, 3, 3, OrientedDirection.NS, this.simulation.getStructureParts().getRoad(1).getSideWalk(0)));
 //		listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.EW, this.simulation.getStructureParts().getRoad(0).getSideWalk(0)));
 //		listPedestrians.add(new Pedestrian(this, 1, 1, OrientedDirection.SN, this.simulation.getStructureParts().getRoad(1).getSideWalk(0)));

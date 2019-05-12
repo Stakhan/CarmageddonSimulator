@@ -1,6 +1,7 @@
 package display;
 
 
+import java.awt.Choice;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -56,7 +57,7 @@ public class Window extends JFrame implements ActionListener{
 
 		// *** Text Area ***
 		JTextArea textStats = new JTextArea();
-		String displayStats = simulation.getLastState().getStatistics().toString();
+		String displayStats = simulation.getStatistics().toString();
 		textStats.append(displayStats);
 		textStats.setEditable(false);
 		textStats.setOpaque(true);
@@ -76,13 +77,38 @@ public class Window extends JFrame implements ActionListener{
 		//=============================================================================
 		//								*** STATS ***
 		//=============================================================================
+		//----------------------------------------------------------------------------
+		// GRAPHS // STATS
+		Choice choiceStats = new Choice();
+		choiceStats.add("Pedestrian WaitingTime");  
+		choiceStats.add("Pedestrian CrossingDuration");  
+		choiceStats.add("Car WaitingTime");  
+		choiceStats.add("Car CrossingDuration");  
+		
+		
 		// Adding a button to compute stats
 		JButton buttonStats = new JButton("Update Stats");
 		buttonStats.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String displayStats = simulation.getLastState().getStatistics().toString();
+				String displayStats = simulation.getStatistics().toString();
 				textStats.setText(displayStats);
+				
+				String index = choiceStats.getItem(choiceStats.getSelectedIndex());
+				if (index.equals("Pedestrian WaitingTime")) {
+					Graph.drawGraph(simulation.getStatistics().getListWaitingTimePedestrian());
+				}
+				else if (index.equals("Car WaitingTime")) {
+					Graph.drawGraph(simulation.getStatistics().getListWaitingTimeCar());
+				}
+				else if (index.equals("Car CrossingDuration")) {
+					Graph.drawGraph(simulation.getStatistics().getListCrossingDurationCar());
+				}
+				else if (index.equals("Pedestrian CrossingDuration")) {
+					Graph.drawGraph(simulation.getStatistics().getListCrossingDurationPedestrian());
+				}
+				
+				//Graph.drawGraph(simulation.getStatistics().getListCrossingDurationCar());
 				
 				// Focus on the mainPanel
 				gridPanel.setFocusable(true);
@@ -90,11 +116,7 @@ public class Window extends JFrame implements ActionListener{
 			}
 		});
 		
-		//----------------------------------------------------------------------------
-		// GRAPHS
-		
-		
-		
+
 		
 		
 		//============================================================================
@@ -352,9 +374,17 @@ public class Window extends JFrame implements ActionListener{
 		textStats.setBounds(simulationLength + 20, 0, buttonLength, buttonHeight);
 		content.add(textStats);
 		
-		buttonStats.setBounds(simulationLength + 20, buttonHeight + 20, buttonLength, buttonHeight);
+		buttonStats.setBounds(simulationLength + 20, buttonHeight + 20, (int) buttonLength/2, buttonHeight);
 		content.add(buttonStats);
 
+		//------------------------------------
+		
+		choiceStats.setBounds(simulationLength + 20*2 + (int) buttonLength/2, buttonHeight + 20, (int) buttonLength/2, buttonHeight);
+		content.add(choiceStats);
+		
+		
+		
+		
 		//---------------------------------------------------------------------------------------------
 		// Flows
 		flowPedLabel.setBounds(simulationLength + 20, (buttonHeight + 20)*2, 

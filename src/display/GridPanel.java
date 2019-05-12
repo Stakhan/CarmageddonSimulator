@@ -122,7 +122,7 @@ public class GridPanel extends JPanel implements KeyListener{
 	@Override
 	public void paintComponent(Graphics g) {
 		//Show grid border
-		boolean border = true;
+		boolean border = false;
 		
 		defineUnits(structConfig);
 
@@ -157,7 +157,8 @@ public class GridPanel extends JPanel implements KeyListener{
 								//g2d.setPaint(Color.pink); //Paint in pink in that case
 							}
 							else {
-								g2d.setPaint(Color.red); //Rest of car should be painted in red
+								g2d.setColor(new Color(245, 0, 0)); 
+								//g2d.setPaint(Color.red); //Rest of car should be painted in red
 							}
 							
 							//Paint cell
@@ -174,11 +175,11 @@ public class GridPanel extends JPanel implements KeyListener{
 						
 						if(grid[i][j].getContainedLights().size() != 0) {
 							g2d.setPaint(Color.orange); 
-							g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
+							//g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 						}
-						else if(grid[i][j].contains(StructureType.SideWalk) && grid[i][j].contains(StructureType.Lane)) { //Test if it contains a Lane and a SideWalk (in that case it should be considered a Lane)
+						if(grid[i][j].contains(StructureType.SideWalk) && grid[i][j].contains(StructureType.Lane)) { //Test if it contains a Lane and a SideWalk (in that case it should be considered a Lane)
 							//Paint cell in pink
-							g2d.setPaint(Color.pink); 
+							g2d.setPaint(Color.white); 
 							g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 							if(border) {
 								//Paint a white border around cell
@@ -186,6 +187,7 @@ public class GridPanel extends JPanel implements KeyListener{
 								g2d.drawRect(j*wUnit, i*hUnit, wUnit, hUnit);
 							}
 						}
+						
 						else if(grid[i][j].contains(StructureType.Lane)) { //Test if it contains a Lane
 							for(Structure lane : grid[i][j].getContainedStructures()) {
 								if(((Lane)lane).getDirection() == false) {
@@ -197,7 +199,7 @@ public class GridPanel extends JPanel implements KeyListener{
 									g2d.setPaint(Color.black);
 								}
 							}
-							 
+							g2d.setPaint(Color.darkGray);
 							g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 							if(border) {
 								//Paint a white border around cell
@@ -221,7 +223,7 @@ public class GridPanel extends JPanel implements KeyListener{
 				
 				else if (grid[i][j].getcontainedRoads().size() == 0) { //In case it doesn't contain a road
 					//Paint cell in green
-					g2d.setPaint(Color.green); 
+					g2d.setColor(new Color(51, 250, 51)); 		// DARK GREEN
 					g2d.fillRect(j*wUnit, i*hUnit, wUnit, hUnit);
 					if(border) {
 						//Paint a black border around cell
