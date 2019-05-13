@@ -471,6 +471,7 @@ public class Pedestrian extends MobileObject{
 		}
 		return false;
 	}
+	
 
 	/**
 	 * Each node gets an index from 1 to 4, starting from top left and going clockwise. Gives the node index on which the pedestrian lies. 

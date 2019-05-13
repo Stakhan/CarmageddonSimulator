@@ -94,26 +94,34 @@ public class Lane extends Structure {
 	public int[] getIntersectionPosition() {
 		int roadPosition = this.getRoad().getPosition();
 		//int pedestrianPositionOnRoad = (int) road.getSideWalkSize()/2;
-		
 		int x = 0;
 		int y = 0;
+		//0,0
 		
 		if (this.getIndex() == 0 && this.getRoad().getIndex() == 0) {
-			x = roadPosition + this.getRoad().getLaneSize() + 1;
+			x = roadPosition + this.getRoad().getLaneSize() + 1; 		
 			y = roadPosition + this.getRoad().getLaneSize();
 		}
-		else if (this.getIndex() == 0 && this.getRoad().getIndex() == 1) {
+		
+		//1,0
+		if (this.getIndex() == 0 && this.getRoad().getIndex() == 1) {
 			x = roadPosition + this.getRoad().getLaneSize()*2 + 1;
 			y = roadPosition + this.getRoad().getLaneSize();
 		}
-		else if (this.getIndex() == 1 && this.getRoad().getIndex() == 0) {
-			x = roadPosition + this.getRoad().getLaneSize() + 1;
-			y = roadPosition + this.getRoad().getLaneSize()*2;
-		}
+		
+		//1,1
+		
 		else if (this.getIndex() == 1 && this.getRoad().getIndex() == 1) {
+			x = roadPosition + this.getRoad().getLaneSize() + 1;
+			y = roadPosition + this.getRoad().getLaneSize()*2;
+		}
+		
+		//0,1
+		else if (this.getIndex() == 1 && this.getRoad().getIndex() == 0) {
 			x = roadPosition + this.getRoad().getLaneSize()*2 + 1;
 			y = roadPosition + this.getRoad().getLaneSize()*2;
 		}
+		
 		int[] position = {y, x};
 		return position;
 	}

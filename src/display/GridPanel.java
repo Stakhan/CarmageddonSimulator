@@ -123,7 +123,7 @@ public class GridPanel extends JPanel implements KeyListener{
 	@Override
 	public void paintComponent(Graphics g) {
 		//Show grid border
-		boolean border = false;
+		boolean border = true;
 		
 		defineUnits(structConfig);
 
@@ -249,12 +249,14 @@ public class GridPanel extends JPanel implements KeyListener{
 		//for (Lane lane : simulation.getStructureParts().get)
 		
 		
-		/*
+		
 		// TESTING ONLY : show intersection points with index road and lane to generalize a method
+		/*
 		int x1;
 		int y1;
 		//0,0
-		x1 = simulation.getStructureParts().getRoad(0).getPosition() + simulation.getStructureParts().getRoad(0).getLaneSize() + 1;
+		x1 = simulation.getStructureParts().getRoad(0).getPosition() + simulation.getStructureParts().getRoad(0).getLaneSize() + 1 +
+				(int) simulation.getStructureParts().getRoad(0).getLaneSize()/2;
 		y1 = simulation.getStructureParts().getRoad(0).getPosition() + simulation.getStructureParts().getRoad(0).getLaneSize();
 		g2d.setPaint(Color.yellow);
 		g2d.fillRect(x1*wUnit, y1*hUnit, wUnit, hUnit);
@@ -440,7 +442,7 @@ public class GridPanel extends JPanel implements KeyListener{
 		}
 		if ((key == KeyEvent.VK_C)) {
 			if(this.simulation.getStructureParts().getRoad(0).getLane(1).testAvailability(5, this.displayState)) { //Test if room available for poping
-				this.simulation.getMovingParts().getListCars().add(new Car(this.simulation.getMovingParts(), 5, 3, Profil.respectful, 0, 5, 10, this.simulation.getStructureParts().getRoad(0).getLane(1)));
+				this.simulation.getMovingParts().getListCars().add(new Car(this.simulation.getMovingParts(), 5, 3, Profil.respectful, 0, 5, 10, this.simulation.getStructureParts().getRoad(1).getLane(1)));
 				this.simulation.getMovingParts().getLastCar().nextStep();
 				this.simulation.getMovingParts().getLastCar().draw(this.displayState.getGrid());
 				repaint();

@@ -179,12 +179,16 @@ public class Car extends MobileObject {
 						this.waitingTime += 1;
 					}
 				}
+				
+				else if(vision.lookIntersection() != -1 &&  vision.lookIntersection()/1 <= this.velocity) {			// /1 to convert distance into velocity. That's how physics works. *science>informatic*
+					this.velocity = vision.lookIntersection()/1;
+				}
+				System.out.println("intersection : " + vision.lookIntersection());
 				if (this.velocity < 0) {
 					this.velocity = 0;
 					
 				} 
-			}
-		
+			}		
 			//System.out.println("viewSpanDepth : " + this.vision.getViewSpanDepth());
 			//List<Integer[]> test = this.vision.getViewList();
 			//System.out.println("viewSpanList : " + this.vision.getViewList());
@@ -277,48 +281,25 @@ public class Car extends MobileObject {
 			}
 		}
 	
+		
+		
+		
 	
-	/**
-	 * This function indicates if a car need to turn or not
-	 * @return
-	 */
-	public boolean willTurn(double probaTurning) {
-		Obstacle obstacle = vision.look();
-		if (obstacle.getType() == ObstacleType.TurningPoint) {
-			if (obstacle.getDistance() <= this.velocity) {								// if the car 
-				if (Math.random() < probaTurning) {
-					this.turn = true;
-					return true;
-				}
-			}
 
-		}
-		return false;
-	}
 		
 	public void changeLane() {
 		if (this.lane.getIndex() == 0 && this.lane.getRoad().getIndex() == 0){
 			this.lane = this.lane.getRoad().getStructureParts().getListRoads().get(1).getLane(1);
 		}
-		
-		/*
-		 * 		if (this.getIndex() == 0 && this.getRoad().getIndex() == 0) {
-			x = roadPosition + this.getRoad().getLaneSize() + 1;
-			y = roadPosition + this.getRoad().getLaneSize();
+		else if (this.lane.getIndex() == 0 && this.lane.getRoad().getIndex() == 1){
+			this.lane = this.lane.getRoad().getStructureParts().getListRoads().get(1).getLane(0);
 		}
-		else if (this.getIndex() == 0 && this.getRoad().getIndex() == 1) {
-			x = roadPosition + this.getRoad().getLaneSize()*2 + 1;
-			y = roadPosition + this.getRoad().getLaneSize();
+		else if (this.lane.getIndex() == 1 && this.lane.getRoad().getIndex() == 0){
+			this.lane = this.lane.getRoad().getStructureParts().getListRoads().get(0).getLane(1);
 		}
-		else if (this.getIndex() == 1 && this.getRoad().getIndex() == 0) {
-			x = roadPosition + this.getRoad().getLaneSize() + 1;
-			y = roadPosition + this.getRoad().getLaneSize()*2;
+		else if (this.lane.getIndex() == 1 && this.lane.getRoad().getIndex() == 1){
+			this.lane = this.lane.getRoad().getStructureParts().getListRoads().get(1).getLane(1);
 		}
-		else if (this.getIndex() == 1 && this.getRoad().getIndex() == 1) {
-			x = roadPosition + this.getRoad().getLaneSize()*2 + 1;
-			y = roadPosition + this.getRoad().getLaneSize()*2;
-		}
-		 */
 	}
 		
 

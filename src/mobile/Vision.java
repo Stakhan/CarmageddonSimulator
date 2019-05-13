@@ -196,6 +196,23 @@ public class Vision {
 		return obstacle;
 		
 	}
+	
+	/**
+	 * Compute the distance from the car to the intersection on the lane.
+	 * If there are no intersections, it returns -1.
+	 * @return
+	 */
+	public int lookIntersection() {
+		int[] intersection = car.getLane().getIntersectionPosition();
+		int distance = 0;
+		for (Integer[] coord : getViewList()) {
+			if (coord[0] == intersection[0] && coord[1] == intersection[1]) {		// there is an intersection detected
+				return distance;
+			}
+			distance ++;
+		}
+		return -1;							
+	}
 
 	
 
