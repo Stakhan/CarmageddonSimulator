@@ -76,6 +76,47 @@ public class Lane extends Structure {
 		return StructureType.Lane;
 	}
 
+	//-----------------------------------------------------------------------------------------------------------------------------------
+	//	*** Computing the intersection position ***
+	//-----------------------------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Compute the intersection position of a lane. Useful to know where the cars need to turn.
+	 * Convention :
+	 * 0,0 | 1,0
+	 * ---------
+	 * 1,1 | 0,1
+	 * First index : index of the road
+	 * Second index : index of the lane
+	 * @return
+	 */
+	
+	public int[] getIntersectionPosition() {
+		int roadPosition = this.getRoad().getPosition();
+		//int pedestrianPositionOnRoad = (int) road.getSideWalkSize()/2;
+		
+		int x = 0;
+		int y = 0;
+		
+		if (this.getIndex() == 0 && this.getRoad().getIndex() == 0) {
+			x = roadPosition + this.getRoad().getLaneSize() + 1;
+			y = roadPosition + this.getRoad().getLaneSize();
+		}
+		else if (this.getIndex() == 0 && this.getRoad().getIndex() == 1) {
+			x = roadPosition + this.getRoad().getLaneSize()*2 + 1;
+			y = roadPosition + this.getRoad().getLaneSize();
+		}
+		else if (this.getIndex() == 1 && this.getRoad().getIndex() == 0) {
+			x = roadPosition + this.getRoad().getLaneSize() + 1;
+			y = roadPosition + this.getRoad().getLaneSize()*2;
+		}
+		else if (this.getIndex() == 1 && this.getRoad().getIndex() == 1) {
+			x = roadPosition + this.getRoad().getLaneSize()*2 + 1;
+			y = roadPosition + this.getRoad().getLaneSize()*2;
+		}
+		int[] position = {y, x};
+		return position;
+	}
 	
 	
 	// Getters

@@ -35,6 +35,7 @@ import enumeration.ObstacleType;
 import immobile.lights.TrafficLight;
 
 import immobile.structures.Lane;
+import immobile.structures.Road;
 import immobile.structures.Structure;
 import mobile.Car;
 import mobile.Pedestrian;
@@ -235,8 +236,47 @@ public class GridPanel extends JPanel implements KeyListener{
 		}
 		
 		
+		// Testin the method below
+		for (Road road : simulation.getStructureParts().getListRoads()) {
+			for (Lane lane : road.getListLanes()) {
+				int[] position = lane.getIntersectionPosition();
+				int i = position[0];
+				int j = position[1];
+				g2d.setPaint(Color.yellow);
+				g2d.drawRect(j*wUnit, i*hUnit, wUnit, hUnit);
+			}
+		}
+		//for (Lane lane : simulation.getStructureParts().get)
 		
-
+		
+		/*
+		// TESTING ONLY : show intersection points with index road and lane to generalize a method
+		int x1;
+		int y1;
+		//0,0
+		x1 = simulation.getStructureParts().getRoad(0).getPosition() + simulation.getStructureParts().getRoad(0).getLaneSize() + 1;
+		y1 = simulation.getStructureParts().getRoad(0).getPosition() + simulation.getStructureParts().getRoad(0).getLaneSize();
+		g2d.setPaint(Color.yellow);
+		g2d.fillRect(x1*wUnit, y1*hUnit, wUnit, hUnit);
+		
+		//1,1
+		x1 = simulation.getStructureParts().getRoad(1).getPosition() + simulation.getStructureParts().getRoad(1).getLaneSize()+ 1;
+		y1 = simulation.getStructureParts().getRoad(1).getPosition() + simulation.getStructureParts().getRoad(1).getLaneSize()*(1+1) ;
+		g2d.setPaint(Color.yellow);
+		g2d.fillRect(x1*wUnit, y1*hUnit, wUnit, hUnit);
+		
+		//1,0
+		x1 = simulation.getStructureParts().getRoad(1).getPosition() + simulation.getStructureParts().getRoad(1).getLaneSize()*(1+1)+ 1;
+		y1 = simulation.getStructureParts().getRoad(1).getPosition() + simulation.getStructureParts().getRoad(1).getLaneSize() ;
+		g2d.setPaint(Color.yellow);
+		g2d.fillRect(x1*wUnit, y1*hUnit, wUnit, hUnit);
+		
+		//0,1
+		x1 = simulation.getStructureParts().getRoad(1).getPosition() + simulation.getStructureParts().getRoad(1).getLaneSize()*(1+1)+ 1;
+		y1 = simulation.getStructureParts().getRoad(1).getPosition() + simulation.getStructureParts().getRoad(1).getLaneSize()*(1+1) ;
+		g2d.setPaint(Color.yellow);
+		g2d.fillRect(x1*wUnit, y1*hUnit, wUnit, hUnit);
+		*/
 		//System.out.println("TRAFFIC LIGHT : " + simulation.getStructureParts().getStructGrid()[58][53].getContainedLights().size());
 	
 		//TESTING ONLY: Painting view span over

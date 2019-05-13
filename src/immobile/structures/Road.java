@@ -118,6 +118,9 @@ public class Road {
 	public StructureParts getStructureParts() {
 		return structureParts;
 	}
+	public int getIndex() {
+		return this.getStructureParts().getIndexOfRoad(this);
+	}
 	
 	
 }

@@ -160,17 +160,6 @@ public class Graph extends JPanel {
     
     
     public static void drawGraph(List<Double> list) {
-    	/*
-        Graph mainPanel = new Graph(scores);
-        mainPanel.setPreferredSize(new Dimension(800, 600));
-        JFrame frame = new JFrame("DrawGraph");
-        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add(mainPanel);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-        */
-        
         List<Double> scores = new ArrayList<>();
         //Random random = new Random();
         //int maxDataPoints = 50;
@@ -192,39 +181,5 @@ public class Graph extends JPanel {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
  }
-    
-    
-    
-    private static void createAndShowGui() {
-    	/* TEST
-        List<Double> scores = new ArrayList<>();
-        Random random = new Random();
-        int maxDataPoints = 40;
-        int maxScore = 100;
-        Double d = 0.63;
-        for (int i = 0; i < maxDataPoints; i++) {
-        	System.out.println(random.nextDouble());
-            scores.add((double) d.intValue() * maxScore);
-//            scores.add((double) i);
-        }
-        scores.add((double) 0.40 * maxScore);
-        scores.add((double) 0.60 * maxScore);
-        Graph mainPanel = new Graph(scores);
-        mainPanel.setPreferredSize(new Dimension(800, 600));
-        JFrame frame = new JFrame("DrawGraph");
-        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add(mainPanel);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-        */
-    }
-    
-    public static void main(String[] args) {
-      SwingUtilities.invokeLater(new Runnable() {
-         public void run() {
-            //createAndShowGui();
-         }
-      });
-   }
+
 }

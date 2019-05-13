@@ -21,6 +21,8 @@ public class Car extends MobileObject {
 	private Lane lane;
 	private Vision vision;
 	
+	private boolean turn;
+	
 	public Car(MovingParts movingParts, int length, int height, Profil profil,
 			int velocity, int maxVelocity, int maxBrake, Lane lane) {
 		super(length, height, initializeCarPosition(movingParts.getSimulation().getStructureParts().getStructGrid(), lane, length, height));
@@ -38,6 +40,7 @@ public class Car extends MobileObject {
 
 		this.lane = lane;
 		
+		this.turn = false;
 		this.crossingDuration = 0;
 		this.waitingTime = 0;
 		
@@ -274,6 +277,50 @@ public class Car extends MobileObject {
 			}
 		}
 	
+	
+	/**
+	 * This function indicates if a car need to turn or not
+	 * @return
+	 */
+	public boolean willTurn(double probaTurning) {
+		Obstacle obstacle = vision.look();
+		if (obstacle.getType() == ObstacleType.TurningPoint) {
+			if (obstacle.getDistance() <= this.velocity) {								// if the car 
+				if (Math.random() < probaTurning) {
+					this.turn = true;
+					return true;
+				}
+			}
+
+		}
+		return false;
+	}
+		
+	public void changeLane() {
+		if (this.lane.getIndex() == 0 && this.lane.getRoad().getIndex() == 0){
+			this.lane = this.lane.getRoad().getStructureParts().getListRoads().get(1).getLane(1);
+		}
+		
+		/*
+		 * 		if (this.getIndex() == 0 && this.getRoad().getIndex() == 0) {
+			x = roadPosition + this.getRoad().getLaneSize() + 1;
+			y = roadPosition + this.getRoad().getLaneSize();
+		}
+		else if (this.getIndex() == 0 && this.getRoad().getIndex() == 1) {
+			x = roadPosition + this.getRoad().getLaneSize()*2 + 1;
+			y = roadPosition + this.getRoad().getLaneSize();
+		}
+		else if (this.getIndex() == 1 && this.getRoad().getIndex() == 0) {
+			x = roadPosition + this.getRoad().getLaneSize() + 1;
+			y = roadPosition + this.getRoad().getLaneSize()*2;
+		}
+		else if (this.getIndex() == 1 && this.getRoad().getIndex() == 1) {
+			x = roadPosition + this.getRoad().getLaneSize()*2 + 1;
+			y = roadPosition + this.getRoad().getLaneSize()*2;
+		}
+		 */
+	}
+		
 
 	
 	//Getters

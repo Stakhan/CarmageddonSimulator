@@ -361,6 +361,11 @@ public class StructureParts {
 	public Road getRoad(int i) {
 		return listRoads.get(i);
 	}
+	
+	public int getIndexOfRoad(Road road) {
+		return this.listRoads.indexOf(road);
+	}
+	
 	public TrafficLightSystem getTrafficLightSystem() {
 		return trafficLightSystem;
 	}
