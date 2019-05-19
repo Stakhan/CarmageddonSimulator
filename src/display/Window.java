@@ -17,6 +17,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import engine.Simulation;
+import enumeration.Profil;
+import mobile.Car;
 import model.ConfigureStructure;
 import stats.Statistics;
 
@@ -175,13 +177,13 @@ public class Window extends JFrame implements ActionListener{
 		});
 		//----------------------------------------------------------------------------
 		// Adding a button to add a random car
-		JButton buttonCar = new JButton("Add Car");
+		JButton buttonCar = new JButton("#TESTING# Add Car");
 		buttonCar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				simulation.getMovingParts().addRandomCar();
-				
+				//simulation.getMovingParts().addRandomCar();
+				simulation.getMovingParts().getListCars().add(new Car(simulation.getMovingParts(), 5, 3, Profil.respectful, 0, 5, 20, simulation.getStructureParts().getRoad(1).getLane(1), simulation.getStructureParts().getRoad(0).getLane(0)));
 				System.out.println("***	CAR ADDED				***");
 				// Focus on the mainPanel
 				gridPanel.setFocusable(true);

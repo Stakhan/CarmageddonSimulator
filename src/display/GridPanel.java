@@ -285,10 +285,9 @@ public class GridPanel extends JPanel implements KeyListener{
 		g2d.setPaint(Color.yellow);
 		for (Car car : this.simulation.getMovingParts().getListCars()) {
 			if (!car.inGarage()) {
-				List<Integer[]> viewList = car.getVision().getViewList();
+				List<Integer[]> viewList = car.getVision().getView();
 				for (Integer[] coord : viewList) {
-					
-					//g2d.fillRect((coord[1])*wUnit, (coord[0])*hUnit, wUnit, hUnit);
+					g2d.fillRect((coord[1])*wUnit, (coord[0])*hUnit, wUnit, hUnit);
 				}
 			}
 		}

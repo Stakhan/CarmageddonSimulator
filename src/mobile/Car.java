@@ -1,5 +1,8 @@
 package mobile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import enumeration.MobileType;
 import enumeration.ObstacleType;
 import enumeration.Orientation;
@@ -18,6 +21,8 @@ public class Car extends MobileObject {
 	private int velocity;
 	private int maxVelocity;
 	private int maxBrake;
+	private Lane startLane;
+	private Lane destinationLane;
 	private Lane lane;
 	private Vision vision;
 	
@@ -39,13 +44,54 @@ public class Car extends MobileObject {
 		this.height = height;
 
 		this.lane = lane;
-		
+		this.startLane = lane; //Usefull for statistics
+		destinationLane = this.randDestination();
 		this.turn = false;
+		
 		this.crossingDuration = 0;
 		this.waitingTime = 0;
 		
 		// Vision fixe dans un premier temps
-		this.vision = new Vision(5 * 4, this);
+		this.vision = new Vision(5 * 4, 3, this);
+		
+		computeCoverage(movingParts);
+	}
+	
+	
+	/**
+	 * FOR TESTING
+	 */
+	public Car(MovingParts movingParts, int length, int height, Profil profil,
+			int velocity, int maxVelocity, int maxBrake, Lane lane, Lane destinationLane) {
+		super(length, height, initializeCarPosition(movingParts.getSimulation().getStructureParts().getStructGrid(), lane, length, height));
+		
+		initializeCarPosition(movingParts.getSimulation().getStructureParts().getStructGrid(), lane, length, height);
+		this.movingParts = movingParts;
+		
+		this.profil = profil;
+		this.velocity = velocity;
+		this.maxVelocity = maxVelocity;
+		this.maxBrake = maxBrake;
+		
+		this.length = length;
+		this.height = height;
+
+		this.lane = lane;
+		this.startLane = lane; //Usefull for statistics
+		this.destinationLane = destinationLane;
+		
+		if(this.lane.equals(this.destinationLane)) {
+			this.turn = false;
+		}
+		else {
+			this.turn = true;
+		}
+		
+		this.crossingDuration = 0;
+		this.waitingTime = 0;
+		
+		// Vision fixe dans un premier temps
+		this.vision = new Vision(5 * 4, 3, this);
 		
 		computeCoverage(movingParts);
 	}
@@ -152,8 +198,8 @@ public class Car extends MobileObject {
 			this.go();
 			this.computeCoverage(this.movingParts);
 			this.changeVelocity(true);
-			this.vision.setViewSpanDepth(this.velocity * 3); // To have a deeper vision : *3
-			this.vision.updateView(this.velocity * 3);
+			//this.vision.setViewDepth(this.velocity * 3); // To have a deeper vision : *3
+			this.vision.updateViewList();
 			this.vision.look();
 			
 			Obstacle obstacle = this.vision.look();			
@@ -180,14 +226,14 @@ public class Car extends MobileObject {
 					}
 				}
 				
-				else if(vision.lookIntersection() != -1 &&  vision.lookIntersection()/1 <= this.velocity) {			// /1 to convert distance into velocity. That's how physics works. *science>informatic*
-					this.velocity = vision.lookIntersection()/1;
-				}
-				System.out.println("intersection : " + vision.lookIntersection());
-				if (this.velocity < 0) {
-					this.velocity = 0;
-					
-				} 
+//				else if(vision.lookIntersection() != -1 &&  vision.lookIntersection()/1 <= this.velocity) {			// /1 to convert distance into velocity. That's how physics works. *science>informatic*
+//					this.velocity = vision.lookIntersection()/1;
+//				}
+//				System.out.println("intersection : " + vision.lookIntersection());
+//				if (this.velocity < 0) {
+//					this.velocity = 0;
+//					
+//				} 
 			}		
 			//System.out.println("viewSpanDepth : " + this.vision.getViewSpanDepth());
 			//List<Integer[]> test = this.vision.getViewList();
@@ -283,7 +329,26 @@ public class Car extends MobileObject {
 	
 		
 		
-		
+	/*
+	 * Random selection of a destination between the lanes 
+	 * which intersect the origin lane
+	 * @return (Lane) the destination lane
+	 */
+	private Lane randDestination() {
+		List<Lane> laneCandidates = new ArrayList<Lane>();
+		if (this.lane.getRoad().getOrientation().equals(Orientation.Horizontal)) {
+			laneCandidates.addAll(movingParts.getSimulation().getStructureParts().getRoad(1).getListLanes());
+		}
+		else if (this.lane.getRoad().getOrientation().equals(Orientation.Vertical)) {
+			laneCandidates.addAll(movingParts.getSimulation().getStructureParts().getRoad(0).getListLanes());
+		}
+		int nbLanes = laneCandidates.size();
+		for (int i = 0; i < nbLanes; i++) {
+			laneCandidates.add(this.lane); // Half probability to go straight
+		}
+		int r = (int) (Math.random()*laneCandidates.size());
+		return laneCandidates.get(r);
+	}	
 	
 
 		
@@ -329,6 +394,10 @@ public class Car extends MobileObject {
 	
 	public void setWaitingTime(int n) {
 		this.waitingTime = n;
+	}
+	
+	public boolean turns() {
+		return this.turn;
 	}
 	
 }

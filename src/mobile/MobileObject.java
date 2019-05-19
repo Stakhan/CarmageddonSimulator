@@ -96,6 +96,10 @@ public abstract class MobileObject {
 		return length;
 	}
 	
+	public int getHeight() {
+		return height;
+	}
+	
 	public int getCrossingDuration() {
 		return crossingDuration;
 	}
